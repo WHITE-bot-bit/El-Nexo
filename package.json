@@ -1,0 +1,21 @@
+
+{
+  "name": "el-nexo",
+  "version": "1.0.0",
+  "description": "A lightweight frontend framework built from scratch",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node server.cjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "bench": "vitest run tests/fiberPerformance.bench.test.js"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}

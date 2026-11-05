@@ -1,0 +1,1387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f0e5" />
+    <title>El Nexo — Developer Studio</title>
+    <link rel="stylesheet" href="./devtools.css" />
+    <style>
+      /* =================================
+         EL NEXO AI ASSISTANT
+      ================================= */
+
+      .ai-assistant-panel {
+        grid-column: 1 / -1;
+      }
+
+      .ai-assistant-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        padding: 18px;
+        align-items: end;
+      }
+
+      .ai-assistant-input {
+        width: 100%;
+        min-height: 104px;
+        resize: vertical;
+        padding: 12px 14px;
+        border: 1px solid var(--border, #26343d);
+        border-radius: 10px;
+        background: var(--surface, #0a1014);
+        color: var(--text, #edf4f8);
+        font: inherit;
+        line-height: 1.5;
+      }
+
+      .ai-assistant-input:focus {
+        outline: 2px solid var(--accent, #f59e0b);
+        outline-offset: 2px;
+      }
+
+      .ai-assistant-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .ai-assistant-response {
+        margin: 0 18px 18px;
+        padding: 16px;
+        border: 1px solid var(--border, #26343d);
+        border-radius: 10px;
+        background: rgba(10, 16, 20, 0.72);
+        color: var(--text, #edf4f8);
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        line-height: 1.6;
+        min-height: 54px;
+      }
+
+      .ai-assistant-response:empty::before {
+        content: "AI explanations will appear here.";
+        color: var(--muted, #91a2ad);
+      }
+
+      .ai-assistant-response[data-state="error"] {
+        border-color: #b45353;
+        color: #ffb4b4;
+      }
+
+      .ai-assistant-response[data-state="loading"] {
+        color: var(--muted, #91a2ad);
+      }
+
+      @media (max-width: 700px) {
+        .ai-assistant-body {
+          grid-template-columns: 1fr;
+        }
+
+        .ai-assistant-actions {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .performance-workspace {
+        width: 100%;
+        min-width: 0;
+        margin-top: 4px;
+        border: 1px solid #263746;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #080e18;
+      }
+
+      .performance-workspace iframe {
+        display: block;
+        width: 100%;
+        height: 760px;
+        min-height: 0;
+        border: 0;
+        background: #080e18;
+        overflow: hidden;
+      }
+
+      @media (max-width: 700px) {
+        .performance-workspace iframe {
+          height: 900px;
+          min-height: 0;
+        }
+      }
+      /* Final theme-aware styling for inline workspace components. */
+
+      body[data-visual-theme="notebook"] .ai-assistant-input {
+        background: #fffdf8 !important;
+        color: #293750 !important;
+        border-color: #d9d2c4 !important;
+      }
+
+      body[data-visual-theme="notebook"] .ai-assistant-response {
+        background: #fffaf0 !important;
+        color: #344966 !important;
+        border-color: #dfd2bd !important;
+      }
+
+      body[data-visual-theme="notebook"] .ai-assistant-response:empty::before {
+        color: #66738a !important;
+      }
+
+      body[data-visual-theme="studio"] .ai-assistant-input {
+        background: #123963 !important;
+        color: #edf5ff !important;
+        border-color: #47739b !important;
+      }
+
+      body[data-visual-theme="studio"] .ai-assistant-response {
+        background: #123b65 !important;
+        color: #edf5ff !important;
+        border-color: #47739b !important;
+      }
+
+      body[data-visual-theme="studio"] .ai-assistant-response:empty::before {
+        color: #b5cce4 !important;
+      }
+
+      body[data-visual-theme="notebook"] .performance-workspace {
+        background: #f5f0e5 !important;
+        border-color: #dfd2bd !important;
+      }
+
+      body[data-visual-theme="notebook"] .performance-workspace iframe {
+        background: #f5f0e5 !important;
+      }
+
+      body[data-visual-theme="studio"] .performance-workspace {
+        background: #0b2b52 !important;
+        border-color: #47739b !important;
+      }
+
+      body[data-visual-theme="studio"] .performance-workspace iframe {
+        background: #0b2b52 !important;
+      }
+    </style>
+  </head>
+
+  <body data-visual-theme="studio">
+    <script>
+      if (!window.location.hash) {
+        history.replaceState(null, "", "#overview");
+      }
+
+      window.scrollTo(0, 0);
+    </script>
+    <header class="topbar">
+      <a class="brand" href="#overview" aria-label="El Nexo home">
+        <span class="brand-mark">✳</span>
+        <strong>EL NEXO</strong>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#overview" id="playground-nav"
+          >Playground</a
+        >
+        <a
+          class="nav-link nav-link-ai"
+          href="#ai-assistant"
+          id="ai-assistant-nav"
+          >AI Assistant</a
+        >
+      </nav>
+
+      <div class="topbar-tools">
+        <div class="theme-toggle" role="group" aria-label="Visual theme">
+          <button
+            class="theme-choice"
+            type="button"
+            data-visual-theme="notebook"
+            aria-pressed="false"
+          >
+            ✎ Notebook
+          </button>
+          <button
+            class="theme-choice"
+            type="button"
+            data-visual-theme="studio"
+            aria-pressed="true"
+          >
+            ▦ Studio
+          </button>
+        </div>
+        <span class="live-pill"><i></i> Live</span>
+
+        <button
+          class="icon-button"
+          id="refresh-preview"
+          type="button"
+          title="Refresh preview"
+          aria-label="Refresh preview"
+        >
+          ↻
+        </button>
+
+        <button
+          class="avatar avatar-button"
+          id="ai-avatar"
+          type="button"
+          title="Open El Nexo AI Assistant"
+          aria-label="Open El Nexo AI Assistant"
+        >
+          ✳
+        </button>
+      </div>
+    </header>
+
+    <main class="app-shell" id="overview" data-mode="studio">
+      <aside class="project-sidebar" id="project-sidebar">
+        <div class="section-label">
+          PROJECT
+          <button class="quiet-icon" type="button" aria-label="Project menu">
+            ···
+          </button>
+        </div>
+
+        <div class="project-select">
+          <span class="folder-symbol">◈</span> my-app
+          <span class="select-chevron">⌄</span>
+        </div>
+
+        <div class="file-tree" id="example-file-tree">
+          <div class="tree-loading">Loading examples...</div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="section-label">EL NEXO</div>
+
+        <a class="side-tool active-tool" href="#components-panel">
+          <span>⌘</span> Component Explorer
+        </a>
+
+        <a class="side-tool" href="#fiber-panel">
+          <span>⌬</span> Fiber Inspector
+        </a>
+
+        <a class="side-tool" href="#deep-activity-panel">
+          <span>◷</span> Runtime Activity
+        </a>
+
+        <a class="side-tool" href="#performance-workspace" id="performance-nav">
+          <span>⌁</span> Performance
+        </a>
+
+        <div class="sidebar-health">
+          <span class="health-dot"></span>
+          <div>
+            <strong>Runtime connected</strong>
+            <small>Local session · v1.0.0</small>
+          </div>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <div class="workspace-heading">
+          <div>
+            <div class="eyebrow">
+              MY-APP <span>/</span>
+              <b id="mode-kicker">STUDIO</b>
+            </div>
+
+            <h1 id="workspace-title">A live scratchpad for the runtime.</h1>
+
+            <p id="workspace-subtitle">
+              Edit a component, run it, and watch the runtime respond.
+            </p>
+          </div>
+
+          <div class="heading-actions">
+            <span class="runtime-status"><i></i> Runtime ready</span>
+
+            <button class="primary-button" id="run-button" type="button">
+              ▶ Run
+            </button>
+          </div>
+        </div>
+
+        <!-- Developer Studio Overview -->
+        <section class="studio-overview metric-strip" id="studio-overview">
+          <div class="metric-card">
+            <span>Registered Components</span>
+            <strong id="studio-component-count">0</strong>
+            <small>Runtime component registry</small>
+          </div>
+
+          <div class="metric-card">
+            <span>Render Cycles</span>
+            <strong id="studio-render-count">0</strong>
+            <small>Current session</small>
+          </div>
+
+          <div class="metric-card">
+            <span>Fiber Snapshot Nodes</span>
+            <strong id="studio-node-count">0</strong>
+            <small>Current VDOM snapshot</small>
+          </div>
+        </section>
+
+        <section
+          class="studio-layout"
+          id="studio-layout"
+          aria-label="Studio workspace"
+        >
+          <!-- CODE EDITOR -->
+          <section class="panel code-panel">
+            <div class="panel-top">
+              <div class="tab-label">
+                <span class="file-icon">JS</span>
+                Counter.js
+                <span class="tab-close">×</span>
+              </div>
+              <span class="panel-tool-label">EDITOR · PREVIEW MODE</span>
+            </div>
+
+            <div
+              class="code-editor editor-surface"
+              aria-label="Counter example code editor"
+            >
+              <textarea
+                id="source-editor"
+                class="source-editor"
+                spellcheck="false"
+                autocapitalize="off"
+                autocomplete="off"
+                aria-label="Editable El Nexo JavaScript source"
+              >
+return function Counter() {
+  const [count, setCount] = useState(0);
+  const [message, setMessage] = useState("Your code is running!");
+
+  return createElement(
+    "div",
+    { className: "counter-card" },
+    createElement("h2", null, "My Counter"),
+    createElement("p", null, `Count: ${count}`),
+    createElement("p", null, message),
+    createElement(
+      "button",
+      { onClick: () => setCount(value => value + 1) },
+      "Increment"
+    ),
+    createElement(
+      "button",
+      { onClick: () => setMessage("Updated from the editor!") },
+      "Change message"
+    )
+  );
+}</textarea
+              >
+            </div>
+
+            <div
+              id="editor-status"
+              class="editor-status"
+              role="status"
+              aria-live="polite"
+            >
+              Ready to run · JavaScript using El Nexo createElement
+            </div>
+
+            <div class="panel-bottom">
+              <span><i class="green-dot"></i> JavaScript · El Nexo</span>
+              <span>UTF-8&nbsp; · &nbsp;Spaces: 2</span>
+            </div>
+          </section>
+
+          <!-- LIVE PREVIEW -->
+          <section class="panel preview-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-eyebrow">LIVE CANVAS</span>
+                <h2>Preview</h2>
+              </div>
+            </div>
+
+            <div class="preview-body">
+              <div class="preview-orbit orbit-one"></div>
+              <div class="preview-orbit orbit-two"></div>
+
+              <div class="preview-card">
+                <span class="preview-overline">EL NEXO · EXAMPLE</span>
+                <h2>Multiple Hooks</h2>
+                <p>State changes, rendered live.</p>
+                <div id="root" class="preview-app"></div>
+              </div>
+            </div>
+
+            <!-- ADDITIVE FEATURE: live Fiber tree below the existing preview. -->
+            <section
+              class="preview-fiber-visualizer"
+              id="preview-fiber-visualizer"
+              hidden
+              aria-label="Live Fiber tree visualization"
+            >
+              <div class="preview-fiber-heading">
+                <div>
+                  <span class="panel-eyebrow">RUNTIME STRUCTURE</span>
+                  <h3>Fiber Tree</h3>
+                  <p>
+                    Click a node to inspect it. Run or update your code to watch
+                    the tree change.
+                  </p>
+                </div>
+                <div class="preview-fiber-actions">
+                  <button
+                    type="button"
+                    class="preview-fiber-expand"
+                    id="preview-fiber-expand"
+                  >
+                    Show large view</button
+                  ><button
+                    type="button"
+                    class="preview-fiber-replay"
+                    id="preview-fiber-replay"
+                  >
+                    Replay
+                  </button>
+                </div>
+              </div>
+              <div
+                class="preview-fiber-canvas"
+                id="preview-fiber-canvas"
+                role="group"
+                aria-label="Interactive Fiber tree"
+              >
+                <p class="preview-fiber-empty">
+                  Run your code to visualize its Fiber tree.
+                </p>
+              </div>
+              <div class="preview-fiber-footer">
+                <strong id="preview-fiber-count"
+                  >0 Fibers in this snapshot</strong
+                >
+                <span id="preview-fiber-renders">0 renders so far</span>
+              </div>
+              <div
+                class="preview-fiber-selection"
+                id="preview-fiber-selection"
+                aria-live="polite"
+              >
+                Select a node to see its Fiber details.
+              </div>
+            </section>
+
+            <div class="panel-bottom">
+              <span><i class="green-dot"></i> Live preview</span>
+              <span>State-driven render</span>
+            </div>
+          </section>
+
+          <!-- RUNTIME ACTIVITY -->
+          <section class="panel activity-panel" id="render-activity">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-eyebrow">RUNTIME EVENTS</span>
+                <h2>Recent Activity</h2>
+              </div>
+
+              <div class="activity-actions">
+                <span class="activity-count" id="activity-count">0 EVENTS</span>
+                <button type="button" class="text-button" id="clear-activity">
+                  Clear
+                </button>
+              </div>
+
+              <div class="activity-filters">
+                <button class="activity-filter active" data-filter="all">
+                  All
+                </button>
+                <button class="activity-filter" data-filter="RENDER">
+                  Renders
+                </button>
+                <button class="activity-filter" data-filter="BAILOUT">
+                  Bailouts
+                </button>
+              </div>
+            </div>
+
+            <div class="activity-summary">
+              <div class="activity-stat">
+                <span>Total renders</span>
+                <strong id="render-count">0</strong>
+              </div>
+
+              <div class="activity-stat">
+                <span>Current tree nodes</span>
+                <strong id="activity-node-count">0</strong>
+              </div>
+
+              <div class="activity-stat">
+                <span>Last render</span>
+                <strong id="last-render-time">—</strong>
+              </div>
+            </div>
+
+            <div
+              class="activity-log"
+              id="activity-log"
+              aria-live="polite"
+              aria-relevant="additions"
+            >
+              <p class="inspector-empty">
+                Activity will appear when the playground renders or state
+                changes.
+              </p>
+            </div>
+
+            <div class="panel-bottom">
+              <span>Session event history</span>
+              <span>Last 30 events</span>
+            </div>
+          </section>
+        </section>
+
+        <!-- EL NEXO AI ASSISTANT -->
+        <section class="panel ai-assistant-panel" id="ai-assistant">
+          <div class="panel-heading">
+            <div>
+              <span class="panel-eyebrow">LOCAL AI · OLLAMA</span>
+              <h2>El Nexo AI Assistant</h2>
+            </div>
+
+            <span class="snapshot-badge" id="ai-connection-status">
+              CHECKING CONNECTION
+            </span>
+          </div>
+
+          <div class="ai-assistant-body">
+            <label>
+              <span class="panel-eyebrow">
+                ASK ABOUT YOUR CODE OR THE RUNTIME
+              </span>
+
+              <textarea
+                id="ai-prompt"
+                class="ai-assistant-input"
+                rows="4"
+                maxlength="10000"
+                placeholder="For example: Explain how this component uses useState and how El Nexo updates it."
+              ></textarea>
+            </label>
+
+            <div class="ai-assistant-actions">
+              <button class="text-button" id="ai-explain-code" type="button">
+                Explain selected code
+              </button>
+
+              <button class="primary-button" id="ai-ask-button" type="button">
+                Ask AI
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="ai-response"
+            class="ai-assistant-response"
+            role="status"
+            aria-live="polite"
+          ></div>
+
+          <div class="panel-bottom">
+            <span>
+              <i class="green-dot"></i>
+              Runs locally through Ollama
+            </span>
+
+            <span id="ai-model-label">llama3.2:1b</span>
+          </div>
+        </section>
+
+        <!-- DEEP INSPECT WORKSPACE -->
+        <section
+          class="inspect-layout"
+          id="inspect-layout"
+          aria-label="Deep Inspect workspace"
+        >
+          <!-- Duplicate KPI STRIP REMOVED -->
+
+          <section class="panel cycle-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-eyebrow">RENDER PIPELINE</span>
+                <h2>Render Cycle</h2>
+              </div>
+
+              <span class="snapshot-badge">CONCEPTUAL FLOW</span>
+            </div>
+
+            <div class="cycle-flow">
+              <div class="cycle-node done" data-stage="trigger">
+                <span>✓</span>
+                <strong>Trigger</strong>
+              </div>
+
+              <i class="cycle-arrow">›</i>
+
+              <div class="cycle-node done" data-stage="schedule">
+                <span>✓</span>
+                <strong>Schedule</strong>
+              </div>
+
+              <i class="cycle-arrow">›</i>
+
+              <div class="cycle-node active" data-stage="reconcile">
+                <span>3</span>
+                <strong>Reconcile</strong>
+              </div>
+
+              <i class="cycle-arrow">›</i>
+
+              <div class="cycle-node" data-stage="commit">
+                <span>5</span>
+                <strong>Commit</strong>
+              </div>
+            </div>
+          </section>
+
+          <div class="inspect-grid">
+            <!-- FIBER INSPECTOR -->
+            <section class="panel inspector-panel" id="fiber-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-eyebrow">NEXUS / INSIGHTS</span>
+                  <h2>Fiber Inspector</h2>
+                </div>
+
+                <span class="snapshot-badge">VDOM SNAPSHOT</span>
+              </div>
+
+              <div class="stats-grid" id="fiber-stats">
+                <div class="stat-card">
+                  <span>All nodes</span>
+                  <strong data-stat="nodes">0</strong>
+                </div>
+
+                <div class="stat-card">
+                  <span>Elements</span>
+                  <strong data-stat="elements">0</strong>
+                </div>
+
+                <div class="stat-card">
+                  <span>Text nodes</span>
+                  <strong data-stat="text">0</strong>
+                </div>
+
+                <div class="stat-card">
+                  <span>Components</span>
+                  <strong data-stat="components">0</strong>
+                </div>
+              </div>
+
+              <label class="search-box">
+                <span>⌕</span>
+                <input
+                  id="fiber-search"
+                  type="search"
+                  placeholder="Filter nodes or props…"
+                  autocomplete="off"
+                />
+                <kbd>FILTER</kbd>
+              </label>
+
+              <div class="inspector-content">
+                <div class="tree-pane">
+                  <div class="pane-heading">
+                    <span>FIBER TREE</span>
+                    <span class="pane-subtitle">Parent / child / sibling</span>
+                  </div>
+
+                  <div
+                    id="fiber-inspector"
+                    class="fiber-tree"
+                    role="tree"
+                    aria-label="Fiber tree"
+                  ></div>
+                </div>
+
+                <aside class="details-pane">
+                  <div class="pane-heading">
+                    <span>NODE DETAILS</span>
+                    <span class="details-symbol">◈</span>
+                  </div>
+
+                  <div id="fiber-details" class="fiber-details">
+                    <p class="inspector-empty">
+                      Select a node to inspect its details.
+                    </p>
+                  </div>
+                </aside>
+              </div>
+
+              <div class="panel-bottom">
+                <span>Select a node to inspect metadata</span>
+                <span>Snapshot-backed</span>
+              </div>
+            </section>
+
+            <!-- COMPONENT EXPLORER -->
+            <section class="panel components-panel" id="components-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-eyebrow">NEXUS / INSIGHTS</span>
+                  <h2>Component Explorer</h2>
+                </div>
+
+                <span id="component-count" class="activity-count">
+                  0 COMPONENTS
+                </span>
+              </div>
+
+              <label class="component-search-box">
+                <span>⌕</span>
+                <input
+                  id="component-search"
+                  type="search"
+                  placeholder="Search components, props, hooks…"
+                  autocomplete="off"
+                />
+              </label>
+
+              <div class="components-layout">
+                <div
+                  id="component-list"
+                  class="component-list"
+                  role="list"
+                  aria-label="Registered components"
+                ></div>
+
+                <aside
+                  id="component-details"
+                  class="component-details"
+                  aria-live="polite"
+                >
+                  <p class="inspector-empty">
+                    Render a component to populate the registry.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <!-- VDOM DIFF -->
+            <section class="panel diff-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-eyebrow">RECONCILIATION</span>
+                  <h2>VDOM Diff</h2>
+                </div>
+
+                <span class="snapshot-badge">COMING FROM RECONCILER</span>
+              </div>
+
+              <div class="diff-placeholder">
+                <div class="diff-side">
+                  <span>BEFORE</span>
+                  <code>&lt;h1&gt; previous tree &lt;/h1&gt;</code>
+                </div>
+
+                <div class="diff-side">
+                  <span>AFTER</span>
+                  <code>&lt;h1&gt; current tree &lt;/h1&gt;</code>
+                </div>
+
+                <p>
+                  Patch-level diffs will be connected to the reconciler next.
+                  This panel intentionally does not invent patch data.
+                </p>
+              </div>
+            </section>
+
+            <!-- RENDER TIMELINE -->
+            <section class="panel timeline-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-eyebrow">TIMING</span>
+                  <h2>Render Timeline</h2>
+                </div>
+
+                <span class="snapshot-badge">SESSION</span>
+              </div>
+
+              <div class="timeline-rows">
+                <div>
+                  <span>Render events</span>
+                  <div class="timeline-track">
+                    <i style="width: 78%"></i>
+                  </div>
+                </div>
+
+                <div>
+                  <span>State updates</span>
+                  <div class="timeline-track">
+                    <i style="width: 52%"></i>
+                  </div>
+                </div>
+
+                <div>
+                  <span>Component mounts</span>
+                  <div class="timeline-track">
+                    <i style="width: 34%"></i>
+                  </div>
+                </div>
+              </div>
+
+              <p class="panel-disclaimer">
+                Visual guide only until per-component timestamps are
+                instrumented.
+              </p>
+            </section>
+
+            <!-- RUNTIME EVENT LOG -->
+            <section class="panel deep-activity-panel" id="deep-activity-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-eyebrow">EVENT STREAM</span>
+                  <h2>Runtime Event Log</h2>
+                </div>
+              </div>
+
+              <div class="deep-log-mirror" id="deep-log-mirror">
+                Runtime events from the current session will appear here.
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- Dedicated NEXUS Performance workspace -->
+        <section
+          class="performance-workspace"
+          id="performance-workspace"
+          aria-label="NEXUS Performance Command Center"
+        >
+          <iframe
+            id="performance-frame"
+            src="./performance.html"
+            title="NEXUS Performance Command Center"
+            loading="lazy"
+            referrerpolicy="same-origin"
+          ></iframe>
+        </section>
+      </section>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+
+    <script type="module">
+      // Visual theme is independent from the Studio / Inspect workspace mode.
+      // This keeps all existing navigation and runtime interactions untouched.
+      const themeButtons = [
+        ...document.querySelectorAll("[data-visual-theme]"),
+      ];
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+
+      function setVisualTheme(theme, persist = true) {
+        const selected = theme === "studio" ? "studio" : "notebook";
+        document.body.dataset.visualTheme = selected;
+        document.documentElement.dataset.visualTheme = selected;
+        themeButtons.forEach((button) => {
+          const active = button.dataset.visualTheme === selected;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-pressed", String(active));
+        });
+        if (themeMeta)
+          themeMeta.content = selected === "studio" ? "#102f59" : "#f4f0e5";
+        if (persist) {
+          try {
+            localStorage.setItem("el-nexo-visual-theme", selected);
+          } catch {}
+        }
+        document.dispatchEvent(
+          new CustomEvent("elnexo:theme-change", {
+            detail: { theme: selected },
+          }),
+        );
+      }
+
+      themeButtons.forEach((button) => {
+        button.addEventListener("click", () =>
+          setVisualTheme(button.dataset.visualTheme),
+        );
+      });
+      let savedVisualTheme = "studio";
+
+      try {
+        savedVisualTheme =
+          localStorage.getItem("el-nexo-visual-theme") || "studio";
+      } catch {}
+
+      setVisualTheme(savedVisualTheme, false);
+
+      const shell = document.querySelector(".app-shell");
+      const studio = document.getElementById("studio-layout");
+      const inspect = document.getElementById("inspect-layout");
+      const title = document.getElementById("workspace-title");
+      const subtitle = document.getElementById("workspace-subtitle");
+      const kicker = document.getElementById("mode-kicker");
+      const modes = [...document.querySelectorAll("[data-mode]")];
+      const performanceWorkspace = document.getElementById(
+        "performance-workspace",
+      );
+      const performanceNav = document.getElementById("performance-nav");
+      const overview = document.getElementById("studio-overview");
+      const assistant = document.getElementById("ai-assistant");
+      const footer = document.getElementById("footer");
+      let activeWorkspace = "studio";
+
+      function setPerformanceView() {
+        performanceNav?.classList.add("active-tool");
+        document.querySelectorAll(".side-tool").forEach((item) => {
+          if (item !== performanceNav) item.classList.remove("active-tool");
+        });
+        performanceWorkspace.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+
+      const sideTools = [...document.querySelectorAll(".side-tool")];
+
+      function activateSideTool(activeItem) {
+        sideTools.forEach((item) => {
+          item.classList.toggle("active-tool", item === activeItem);
+        });
+      }
+
+      function scrollToSection(target, activeItem) {
+        if (!target) return;
+        activateSideTool(activeItem);
+        requestAnimationFrame(() => {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+
+      performanceNav?.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        activateSideTool(performanceNav);
+
+        requestAnimationFrame(() => {
+          performanceWorkspace.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        });
+      });
+
+      document
+        .getElementById("playground-nav")
+        ?.addEventListener("click", (event) => {
+          event.preventDefault();
+          setMode("studio");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+      document
+        .querySelectorAll(
+          '.side-tool[href="#fiber-panel"], .side-tool[href="#components-panel"]',
+        )
+        .forEach((item) => {
+          item.addEventListener("click", (event) => {
+            event.preventDefault();
+            setMode("inspect");
+            scrollToSection(
+              document.querySelector(item.getAttribute("href")),
+              item,
+            );
+          });
+        });
+
+      // Runtime Activity lives in the Studio view, so do not switch to Inspect.
+      const runtimeActivityNav = document.querySelector(
+        '.side-tool[href="#deep-activity-panel"]',
+      );
+
+      runtimeActivityNav?.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        setMode("inspect");
+
+        scrollToSection(
+          document.getElementById("deep-activity-panel"),
+          runtimeActivityNav,
+        );
+      });
+
+      function setMode(mode) {
+        activeWorkspace = mode;
+        overview.hidden = false;
+        assistant.hidden = false;
+        if (footer) footer.hidden = false;
+        const deep = mode === "inspect";
+
+        shell.dataset.mode = mode;
+        // Keep the main Studio editor and preview visible.
+studio.hidden = false;
+
+// Keep Deep Inspect features available below the Studio workspace.
+inspect.hidden = false;
+
+        modes.forEach((button) => {
+          const active = button.dataset.mode === mode;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-pressed", String(active));
+        });
+
+        title.textContent = deep
+          ? "Understand the runtime."
+          : "A live scratchpad for the runtime.";
+
+        subtitle.textContent = deep
+          ? "Inspect structure and session events without leaving your workspace."
+          : "Edit a component, run it, and watch the runtime respond.";
+
+        kicker.textContent = deep ? "DEEP INSPECT" : "STUDIO";
+        performanceNav?.classList.remove("active-tool");
+        syncMetrics();
+      }
+
+      function syncMetrics() {
+        const copy = (from, to) => {
+          const source = document.getElementById(from);
+          const target = document.getElementById(to);
+
+          if (source && target) {
+            target.textContent = source.textContent;
+          }
+        };
+
+        copy("render-count", "inspect-render-count");
+        copy("last-render-time", "inspect-last-render");
+        copy("component-count", "inspect-component-count");
+
+        const source = document.getElementById("activity-log");
+        const target = document.getElementById("deep-log-mirror");
+
+        if (source && target) {
+          target.innerHTML = source.innerHTML;
+        }
+      }
+
+      modes.forEach((button) => {
+        button.addEventListener("click", () => setMode(button.dataset.mode));
+      });
+
+      const openAIAssistant = (event) => {
+        event.preventDefault();
+        setMode("studio");
+        const assistant = document.getElementById("ai-assistant");
+        requestAnimationFrame(() => {
+          assistant?.scrollIntoView({ behavior: "smooth", block: "start" });
+          document.getElementById("ai-prompt")?.focus({ preventScroll: true });
+        });
+      };
+
+      document
+        .getElementById("ai-assistant-nav")
+        ?.addEventListener("click", openAIAssistant);
+      document
+        .getElementById("ai-avatar")
+        ?.addEventListener("click", openAIAssistant);
+
+      // Header refresh reloads the full Studio and starts a clean local session.
+      document
+        .getElementById("refresh-preview")
+        ?.addEventListener("click", () => {
+          window.location.reload();
+        });
+
+      const runCurrentEditor = () => {
+        syncMetrics();
+        document.dispatchEvent(new CustomEvent("elnexo:refresh-preview"));
+      };
+
+      document
+        .getElementById("run-button")
+        ?.addEventListener("click", runCurrentEditor);
+
+      const observer = new MutationObserver(syncMetrics);
+
+      [
+        "activity-log",
+        "render-count",
+        "activity-node-count",
+        "last-render-time",
+        "component-count",
+      ].forEach((id) => {
+        const element = document.getElementById(id);
+
+        if (element) {
+          observer.observe(element, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+          });
+        }
+      });
+
+      setMode("studio");
+    </script>
+
+    <script>
+      // ==========================================
+      // EL NEXO AI ASSISTANT
+      // ==========================================
+
+      const promptInput = document.getElementById("ai-prompt");
+      const responseBox = document.getElementById("ai-response");
+
+      const askButton = document.getElementById("ai-ask-button");
+      const explainButton = document.getElementById("ai-explain-code");
+
+      const statusBadge = document.getElementById("ai-connection-status");
+      const modelLabel = document.getElementById("ai-model-label");
+
+      const editor = document.getElementById("source-editor");
+
+      // Safe Markdown Formatter
+
+      function renderAIResponse(markdown) {
+        const escapeHTML = (text) =>
+          text.replace(
+            /[&<>"']/g,
+            (char) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[char],
+          );
+
+        let html = escapeHTML(markdown);
+
+        html = html.replace(
+          /```(?:\w+)?\n([\s\S]*?)```/g,
+          "<pre><code>$1</code></pre>",
+        );
+
+        html = html.replace(/^### (.+)$/gm, "<h4>$1</h4>");
+        html = html.replace(/^## (.+)$/gm, "<h3>$1</h3>");
+        html = html.replace(/^# (.+)$/gm, "<h2>$1</h2>");
+
+        html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+        html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+
+        html = html.replace(/^\s*[-*] (.+)$/gm, "<li>$1</li>");
+
+        html = html.replace(
+          /(?:<li>.*?<\/li>\n?)+/gs,
+          (list) => `<ul>${list}</ul>`,
+        );
+
+        html = html.replace(/\n/g, "<br>");
+
+        responseBox.innerHTML = html;
+      }
+
+      // CHECK AI CONNECTION
+
+      async function checkAIConnection() {
+        try {
+          const response = await fetch("/api/ai/health");
+          const data = await response.json();
+
+          if (!response.ok || !data.connected || !data.modelAvailable) {
+            throw new Error("AI model unavailable");
+          }
+
+          statusBadge.textContent = "AI CONNECTED";
+          statusBadge.dataset.state = "connected";
+
+          modelLabel.textContent = `${data.provider} · ${data.model}`;
+        } catch (error) {
+          statusBadge.textContent = "AI OFFLINE";
+          statusBadge.dataset.state = "error";
+
+          modelLabel.textContent = "Check Ollama";
+        }
+      }
+
+      // SEND QUESTION TO AI
+
+      async function askAI(prompt, codeContext = null) {
+        const question = prompt.trim();
+
+        if (!question) {
+          responseBox.dataset.state = "error";
+          responseBox.textContent =
+            "Enter a question or select code to explain.";
+          return;
+        }
+
+        const context =
+          codeContext !== null ? codeContext : editor?.value?.trim() || "";
+
+        const selectedFile = document.querySelector(".file-row.selected-file");
+
+        const fileName =
+          selectedFile?.dataset.file ||
+          selectedFile?.querySelector("span")?.textContent ||
+          document.querySelector(".tab-label")?.textContent?.trim() ||
+          "Current editor";
+
+        askButton.disabled = true;
+        explainButton.disabled = true;
+
+        responseBox.dataset.state = "loading";
+        responseBox.textContent = "El Nexo AI is thinking...";
+
+        try {
+          const response = await fetch("/api/ai/explain", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: question,
+              context,
+              fileName,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok || !data.success) {
+            throw new Error(data.error || "AI request failed.");
+          }
+
+          responseBox.dataset.state = "success";
+          renderAIResponse(data.answer);
+
+          modelLabel.textContent = `${data.provider} · ${data.model}`;
+        } catch (error) {
+          responseBox.dataset.state = "error";
+          renderAIResponse(error.message || "Could not reach El Nexo AI.");
+        } finally {
+          askButton.disabled = false;
+          explainButton.disabled = false;
+        }
+      }
+
+      // ASK AI BUTTON
+
+      askButton.addEventListener("click", () => {
+        askAI(promptInput.value);
+      });
+
+      // CTRL + ENTER SHORTCUT
+
+      promptInput.addEventListener("keydown", (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+          askAI(promptInput.value);
+        }
+      });
+
+      // EXPLAIN SELECTED CODE
+
+      explainButton.addEventListener("click", () => {
+        if (!editor) {
+          responseBox.dataset.state = "error";
+          responseBox.textContent = "Code editor was not found.";
+          return;
+        }
+
+        const selectedCode = editor.value
+          .slice(editor.selectionStart, editor.selectionEnd)
+          .trim();
+
+        const code = selectedCode || editor.value.trim();
+
+        if (!code) {
+          responseBox.dataset.state = "error";
+          responseBox.textContent =
+            "There is no code in the editor to explain.";
+          return;
+        }
+
+        promptInput.value =
+          "Explain this El Nexo code. Describe what it does, " +
+          "how its components and Hooks work, and how it relates " +
+          "to the runtime. Only make claims supported by the code.";
+
+        askAI(promptInput.value, code);
+      });
+
+      // INITIALIZE
+
+      checkAIConnection();
+
+      // Fit the Performance iframe to its intrinsic content, without observing
+      // the document viewport (which can create an ever-growing resize loop).
+      (() => {
+        const frame = document.getElementById("performance-frame");
+        if (!frame) return;
+
+        let contentObserver = null;
+        let resizeQueued = false;
+
+        const fitFrameToContent = () => {
+          resizeQueued = false;
+          try {
+            const doc = frame.contentDocument;
+            const app = doc?.querySelector(".app");
+            if (!app) return;
+
+            const appHeight = Math.ceil(app.getBoundingClientRect().height);
+            const bodyStyle = doc.defaultView.getComputedStyle(doc.body);
+            const verticalPadding =
+              (parseFloat(bodyStyle.paddingTop) || 0) +
+              (parseFloat(bodyStyle.paddingBottom) || 0);
+            const nextHeight = Math.max(420, appHeight + verticalPadding + 4);
+
+            if (
+              Math.abs(frame.getBoundingClientRect().height - nextHeight) > 2
+            ) {
+              frame.style.height = `${nextHeight}px`;
+            }
+          } catch (error) {
+            console.warn(
+              "[El Nexo] Performance frame sizing unavailable:",
+              error,
+            );
+          }
+        };
+
+        const scheduleFit = () => {
+          if (resizeQueued) return;
+          resizeQueued = true;
+          requestAnimationFrame(fitFrameToContent);
+        };
+
+        frame.addEventListener("load", () => {
+          if (contentObserver) contentObserver.disconnect();
+          try {
+            const app = frame.contentDocument?.querySelector(".app");
+            if (app && "ResizeObserver" in window) {
+              contentObserver = new ResizeObserver(scheduleFit);
+              contentObserver.observe(app);
+            }
+          } catch (error) {
+            console.warn(
+              "[El Nexo] Could not observe Performance content:",
+              error,
+            );
+          }
+          scheduleFit();
+        });
+
+        window.addEventListener("resize", scheduleFit);
+      })();
+    </script>
+  </body>
+</html>

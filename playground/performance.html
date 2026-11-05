@@ -1,0 +1,1586 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080e18" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <title>El Nexo — Runtime Performance</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #080e18;
+        --panel: #101c2a;
+        --panel2: #0c1722;
+        --border: #26394a;
+        --text: #e8f0f8;
+        --muted: #8298ad;
+        --cyan: #55d7e9;
+        --violet: #b6a2ff;
+        --green: #6de0b0;
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        font-size: 12px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-width: 320px;
+        background: var(--bg);
+        color: var(--text);
+      }
+      body {
+        padding: 10px;
+      }
+      .app {
+        max-width: 1180px;
+        margin: 0 auto;
+        display: grid;
+        gap: 8px;
+      }
+      .topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 2px 2px 8px;
+        border-bottom: 1px solid var(--border);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        border: 1px solid #285368;
+        border-radius: 9px;
+        background: #132b3a;
+        color: var(--cyan);
+        font-weight: 800;
+        font-size: 18px;
+      }
+      .brand strong {
+        display: block;
+        letter-spacing: 0.12em;
+        font-size: 12px;
+      }
+      .eyebrow {
+        font-size: 9px;
+        letter-spacing: 0.13em;
+        color: #87a0b6;
+        font-weight: 700;
+      }
+      .status {
+        font-size: 9px;
+        letter-spacing: 0.06em;
+        border: 1px solid #24564d;
+        color: #75dfb6;
+        padding: 6px 9px;
+        border-radius: 20px;
+        white-space: nowrap;
+      }
+      .heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 14px;
+        padding: 4px 2px 2px;
+      }
+      .heading h1 {
+        font-size: clamp(18px, 2.2vw, 23px);
+        letter-spacing: -0.045em;
+        margin: 5px 0;
+        font-weight: 700;
+      }
+      .heading p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .actions {
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        border: 1px solid #30495d;
+        background: #142536;
+        color: #cbd9e6;
+        border-radius: 6px;
+        padding: 7px 10px;
+        font: inherit;
+        font-size: 10px;
+        cursor: pointer;
+      }
+      .btn:hover,
+      .btn.active {
+        border-color: #45c9df;
+        color: #8cecf4;
+        background: #12303c;
+      }
+      .btn:disabled {
+        opacity: 0.55;
+        cursor: wait;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .card,
+      .metric {
+        background: linear-gradient(150deg, #111e2c, #0d1824);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        min-width: 0;
+      }
+      .metric {
+        padding: 12px 14px;
+      }
+      .metric label {
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        color: #91a8bb;
+        font-weight: 700;
+      }
+      .metric strong {
+        display: block;
+        font:
+          700 21px/1.2 ui-monospace,
+          SFMono-Regular,
+          Consolas,
+          monospace;
+        margin: 8px 0 3px;
+      }
+      .metric small {
+        font-size: 9px;
+        color: #718ba1;
+      }
+      .cyan {
+        color: var(--cyan);
+      }
+      .violet {
+        color: var(--violet);
+      }
+      .green {
+        color: var(--green);
+      }
+      .card {
+        padding: 10px;
+      }
+      .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+      .card-head h2 {
+        font-size: 12px;
+        margin: 0;
+        font-weight: 700;
+      }
+      .sub {
+        font-size: 9px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .tag {
+        font-size: 8px;
+        letter-spacing: 0.08em;
+        border: 1px solid #28596a;
+        color: #74dced;
+        padding: 4px 7px;
+        border-radius: 20px;
+        white-space: nowrap;
+      }
+      .wave-wrap {
+        height: 76px;
+        margin-top: 6px;
+      }
+      .wave-wrap svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .axis {
+        display: flex;
+        justify-content: space-between;
+        color: #6f879b;
+        font-size: 8px;
+        margin-top: 2px;
+      }
+      .wave-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 9px;
+      }
+      .hint {
+        font-size: 9px;
+        color: #7890a5;
+      }
+      .pipeline {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        padding: 8px 2px 2px;
+      }
+      .stage {
+        text-align: center;
+        min-width: 0;
+        position: relative;
+      }
+      .stage:not(:last-child):after {
+        content: "";
+        position: absolute;
+        height: 1px;
+        background: linear-gradient(90deg, #45c9df, #31485a);
+        width: calc(100% - 42px);
+        left: calc(50% + 22px);
+        top: 15px;
+      }
+      .stage-dot {
+        width: 30px;
+        height: 30px;
+        margin: 0 auto 7px;
+        display: grid;
+        place-items: center;
+        border: 1px solid #3b5367;
+        border-radius: 50%;
+        background: #142435;
+        color: #9db1c4;
+        font-size: 10px;
+        position: relative;
+        z-index: 1;
+      }
+      .stage.done .stage-dot {
+        border-color: #368d7c;
+        background: #15372f;
+        color: #80e5bb;
+      }
+      .stage.current .stage-dot {
+        border-color: #48cde1;
+        background: #123746;
+        color: #8cecf5;
+        box-shadow: 0 0 15px #45c9df24;
+      }
+      .stage b {
+        font-size: 9px;
+        color: #b9c9d7;
+      }
+      .two-col {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+      }
+      .profiler {
+        display: grid;
+        gap: 12px;
+        margin-top: 9px;
+      }
+      .profile-row {
+        display: grid;
+        grid-template-columns: 100px minmax(0, 1fr) 65px;
+        gap: 9px;
+        align-items: center;
+      }
+      .profile-name {
+        font-size: 10px;
+        color: #c4d2df;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .track {
+        height: 7px;
+        border-radius: 20px;
+        background: #25394a;
+        overflow: hidden;
+      }
+      .track i {
+        display: block;
+        height: 100%;
+        border-radius: 20px;
+        background: linear-gradient(90deg, #3bc3db, #a18bff);
+      }
+      .profile-value {
+        text-align: right;
+        font:
+          10px ui-monospace,
+          monospace;
+        color: #91a9bc;
+      }
+      .tree {
+        display: grid;
+        gap: 9px;
+        margin-top: 9px;
+      }
+      .tree-root {
+        display: flex;
+        justify-content: center;
+      }
+      .tree-children {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 7px;
+      }
+      .tree button {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border: 1px solid #344d62;
+        background: #172b3d;
+        color: #c5d4e1;
+        border-radius: 6px;
+        padding: 8px 5px;
+        font-size: 9px;
+        cursor: pointer;
+      }
+      .tree button.selected {
+        border-color: #4bd5e7;
+        background: #123744;
+        color: #91eff5;
+      }
+      .tree-info {
+        margin-top: 12px;
+        padding: 10px;
+        border: 1px solid #26394a;
+        border-radius: 7px;
+        background: #0b1622;
+      }
+      .tree-info b {
+        font-size: 10px;
+      }
+      .tree-info p {
+        margin: 5px 0 0;
+        color: #8da4b8;
+        font-size: 9px;
+        line-height: 1.5;
+      }
+      .insights {
+        display: grid;
+        gap: 12px;
+        margin-top: 9px;
+      }
+      .insight-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 10px;
+        color: #c3d1dd;
+        margin-bottom: 6px;
+      }
+      .bar {
+        height: 7px;
+        border-radius: 20px;
+        background: #26394a;
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, #3bc3db, #a18bff);
+      }
+      .bar.greenbar i {
+        background: linear-gradient(90deg, #36a98c, #75dfb6);
+      }
+      .events-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .filters {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+      }
+      .filter {
+        border: 1px solid #30485c;
+        background: #142333;
+        color: #91a7ba;
+        border-radius: 5px;
+        padding: 5px 7px;
+        font-size: 9px;
+        cursor: pointer;
+      }
+      .filter.active {
+        border-color: #43c9df;
+        color: #7de6f1;
+        background: #12303b;
+      }
+      .event-list {
+        max-height: 245px;
+        overflow: auto;
+        margin-top: 8px;
+      }
+      .event {
+        display: grid;
+        grid-template-columns: 8px minmax(0, 1fr) auto;
+        gap: 9px;
+        align-items: start;
+        padding: 6px 2px;
+        border-bottom: 1px solid #223443;
+      }
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        margin-top: 4px;
+        background: var(--cyan);
+      }
+      .event strong {
+        font-size: 10px;
+        font-weight: 600;
+      }
+      .event p {
+        margin: 3px 0 0;
+        font-size: 9px;
+        color: #839bb0;
+        overflow-wrap: anywhere;
+      }
+      .event time {
+        font-size: 8px;
+        color: #71889c;
+        white-space: nowrap;
+      }
+      .empty {
+        font-size: 10px;
+        color: #8198ad;
+        text-align: center;
+        padding: 20px;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        border-top: 1px solid var(--border);
+        padding: 11px 2px 2px;
+        color: #6e8499;
+        font-size: 8px;
+        letter-spacing: 0.06em;
+      }
+      .note {
+        color: #8096a9;
+        font-size: 9px;
+        line-height: 1.5;
+        margin: 10px 0 0;
+      }
+      .error {
+        color: #ffb1b1;
+      }
+      @media (max-width: 760px) {
+        body {
+          padding: 10px;
+        }
+        .metrics {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+        .heading {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .profile-row {
+          grid-template-columns: 82px minmax(0, 1fr) 58px;
+        }
+      }
+      @media (max-width: 420px) {
+        .metric {
+          padding: 10px;
+        }
+        .metric strong {
+          font-size: 21px;
+        }
+        .pipeline {
+          gap: 6px;
+        }
+        .stage b {
+          font-size: 8px;
+        }
+        .profile-row {
+          grid-template-columns: 70px minmax(0, 1fr) 55px;
+        }
+      }
+
+      /* Compact Studio-native presentation */
+      body {
+        padding: 8px;
+        background: #080e18;
+      }
+      .app {
+        width: 100%;
+        max-width: none;
+        gap: 7px;
+      }
+      .topline {
+        padding: 0 1px 6px;
+      }
+      .heading {
+        align-items: center;
+        padding: 1px 1px 3px;
+        gap: 8px;
+      }
+      .heading h1 {
+        font-size: 19px;
+        margin: 2px 0;
+      }
+      .heading p {
+        font-size: 10px;
+      }
+      .eyebrow {
+        font-size: 8px;
+      }
+      .status {
+        font-size: 8px;
+        padding: 4px 7px;
+      }
+      .actions {
+        gap: 5px;
+      }
+      .btn {
+        padding: 5px 8px;
+        font-size: 9px;
+      }
+      .metrics {
+        gap: 7px;
+      }
+      .metric {
+        padding: 8px 10px;
+        border-radius: 7px;
+      }
+      .metric label {
+        font-size: 8px;
+      }
+      .metric strong {
+        font-size: 19px;
+        margin: 4px 0 2px;
+      }
+      .metric small {
+        font-size: 8px;
+      }
+      .card {
+        padding: 8px;
+        border-radius: 7px;
+      }
+      .card-head {
+        margin-bottom: 2px;
+      }
+      .card-head h2 {
+        font-size: 11px;
+      }
+      .sub {
+        font-size: 8px;
+        margin-top: 2px;
+      }
+      .tag {
+        font-size: 7px;
+        padding: 3px 6px;
+      }
+      .pipeline {
+        gap: 8px;
+        padding: 8px 1px 1px;
+      }
+      .stage-dot {
+        width: 23px;
+        height: 23px;
+        margin-bottom: 4px;
+        font-size: 9px;
+      }
+      .stage:not(:last-child):after {
+        top: 11px;
+        width: calc(100% - 34px);
+        left: calc(50% + 18px);
+      }
+      .stage b {
+        font-size: 8px;
+      }
+      .note {
+        font-size: 8px;
+        line-height: 1.35;
+        margin: 6px 0 0;
+      }
+      .two-col {
+        gap: 7px;
+      }
+      .profiler {
+        gap: 7px;
+        margin-top: 8px;
+      }
+      .profile-row {
+        grid-template-columns: 82px minmax(0, 1fr) 55px;
+        gap: 6px;
+      }
+      .profile-name,
+      .profile-value {
+        font-size: 8px;
+      }
+      .track,
+      .bar {
+        height: 5px;
+      }
+      .tree {
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .tree-children {
+        gap: 5px;
+      }
+      .tree button {
+        padding: 6px 4px;
+        font-size: 8px;
+      }
+      .tree-info {
+        margin-top: 7px;
+        padding: 7px;
+      }
+      .tree-info b {
+        font-size: 9px;
+      }
+      .tree-info p {
+        font-size: 8px;
+        margin-top: 3px;
+      }
+      .insights {
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .insight-line {
+        font-size: 8px;
+        margin-bottom: 4px;
+      }
+      .events-head {
+        margin-top: 6px;
+      }
+      .filter {
+        padding: 4px 6px;
+        font-size: 8px;
+      }
+      .event-list {
+        max-height: 112px;
+        margin-top: 5px;
+      }
+      .event {
+        gap: 6px;
+        padding: 6px 1px;
+      }
+      .event strong {
+        font-size: 8px;
+      }
+      .event p {
+        font-size: 8px;
+        margin-top: 2px;
+      }
+      .event time {
+        font-size: 7px;
+      }
+      .empty {
+        font-size: 8px;
+        padding: 12px;
+      }
+      .footer {
+        padding: 7px 1px 1px;
+        font-size: 7px;
+      }
+      @media (max-width: 700px) {
+        body {
+          padding: 7px;
+        }
+        .metrics {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+        .heading {
+          align-items: flex-start;
+        }
+        .profile-row {
+          grid-template-columns: 76px minmax(0, 1fr) 52px;
+        }
+      }
+      @media (max-width: 420px) {
+        .heading {
+          flex-direction: column;
+        }
+        .metrics {
+          gap: 5px;
+        }
+        .metric {
+          padding: 7px;
+        }
+        .metric strong {
+          font-size: 17px;
+        }
+        .pipeline {
+          gap: 3px;
+        }
+        .stage b {
+          font-size: 7px;
+        }
+      }
+
+      /* Balanced scale: readable at normal browser zoom while remaining Studio-native */
+      body {
+        padding: 10px;
+      }
+      .app {
+        gap: 9px;
+      }
+      .topline {
+        padding-bottom: 8px;
+      }
+      .heading {
+        padding: 3px 2px 5px;
+      }
+      .heading h1 {
+        font-size: 21px;
+      }
+      .heading p {
+        font-size: 10.5px;
+      }
+      .btn {
+        padding: 6px 9px;
+        font-size: 9.5px;
+      }
+      .metrics {
+        gap: 8px;
+      }
+      .metric {
+        padding: 10px 12px;
+      }
+      .metric strong {
+        font-size: 21px;
+        margin: 5px 0 3px;
+      }
+      .metric label {
+        font-size: 8.5px;
+      }
+      .metric small {
+        font-size: 8.5px;
+      }
+      .card {
+        padding: 10px;
+      }
+      .card-head h2 {
+        font-size: 11.5px;
+      }
+      .sub {
+        font-size: 8.5px;
+      }
+      .pipeline {
+        padding: 10px 2px 2px;
+        gap: 10px;
+      }
+      .stage-dot {
+        width: 26px;
+        height: 26px;
+        margin-bottom: 5px;
+      }
+      .stage:not(:last-child):after {
+        top: 13px;
+      }
+      .stage b {
+        font-size: 8.5px;
+      }
+      .profiler {
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .profile-row {
+        grid-template-columns: 90px minmax(0, 1fr) 58px;
+        gap: 7px;
+      }
+      .profile-name,
+      .profile-value {
+        font-size: 8.5px;
+      }
+      .tree button {
+        padding: 7px 5px;
+        font-size: 8.5px;
+      }
+      .tree-info {
+        padding: 8px;
+      }
+      .insights {
+        gap: 9px;
+        margin-top: 10px;
+      }
+      .insight-line {
+        font-size: 8.5px;
+      }
+      .event-list {
+        max-height: 145px;
+      }
+      .event {
+        padding: 7px 2px;
+      }
+      .event strong {
+        font-size: 8.5px;
+      }
+      .event p {
+        font-size: 8.5px;
+      }
+      .note {
+        font-size: 8.5px;
+      }
+      .footer {
+        font-size: 7.5px;
+      }
+      .btn-primary {
+        border-color: #27879a;
+        background: #123746;
+        color: #9aeff5;
+      }
+      .btn-primary:hover {
+        background: #174758;
+        border-color: #55d7e9;
+      }
+      @media (max-width: 700px) {
+        .metric {
+          padding: 9px;
+        }
+        .heading h1 {
+          font-size: 19px;
+        }
+      }
+    
+      /* El Nexo notebook palette — aligned with the parent Studio */
+      :root {
+        color-scheme: light;
+        --bg: #f7f4eb;
+        --panel: #fffdf7;
+        --panel2: #f5f0e5;
+        --border: #d9d2c4;
+        --text: #29364d;
+        --muted: #727b8d;
+        --cyan: #477b86;
+        --violet: #a47765;
+        --green: #477d62;
+      }
+      html, body { background: #f7f4eb !important; color: #29364d !important; }
+      body {
+        background-image:
+          linear-gradient(rgba(86,113,133,.075) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(86,113,133,.075) 1px, transparent 1px) !important;
+        background-size: 22px 22px !important;
+      }
+      .app { max-width: 100%; }
+      .topline { border-color: #d9d2c4; }
+      .brand-mark {
+        background: #f1d66d !important; border-color: #d1ae3d !important;
+        color: #29364d !important; border-radius: 3px !important;
+      }
+      .brand strong, .heading h1, .card h2, .profile-name { color: #29364d !important; }
+      .status { color: #477d62 !important; border-color: #cbd9cb !important; background: #f5faf1 !important; }
+      .metric, .card, .pipeline, .tree-info, .event {
+        background: rgba(255,253,247,.96) !important;
+        border-color: #d9d2c4 !important;
+        border-radius: 4px !important;
+        box-shadow: 2px 3px 0 rgba(47,53,66,.06);
+      }
+      .metric { border-top: 2px solid #e3c65e !important; }
+      .metric strong, .profile-value { color: #29364d !important; }
+      .sub, .hint, .axis, .wave-meta, .tree-info, .note { color: #727b8d !important; }
+      .btn, .filter {
+        color: #35415a !important; background: #fffdf7 !important;
+        border: 1px solid #d4cdbf !important; border-radius: 3px !important;
+      }
+      .btn-primary {
+        background: #f2cf48 !important; border-color: #b99525 !important;
+        color: #26334b !important; box-shadow: 2px 2px 0 #34415a;
+      }
+      .active, .filter.active, .selected {
+        background: #f7edc5 !important; border-color: #c9a637 !important; color: #29364d !important;
+      }
+      .track, .bar { background: #e8e2d6 !important; }
+      .footer { border-color: #d9d2c4 !important; color: #727b8d !important; }
+
+    </style>
+  
+    <style id="elnexo-theme-styles">
+      body[data-visual-theme="notebook"] {
+        color-scheme: light; --bg:#f4f0e5; --panel:#fffdf8; --panel2:#f8f3e8; --border:#dfd2bd; --text:#293750; --muted:#66738a; --cyan:#497bb8; --violet:#9b6686; --green:#39804e;
+        background-color:#f4f0e5; background-image:linear-gradient(rgba(100,139,170,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(100,139,170,.13) 1px,transparent 1px); background-size:24px 24px;
+      }
+      body[data-visual-theme="notebook"] .card, body[data-visual-theme="notebook"] .metric { background:rgba(255,253,248,.97); border-color:#dfd2bd; color:#293750; box-shadow:0 5px 16px rgba(71,57,35,.07); }
+      body[data-visual-theme="notebook"] .btn { background:#f8f3e8; border-color:#dfd2bd; color:#344966; }
+      body[data-visual-theme="notebook"] .btn:hover, body[data-visual-theme="notebook"] .btn.active { background:#f8e7a5; border-color:#dfc56e; color:#293750; }
+      body[data-visual-theme="notebook"] .heading h1 { font-family:Caveat,cursive; font-size:30px; color:#202d49; }
+      body[data-visual-theme="notebook"] .topline { border-color:#dfd2bd; }
+      body[data-visual-theme="studio"] { color-scheme:dark; --bg:#0b2b52; --panel:#123963; --panel2:#0d3158; --border:#47739b; --text:#eaf3ff; --muted:#a9c3df; --cyan:#78d9ef; --violet:#d0b8ff; --green:#8de0b4; background-color:#0b2b52; background-image:linear-gradient(rgba(153,190,226,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(153,190,226,.10) 1px,transparent 1px); background-size:24px 24px; }
+      body[data-visual-theme="studio"] .card, body[data-visual-theme="studio"] .metric { background:rgba(13,49,88,.97); border-color:#47739b; color:#eaf3ff; }
+      body[data-visual-theme="studio"] .btn { background:#153f6d; border-color:#47739b; color:#eaf3ff; }
+      body[data-visual-theme="studio"] .btn:hover, body[data-visual-theme="studio"] .btn.active { background:#f4c64e; border-color:#ffe08a; color:#102f59; }
+      body[data-visual-theme="studio"] .heading h1 { color:#fff; }
+    </style>
+    <style id="elnexo-performance-theme-final">
+  /* NOTEBOOK THEME */
+  html[data-visual-theme="notebook"],
+  body[data-visual-theme="notebook"] {
+    color-scheme: light !important;
+    --bg: #f5f0e5 !important;
+    --panel: #fffdf8 !important;
+    --panel2: #f8f3e8 !important;
+    --border: #dfd2bd !important;
+    --text: #293750 !important;
+    --muted: #66738a !important;
+    --cyan: #497bb8 !important;
+    --violet: #916b9d !important;
+    --green: #39804e !important;
+
+    background-color: #f5f0e5 !important;
+    background-image:
+      linear-gradient(rgba(100,139,170,.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(100,139,170,.12) 1px, transparent 1px) !important;
+    background-size: 24px 24px !important;
+    color: #293750 !important;
+  }
+
+  body[data-visual-theme="notebook"] :is(
+    .metric, .card, .pipeline, .tree-info, .event
+  ) {
+    background: #fffdf8 !important;
+    color: #293750 !important;
+    border-color: #dfd2bd !important;
+    box-shadow: 0 4px 12px rgba(71,57,35,.06) !important;
+  }
+
+  body[data-visual-theme="notebook"] :is(
+    h1, h2, h3, h4, strong, .metric strong, .profile-value, .brand strong
+  ) {
+    color: #293750 !important;
+    opacity: 1 !important;
+  }
+
+  body[data-visual-theme="notebook"] :is(
+    p, .sub, .hint, .axis, .wave-meta, .note, .footer, .tree-info
+  ) {
+    color: #66738a !important;
+    opacity: 1 !important;
+  }
+
+  body[data-visual-theme="notebook"] :is(.btn, .filter) {
+    background: #fffdf8 !important;
+    color: #344966 !important;
+    border-color: #d8cbb7 !important;
+  }
+
+  body[data-visual-theme="notebook"] :is(
+    .btn-primary, .btn.active, .filter.active, .selected
+  ) {
+    background: #f2cf48 !important;
+    color: #26334b !important;
+    border-color: #c5a43a !important;
+  }
+
+  body[data-visual-theme="notebook"] :is(.track, .bar) {
+    background-color: #e8e2d6 !important;
+  }
+
+  /* STUDIO THEME */
+  html[data-visual-theme="studio"],
+  body[data-visual-theme="studio"] {
+    color-scheme: dark !important;
+    --bg: #0b2b52 !important;
+    --panel: #123963 !important;
+    --panel2: #0d3158 !important;
+    --border: #47739b !important;
+    --text: #edf5ff !important;
+    --muted: #b5cce4 !important;
+    --cyan: #78d9ef !important;
+    --violet: #d0b8ff !important;
+    --green: #8de0b4 !important;
+
+    background-color: #0b2b52 !important;
+    background-image:
+      linear-gradient(rgba(153,190,226,.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(153,190,226,.09) 1px, transparent 1px) !important;
+    background-size: 24px 24px !important;
+    color: #edf5ff !important;
+  }
+
+  body[data-visual-theme="studio"] :is(
+    .metric, .card, .pipeline, .tree-info, .event
+  ) {
+    background: #123963 !important;
+    color: #edf5ff !important;
+    border-color: #47739b !important;
+    box-shadow: 0 5px 16px rgba(0,12,30,.18) !important;
+  }
+
+  body[data-visual-theme="studio"] :is(
+    h1, h2, h3, h4, strong, .metric strong, .profile-value, .brand strong
+  ) {
+    color: #fff1c2 !important;
+    opacity: 1 !important;
+  }
+
+  body[data-visual-theme="studio"] :is(
+    p, .sub, .hint, .axis, .wave-meta, .note, .footer, .tree-info
+  ) {
+    color: #b5cce4 !important;
+    opacity: 1 !important;
+  }
+
+  body[data-visual-theme="studio"] :is(.btn, .filter) {
+    background: #153f6d !important;
+    color: #edf5ff !important;
+    border-color: #47739b !important;
+  }
+
+  body[data-visual-theme="studio"] :is(
+    .btn-primary, .btn.active, .filter.active, .selected
+  ) {
+    background: #f4c64e !important;
+    color: #102f59 !important;
+    border-color: #ffe08a !important;
+  }
+
+  body[data-visual-theme="studio"] :is(.track, .bar) {
+    background-color: #082747 !important;
+  }
+
+  body[data-visual-theme="studio"] .status {
+    color: #8de0b4 !important;
+  }
+
+  body[data-visual-theme="studio"] .brand-mark {
+    background: #f4c64e !important;
+    color: #102f59 !important;
+  }
+</style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="topline">
+        <span class="eyebrow">RUNTIME TELEMETRY</span
+        ><span class="status" id="connection-status"
+          >● WAITING FOR RUNTIME</span
+        >
+      </header>
+      <section class="heading">
+        <div>
+          <div class="eyebrow">NEXUS / INSIGHTS</div>
+          <h1>Runtime Performance</h1>
+          <p>Render health, Fiber activity and component cost — at a glance.</p>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="run-preview" type="button">
+            ▶ Run preview</button
+          ><button class="btn" id="clear-events" type="button">
+            Clear events
+          </button>
+        </div>
+      </section>
+      <section class="metrics">
+        <article class="metric">
+          <label>RENDER CYCLES</label
+          ><strong class="cyan" id="render-cycles">—</strong
+          ><small>Successful runtime commits</small>
+        </article>
+        <article class="metric">
+          <label>FIBER NODES</label
+          ><strong class="violet" id="fiber-nodes">—</strong
+          ><small>Current Fiber snapshot</small>
+        </article>
+        <article class="metric">
+          <label>AVG RENDER TIME</label><strong id="avg-render">—</strong
+          ><small>Average component render duration</small>
+        </article>
+        <article class="metric">
+          <label>SKIPPED RENDERS</label
+          ><strong class="green" id="skipped-renders">—</strong
+          ><small>Fiber bailout count</small>
+        </article>
+      </section>
+      <section class="card">
+        <div class="card-head">
+          <h2>Execution Trace</h2>
+          <span class="tag" id="trace-state">READY</span>
+        </div>
+        <div class="sub">Trigger → Schedule → Reconcile → Commit</div>
+        <div class="pipeline" id="pipeline">
+          <div class="stage" data-stage="Trigger">
+            <div class="stage-dot">01</div>
+            <b>Trigger</b>
+          </div>
+          <div class="stage" data-stage="Schedule">
+            <div class="stage-dot">02</div>
+            <b>Schedule</b>
+          </div>
+          <div class="stage" data-stage="Reconcile">
+            <div class="stage-dot">03</div>
+            <b>Reconcile</b>
+          </div>
+          <div class="stage" data-stage="Commit">
+            <div class="stage-dot">04</div>
+            <b>Commit</b>
+          </div>
+        </div>
+        <div class="note" id="trace-message">
+          Runtime lifecycle events will update this pipeline as the framework
+          executes.
+        </div>
+      </section>
+      <section class="two-col">
+        <article class="card">
+          <div class="card-head">
+            <h2>Component Profiler</h2>
+            <span class="tag">MEASURED DATA</span>
+          </div>
+          <div class="sub">
+            Last measured component render durations from the registry.
+          </div>
+          <div class="profiler" id="profiler">
+            <div class="empty">Waiting for component render measurements.</div>
+          </div>
+          <p class="note">
+            Only components with a recorded duration are plotted. Missing
+            measurements remain unavailable.
+          </p>
+        </article>
+        <article class="card">
+          <div class="card-head">
+            <h2>Fiber Visualization</h2>
+            <span class="tag">REGISTRY SNAPSHOT</span>
+          </div>
+          <div class="sub">
+            Choose a registered component to inspect its runtime metadata.
+          </div>
+          <div class="tree" id="fiber-tree">
+            <div class="empty">Waiting for the first Fiber snapshot.</div>
+          </div>
+          <div class="tree-info">
+            <div class="eyebrow">SELECTED COMPONENT</div>
+            <b id="selected-name">No component selected</b>
+            <p id="selected-info">
+              A component summary will appear here when the runtime publishes
+              its registry snapshot.
+            </p>
+          </div>
+        </article>
+      </section>
+      <section class="two-col">
+        <article class="card">
+          <div class="card-head">
+            <h2>Optimization Insights</h2>
+            <span class="tag">SESSION COUNTS</span>
+          </div>
+          <div class="sub">Executed versus skipped component renders.</div>
+          <div class="insights">
+            <div>
+              <div class="insight-line">
+                <span>Executed component renders</span
+                ><b id="executed-count">—</b>
+              </div>
+              <div class="bar"><i id="executed-bar" style="width: 0%"></i></div>
+            </div>
+            <div>
+              <div class="insight-line">
+                <span>Skipped component renders</span
+                ><b class="green" id="skipped-count-label">—</b>
+              </div>
+              <div class="bar greenbar">
+                <i id="skipped-bar" style="width: 0%"></i>
+              </div>
+            </div>
+          </div>
+          <p class="note" id="optimization-note">
+            Bailout ratio is only meaningful when render attempts and skipped
+            renders are both tracked by the runtime.
+          </p>
+        </article>
+        <article class="card">
+          <div class="card-head">
+            <h2>Runtime Event Log</h2>
+            <span class="tag">LIVE SESSION</span>
+          </div>
+          <div class="events-head">
+            <div class="filters" id="event-filters">
+              <button class="filter active" data-filter="All">All</button
+              ><button class="filter" data-filter="Render">Render</button
+              ><button class="filter" data-filter="State">State</button
+              ><button class="filter" data-filter="Commit">Commit</button
+              ><button class="filter" data-filter="Bailout">Bailout</button>
+            </div>
+          </div>
+          <div class="event-list" id="event-list">
+            <div class="empty">Runtime events will appear here.</div>
+          </div>
+        </article>
+      </section>
+      <footer class="footer">
+        <span>EL NEXO / NEXUS PERFORMANCE</span
+        ><span id="footer-session">WAITING FOR PARENT RUNTIME BRIDGE</span>
+      </footer>
+    </main>
+    <script>
+      (() => {
+        const $ = (id) => document.getElementById(id);
+        const state = {
+          snapshot: null,
+          events: [],
+          filter: "All",
+          selected: null,
+          traceTimer: null,
+        };
+
+        const runPreviewButton = $("run-preview");
+        runPreviewButton?.addEventListener("click", () => {
+          try {
+            if (!window.parent || window.parent === window) {
+              throw new Error("Studio parent window unavailable");
+            }
+            window.parent.document.dispatchEvent(
+              new window.parent.CustomEvent("elnexo:refresh-preview"),
+            );
+            runPreviewButton.textContent = "✓ Preview requested";
+            runPreviewButton.disabled = true;
+            window.setTimeout(() => {
+              runPreviewButton.textContent = "▶ Run preview";
+              runPreviewButton.disabled = false;
+            }, 1200);
+          } catch (error) {
+            runPreviewButton.textContent = "Run from Studio";
+          }
+        });
+
+        const escapeHtml = (value) =>
+          String(value ?? "").replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+        const timeLabel = (value) =>
+          value ||
+          new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+        function classify(event) {
+          const kind = String(
+            event.kind || event.type || "Update",
+          ).toUpperCase();
+          if (kind.includes("BAILOUT")) return "Bailout";
+          if (kind.includes("MOUNT")) return "Mount";
+          if (kind.includes("RENDER")) return "Render";
+          if (kind.includes("COMMIT")) return "Commit";
+          if (/state/i.test(`${event.title || ""} ${event.description || ""}`))
+            return "State";
+          if (kind.includes("ERROR")) return "Error";
+          return "Update";
+        }
+        function renderEvents() {
+          const items = state.events.filter(
+            (e) => state.filter === "All" || e.category === state.filter,
+          );
+          $("event-list").innerHTML = items.length
+            ? items
+                .map(
+                  (e) =>
+                    `<div class="event"><span class="dot" style="background:${e.category === "Bailout" ? "#6de0b0" : e.category === "State" ? "#b6a2ff" : e.category === "Commit" ? "#6de0b0" : "#55d7e9"}"></span><div><strong>${escapeHtml(e.title)}</strong><p>${escapeHtml(e.description)}</p></div><time>${escapeHtml(e.time)}</time></div>`,
+                )
+                .join("")
+            : `<div class="empty">No ${escapeHtml(state.filter.toLowerCase())} events in this session.</div>`;
+        }
+        function addEvent(event) {
+          const category = classify(event);
+          const entry = {
+            category,
+            title: event.title || category,
+            description: event.description || "Runtime event",
+            time: timeLabel(event.time),
+          };
+          state.events.unshift(entry);
+          state.events = state.events.slice(0, 60);
+          renderEvents();
+          if (
+            category === "Commit" ||
+            category === "Mount" ||
+            category === "Update"
+          )
+            updatePipeline("Commit");
+          else if (category === "Render") updatePipeline("Reconcile");
+          else if (category === "State") updatePipeline("Trigger");
+          $("connection-status").textContent = "● RUNTIME CONNECTED";
+          $("footer-session").textContent =
+            "CONNECTED TO EL NEXO LOCAL SESSION";
+        }
+        function updatePipeline(active) {
+          const stages = ["Trigger", "Schedule", "Reconcile", "Commit"];
+          const idx = stages.indexOf(active);
+          document.querySelectorAll(".stage").forEach((el, i) => {
+            el.classList.toggle("done", i < idx);
+            el.classList.toggle("current", i === idx);
+            el.querySelector(".stage-dot").textContent =
+              i < idx ? "✓" : String(i + 1).padStart(2, "0");
+          });
+          $("trace-state").textContent = active.toUpperCase();
+          $("trace-message").textContent =
+            `${active} stage observed from runtime activity.`;
+        }
+        function renderProfiler(components) {
+          const measured = components.filter((c) =>
+            Number.isFinite(c.lastRenderDurationMs),
+          );
+          if (!measured.length) {
+            $("profiler").innerHTML =
+              `<div class="empty">No per-component timing has been recorded yet.</div>`;
+            return;
+          }
+          const sorted = [...measured]
+            .sort((a, b) => b.lastRenderDurationMs - a.lastRenderDurationMs)
+            .slice(0, 8);
+          const max = Math.max(
+            ...sorted.map((c) => c.lastRenderDurationMs),
+            0.001,
+          );
+          $("profiler").innerHTML = sorted
+            .map(
+              (c) =>
+                `<div class="profile-row"><span class="profile-name" title="${escapeHtml(c.name)}">${escapeHtml(c.name)}</span><div class="track"><i style="width:${Math.max(2, (c.lastRenderDurationMs / max) * 100)}%"></i></div><span class="profile-value">${c.lastRenderDurationMs.toFixed(3)} ms</span></div>`,
+            )
+            .join("");
+        }
+        function renderFiber(components) {
+          const list = components.slice(0, 12);
+          if (!list.length) {
+            $("fiber-tree").innerHTML =
+              `<div class="empty">No registered components in the current snapshot.</div>`;
+            return;
+          }
+          const root = list.find((c) => !c.parent) || list[0];
+          const children = list.filter((c) => c !== root).slice(0, 9);
+          $("fiber-tree").innerHTML =
+            `<div class="tree-root"><button class="${state.selected === root.name ? "selected" : ""}" data-component-index="${components.indexOf(root)}">${escapeHtml(root.name)}</button></div><div class="tree-children">${children.map((c) => `<button class="${state.selected === c.name ? "selected" : ""}" data-component-index="${components.indexOf(c)}">${escapeHtml(c.name)}</button>`).join("")}</div>`;
+          $("fiber-tree")
+            .querySelectorAll("[data-component-index]")
+            .forEach((btn) =>
+              btn.addEventListener("click", () => {
+                const c = components[Number(btn.dataset.componentIndex)];
+                state.selected = c.name;
+                renderFiber(components);
+                $("selected-name").textContent = c.name;
+                $("selected-info").textContent =
+                  `${c.kind || "Component"} · Parent: ${c.parent || "Root"} · ${c.renderCount || 0} renders · Last duration: ${Number.isFinite(c.lastRenderDurationMs) ? c.lastRenderDurationMs.toFixed(3) + " ms" : "not measured"}`;
+              }),
+            );
+          const selected =
+            components.find((c) => c.name === state.selected) || root;
+          state.selected = selected.name;
+          $("selected-name").textContent = selected.name;
+          $("selected-info").textContent =
+            `${selected.kind || "Component"} · Parent: ${selected.parent || "Root"} · ${selected.renderCount || 0} renders · Last duration: ${Number.isFinite(selected.lastRenderDurationMs) ? selected.lastRenderDurationMs.toFixed(3) + " ms" : "not measured"}`;
+        }
+        function applySnapshot(s) {
+          if (!s) return;
+          state.snapshot = s;
+          $("render-cycles").textContent = Number.isFinite(s.renderCount)
+            ? s.renderCount
+            : "—";
+          $("fiber-nodes").textContent = Number.isFinite(s.fiberNodeCount)
+            ? s.fiberNodeCount
+            : "—";
+          $("avg-render").textContent = Number.isFinite(
+            s.averageComponentRenderMs,
+          )
+            ? `${s.averageComponentRenderMs.toFixed(3)} ms`
+            : "—";
+          $("skipped-renders").textContent = Number.isFinite(s.skippedRenders)
+            ? s.skippedRenders
+            : "—";
+          const components = Array.isArray(s.components) ? s.components : [];
+          renderProfiler(components);
+          renderFiber(components);
+          const executed = Number(s.componentRenderCount) || 0,
+            skipped = Number(s.skippedRenders) || 0,
+            total = executed + skipped;
+          $("executed-count").textContent = executed;
+          $("skipped-count-label").textContent = skipped;
+          $("executed-bar").style.width = total
+            ? `${(executed / total) * 100}%`
+            : "0%";
+          $("skipped-bar").style.width = total
+            ? `${(skipped / total) * 100}%`
+            : "0%";
+          $("optimization-note").textContent = total
+            ? `Observed ${executed} executed component renders and ${skipped} skipped renders in the current session.`
+            : "No render attempts have been recorded yet.";
+          $("connection-status").textContent = "● RUNTIME CONNECTED";
+          $("footer-session").textContent =
+            `LIVE SESSION · ${s.registryCount ?? components.length} REGISTERED COMPONENTS`;
+        }
+        function receiveRuntime() {
+          try {
+            if (
+              window.parent &&
+              window.parent !== window &&
+              window.parent.location.origin === window.location.origin
+            ) {
+              const doc = window.parent.document;
+              const applyVisualTheme = (theme) => {
+  const selected = theme === "studio" ? "studio" : "notebook";
+
+  document.documentElement.dataset.visualTheme = selected;
+  document.body.dataset.visualTheme = selected;
+};
+
+const readParentTheme = () =>
+  doc.body?.dataset.visualTheme ||
+  doc.documentElement?.dataset.visualTheme ||
+  "notebook";
+
+applyVisualTheme(readParentTheme());
+
+doc.addEventListener("elnexo:theme-change", (event) => {
+  applyVisualTheme(event.detail?.theme || readParentTheme());
+});
+
+// Catch changes to the saved theme attribute as well.
+const themeObserver = new MutationObserver(() => {
+  applyVisualTheme(readParentTheme());
+});
+
+themeObserver.observe(doc.body, {
+  attributes: true,
+  attributeFilter: ["data-visual-theme"],
+});
+
+themeObserver.observe(doc.documentElement, {
+  attributes: true,
+  attributeFilter: ["data-visual-theme"],
+});
+              doc.addEventListener("elnexo:runtime-snapshot", (e) =>
+                applySnapshot(e.detail),
+              );
+              doc.addEventListener("elnexo:runtime-event", (e) =>
+                addEvent(e.detail || {}),
+              );
+              $("connection-status").textContent = "● RUNTIME CONNECTED";
+            }
+          } catch (error) {
+            $("connection-status").textContent = "● STANDALONE PREVIEW";
+            $("footer-session").textContent =
+              "OPEN INSIDE EL NEXO TO CONNECT LIVE METRICS";
+          }
+        }
+        $("event-filters")
+          .querySelectorAll("[data-filter]")
+          .forEach((btn) =>
+            btn.addEventListener("click", () => {
+              state.filter = btn.dataset.filter;
+              $("event-filters")
+                .querySelectorAll(".filter")
+                .forEach((b) => b.classList.toggle("active", b === btn));
+              renderEvents();
+            }),
+          );
+        $("clear-events")?.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+
+          state.events = [];
+          renderEvents();
+          updatePipeline("Trigger");
+          $("trace-state").textContent = "CLEARED";
+          $("trace-message").textContent = "Runtime event history cleared.";
+
+          // Also clear the Studio-side event buffer so a later iframe refresh
+          // does not replay events that the user explicitly cleared.
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.document.dispatchEvent(
+                new window.parent.CustomEvent("elnexo:clear-runtime-events"),
+              );
+            }
+          } catch (error) {
+            console.warn(
+              "[El Nexo] Could not clear parent event history:",
+              error,
+            );
+          }
+
+          const button = $("clear-events");
+          const originalLabel = "Clear events";
+          button.textContent = "✓ Cleared";
+          button.disabled = true;
+          window.setTimeout(() => {
+            button.textContent = originalLabel;
+            button.disabled = false;
+          }, 1100);
+        });
+        $("run-trace")?.addEventListener("click", () => {
+          if (state.traceTimer) clearInterval(state.traceTimer);
+          const stages = ["Trigger", "Schedule", "Reconcile", "Commit"];
+          let i = 0;
+          updatePipeline(stages[0]);
+          $("trace-state").textContent = "DEMO TRACE";
+          state.traceTimer = setInterval(() => {
+            if (i >= stages.length) {
+              clearInterval(state.traceTimer);
+              state.traceTimer = null;
+              return;
+            }
+            updatePipeline(stages[i]);
+            $("trace-message").textContent =
+              `Manual visualization of ${stages[i]} stage. This does not trigger an application render.`;
+            i++;
+          }, 450);
+        });
+        receiveRuntime();
+
+
+        // The iframe can finish loading before main.js completes its initial mount.
+        // Retry the parent bridge briefly so the first published snapshot is not missed.
+        let bridgeRetries = 0;
+        const bridgeRetry = window.setInterval(() => {
+          bridgeRetries += 1;
+          if (
+            window.parent &&
+            window.parent !== window &&
+            window.parent.__EL_NEXO_PERFORMANCE__
+          ) {
+            applySnapshot(window.parent.__EL_NEXO_PERFORMANCE__);
+            window.clearInterval(bridgeRetry);
+            $("connection-status").textContent = "● RUNTIME CONNECTED";
+            $("footer-session").textContent =
+              "CONNECTED TO EL NEXO LOCAL SESSION";
+          } else if (bridgeRetries >= 12) {
+            window.clearInterval(bridgeRetry);
+          }
+        }, 250);
+      })();
+    </script>
+  </body>
+</html>

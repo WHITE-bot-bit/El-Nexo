@@ -1,0 +1,7954 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap");
+:root {
+  color-scheme: dark;
+  --bg: #0a0d10;
+  --surface: #101519;
+  --surface-2: #141b20;
+  --surface-3: #192229;
+  --border: #27343b;
+  --border-soft: #1c282e;
+  --text: #e8edf0;
+  --muted: #91a0a8;
+  --dim: #62717a;
+  --orange: #ff9a3c;
+  --orange-soft: #ffc078;
+  --cyan: #43c9ef;
+  --green: #4bd7a0;
+  --pink: #ef78c5;
+  --radius: 9px;
+  --shadow: 0 14px 40px #0005;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 13px;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 80% -30%, #222016 0, transparent 44%), var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+button,
+input,
+a {
+  font: inherit;
+}
+button {
+  color: inherit;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.topbar {
+  height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 0 22px;
+  border-bottom: 1px solid var(--border);
+  background: #0c1013ed;
+  position: relative;
+  backdrop-filter: blur(16px);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 150px;
+  letter-spacing: 0.07em;
+  font-size: 17px;
+}
+.brand-mark {
+  color: var(--orange);
+  font-size: 28px;
+  line-height: 1;
+}
+.main-nav {
+  display: flex;
+  align-items: stretch;
+  align-self: stretch;
+  gap: 25px;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+  padding: 2px 1px 0;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: var(--text);
+  border-bottom-color: var(--orange);
+}
+.mode-switch {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  padding: 3px;
+  background: #080b0d;
+  border: 1px solid #303b40;
+  border-radius: 9px;
+  gap: 3px;
+}
+.mode-button {
+  padding: 8px 18px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.mode-button.active {
+  color: #fff;
+  background: linear-gradient(180deg, #3a2717, #20170f);
+  border-color: #b66b29;
+  box-shadow: inset 0 0 0 1px #ff9a3c22;
+}
+.app-shell[data-mode="inspect"] .mode-button.active {
+  background: linear-gradient(180deg, #12313e, #10232c);
+  border-color: #2eabc9;
+  box-shadow: inset 0 0 0 1px #43c9ef22;
+}
+.topbar-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.live-pill,
+.runtime-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: #cbd6d9;
+  white-space: nowrap;
+}
+.live-pill i,
+.runtime-status i,
+.live-label i {
+  width: 7px;
+  height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 9px #4bd7a055;
+}
+.icon-button,
+.quiet-icon {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.icon-button {
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+}
+.icon-button:hover,
+.quiet-icon:hover {
+  background: var(--surface-3);
+  color: var(--text);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #27363d;
+  color: #dbe6ea;
+  border: 1px solid #40535c;
+}
+.app-shell {
+  display: grid;
+  grid-template-columns: 218px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px;
+  max-width: 1920px;
+  margin: auto;
+  min-height: calc(100vh - 58px);
+}
+.project-sidebar {
+  background: linear-gradient(180deg, #11171b, #0d1215);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 13px 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  align-self: stretch;
+}
+.section-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 0.11em;
+  color: var(--muted);
+  font-weight: 700;
+  margin: 0 5px 12px;
+}
+.project-select {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  border: 1px solid var(--border);
+  background: #0b1013;
+  padding: 9px 10px;
+  border-radius: 7px;
+  margin-bottom: 16px;
+  color: #d8e0e4;
+}
+.folder-symbol {
+  color: var(--orange);
+  font-size: 13px;
+}
+.select-chevron {
+  margin-left: auto;
+  color: var(--muted);
+}
+.file-tree {
+  font-size: 12px;
+  color: #b8c3c9;
+}
+.tree-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 27px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.folder-row {
+  color: #d4dde0;
+}
+.tree-indent {
+  padding-left: 16px;
+}
+.file-row {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #aab8bf;
+  text-align: left;
+  padding: 4px 7px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.file-row:hover {
+  background: #1a252b;
+}
+.selected-file {
+  background: #1d3039;
+  color: #e8f4f8;
+  box-shadow: inset 2px 0 var(--orange);
+}
+.root-file {
+  margin-left: 16px;
+}
+.sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 18px 0;
+}
+.side-tool {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 6px;
+  color: #9eacb4;
+  margin-bottom: 3px;
+}
+.side-tool span {
+  font-size: 16px;
+  color: var(--muted);
+}
+.side-tool:hover,
+.active-tool {
+  background: #1a2429;
+  color: #f0f4f5;
+}
+.active-tool {
+  box-shadow: inset 2px 0 var(--orange);
+}
+.active-tool span {
+  color: var(--orange);
+}
+.sidebar-health {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border-top: 1px solid var(--border);
+  padding: 13px 5px 2px;
+  margin-top: auto;
+}
+.health-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.sidebar-health strong,
+.sidebar-health small {
+  display: block;
+  font-size: 11px;
+}
+.sidebar-health small {
+  color: var(--muted);
+  margin-top: 4px;
+}
+.workspace {
+  min-width: 0;
+}
+.workspace-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 2px 2px 13px;
+}
+.eyebrow,
+.panel-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.11em;
+  color: var(--muted);
+  font-weight: 600;
+}
+.eyebrow span {
+  color: var(--dim);
+  padding: 0 5px;
+}
+.eyebrow b {
+  color: var(--orange);
+  font-weight: 600;
+}
+.workspace-heading h1 {
+  font-size: 23px;
+  letter-spacing: -0.04em;
+  margin: 5px 0 4px;
+  font-weight: 600;
+}
+.workspace-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.runtime-status {
+  font-size: 11px;
+}
+.primary-button {
+  background: linear-gradient(180deg, #ffad55, #f2872b);
+  color: #201205;
+  border: 1px solid #ffc17c;
+  border-radius: 7px;
+  padding: 9px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 18px #ff9a3c1c;
+}
+.primary-button:hover {
+  filter: brightness(1.08);
+}
+.studio-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 1.08fr) minmax(300px, 1fr);
+  grid-template-rows: minmax(350px, 1.05fr) minmax(220px, 0.7fr);
+  gap: 10px;
+}
+.panel {
+  min-width: 0;
+  background: linear-gradient(180deg, #12181c, #0e1316);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 10px #0002;
+}
+.panel-top,
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.tab-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  background: #1a2227;
+  border: 1px solid #2b363c;
+  border-radius: 6px;
+  color: #e3e9eb;
+  font-size: 12px;
+}
+.file-icon {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--orange);
+}
+.tab-close {
+  color: var(--muted);
+}
+.panel-tool-label {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+}
+.code-panel {
+  display: flex;
+  flex-direction: column;
+}
+.code-editor {
+  padding: 14px 0 12px;
+  flex: 1;
+  background: linear-gradient(90deg, #11171b 0, #101519 100%);
+  font:
+    12px/1.85 "DM Mono",
+    monospace;
+  overflow: auto;
+}
+.code-line {
+  display: grid;
+  grid-template-columns: 43px minmax(max-content, 1fr);
+  padding-right: 16px;
+  min-height: 22px;
+}
+.code-line > span {
+  text-align: right;
+  padding-right: 14px;
+  color: #56646c;
+  user-select: none;
+}
+.code-line code {
+  white-space: pre;
+  color: #d1dce0;
+}
+.code-line em {
+  font-style: normal;
+  color: #df82ca;
+}
+.code-line i {
+  font-style: normal;
+  color: #a9d18e;
+}
+.code-line b {
+  font-weight: 500;
+  color: #78c8f0;
+}
+.panel-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 13px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 10px;
+  color: var(--muted);
+}
+.green-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 6px;
+}
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+}
+.panel-heading h2 {
+  font-size: 13px;
+  margin: 4px 0 0;
+  font-weight: 600;
+}
+.preview-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.preview-route {
+  font:
+    11px "DM Mono",
+    monospace;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  border-radius: 5px;
+  min-width: 80px;
+}
+.preview-body {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: 245px;
+  background: radial-gradient(
+    ellipse at 50% 48%,
+    #2c2115 0,
+    #151715 45%,
+    #0c1114 78%
+  );
+}
+.preview-body:before,
+.preview-body:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 80%;
+  height: 45%;
+  border: 1px solid #bd752d3d;
+  border-radius: 50%;
+  transform: rotate(-22deg);
+  filter: drop-shadow(0 0 10px #ff9a3c16);
+}
+.preview-body:after {
+  width: 95%;
+  height: 65%;
+  transform: rotate(22deg);
+  border-color: #ffb26422;
+}
+.preview-orbit {
+  position: absolute;
+  border: 1px solid #d68b4129;
+  border-radius: 50%;
+  width: 70%;
+  height: 60%;
+  transform: rotate(-30deg);
+}
+.orbit-two {
+  width: 88%;
+  height: 36%;
+  transform: rotate(31deg);
+}
+.preview-card {
+  width: min(82%, 340px);
+  padding: 27px 20px 24px;
+  border: 1px solid #4b3b2c;
+  background: #111311e8;
+  box-shadow: 0 20px 50px #0007;
+  border-radius: 12px;
+  text-align: center;
+}
+.preview-overline {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--orange);
+}
+.preview-card h2 {
+  font-size: 21px;
+  margin: 13px 0 6px;
+}
+.preview-card p {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 0 0 17px;
+}
+.preview-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+}
+.preview-app h1,
+.preview-app h2 {
+  font-size: 18px;
+  margin: 4px 0;
+}
+.preview-app p {
+  margin: 0;
+  color: #e2e7e9;
+}
+.preview-app button {
+  padding: 8px 15px;
+  border-radius: 6px;
+  border: 1px solid #b76b2c;
+  background: #2b1c10;
+  color: #ffd3a3;
+  cursor: pointer;
+}
+.preview-app button:hover {
+  background: #472b15;
+}
+.preview-app section {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+  padding: 6px;
+}
+.flow-panel {
+  grid-column: 1/-1;
+  padding-bottom: 6px;
+}
+.live-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+  font-size: 10px;
+}
+.flow-steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 21px 22px 12px;
+}
+.flow-steps > b {
+  color: #8e6039;
+  font-size: 18px;
+  font-weight: 400;
+}
+.flow-step {
+  display: grid;
+  grid-template-columns: 27px 1fr;
+  column-gap: 9px;
+  align-items: center;
+  min-width: 0;
+}
+.flow-step > span {
+  grid-row: span 2;
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #8e5a2d;
+  border-radius: 50%;
+  color: var(--orange);
+  font:
+    11px "DM Mono",
+    monospace;
+}
+.flow-step strong {
+  font-size: 11px;
+  font-weight: 600;
+}
+.flow-step small {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.active-step > span {
+  background: #362313;
+  box-shadow: 0 0 0 3px #ff9a3c10;
+}
+.flow-note {
+  border-top: 1px solid var(--border-soft);
+  padding: 9px 14px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.orange-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  margin-right: 7px;
+}
+.activity-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.activity-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.activity-count {
+  font:
+    10px "DM Mono",
+    monospace;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+.text-button {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+.activity-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--border-soft);
+}
+.activity-stat {
+  padding: 12px 14px;
+  border-right: 1px solid var(--border-soft);
+}
+.activity-stat:last-child {
+  border-right: 0;
+}
+.activity-stat span {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+}
+.activity-stat strong {
+  display: block;
+  font:
+    19px "DM Mono",
+    monospace;
+  margin-top: 7px;
+}
+.activity-log {
+  overflow: auto;
+  max-height: 170px;
+  padding: 5px 13px;
+}
+.inspector-empty {
+  color: var(--muted);
+  font-size: 11px;
+  padding: 12px;
+}
+.activity-log .activity-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 0;
+  border-bottom: 1px solid #202a2f;
+  font-size: 11px;
+}
+.activity-log .activity-item:last-child {
+  border-bottom: 0;
+}
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--dim);
+  font-size: 10px;
+  padding: 14px 3px 4px;
+}
+.footer-separator {
+  color: var(--orange);
+  padding: 0 4px;
+}
+.inspect-layout[hidden],
+.studio-layout[hidden] {
+  display: none !important;
+}
+.app-shell[data-mode="inspect"] .project-sidebar {
+  border-color: #26404a;
+}
+.app-shell[data-mode="inspect"] .section-label,
+.app-shell[data-mode="inspect"] .panel-eyebrow {
+  color: #7fa6b5;
+}
+.app-shell[data-mode="inspect"] .workspace-heading .eyebrow b {
+  color: var(--cyan);
+}
+.app-shell[data-mode="inspect"] .selected-file,
+.app-shell[data-mode="inspect"] .active-tool {
+  box-shadow: inset 2px 0 var(--cyan);
+}
+.app-shell[data-mode="inspect"] .active-tool span {
+  color: var(--cyan);
+}
+.app-shell[data-mode="inspect"] .workspace-heading .runtime-status i {
+  background: var(--green);
+}
+.metric-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+  margin-bottom: 10px;
+}
+.metric-card {
+  padding: 13px 15px;
+  background: linear-gradient(145deg, #132027, #101519);
+  border: 1px solid #294451;
+  border-radius: 8px;
+  min-width: 0;
+}
+.metric-card span,
+.metric-card small {
+  display: block;
+  color: #a4bbc5;
+  font-size: 10px;
+}
+.metric-card strong {
+  display: block;
+  font:
+    25px "DM Mono",
+    monospace;
+  color: #edf9fc;
+  margin: 8px 0;
+}
+.metric-card small {
+  color: var(--dim);
+}
+.cycle-panel {
+  margin-bottom: 10px;
+}
+.cycle-flow {
+  display: flex;
+  align-items: center;
+  padding: 17px 8%;
+  gap: 12px;
+}
+.cycle-flow > i {
+  height: 1px;
+  background: linear-gradient(90deg, #3dbbdc, #31515c);
+  flex: 1;
+  position: relative;
+}
+.cycle-flow > i:after {
+  content: "›";
+  position: absolute;
+  right: -2px;
+  top: -11px;
+  color: var(--cyan);
+  font-size: 20px;
+}
+.cycle-node {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 70px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.cycle-node > span {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid #52636a;
+  background: #141c20;
+  color: #a5b7be;
+}
+.cycle-node.done > span {
+  background: #143b46;
+  border-color: #39b6d4;
+  color: #baf3ff;
+}
+.cycle-node.current > span {
+  background: #16465a;
+  border-color: var(--cyan);
+  color: #e4fbff;
+  box-shadow: 0 0 14px #43c9ef24;
+}
+.cycle-node strong {
+  font-weight: 600;
+}
+.inspect-grid {
+  display: grid;
+  grid-template-columns: minmax(400px, 1.3fr) minmax(300px, 1fr);
+  gap: 10px;
+}
+.inspector-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 430px;
+}
+.snapshot-badge {
+  font:
+    9px "DM Mono",
+    monospace;
+  letter-spacing: 0.07em;
+  color: #8eb4c2;
+  border: 1px solid #2a4955;
+  border-radius: 4px;
+  padding: 5px 7px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  padding: 10px 12px;
+}
+.stat-card {
+  background: #0b1114;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 9px;
+}
+.stat-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+}
+.stat-card strong {
+  display: block;
+  font:
+    18px "DM Mono",
+    monospace;
+  margin-top: 5px;
+  color: #d9f5fb;
+}
+.search-box,
+.component-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 12px 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #0a1013;
+  color: var(--muted);
+}
+.search-box input,
+.component-search-box input {
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--text);
+  font-size: 11px;
+}
+.search-box kbd {
+  font-size: 8px;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.inspector-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 0;
+  flex: 1;
+  min-height: 200px;
+  border-top: 1px solid var(--border-soft);
+}
+.tree-pane,
+.details-pane {
+  min-width: 0;
+  padding: 10px;
+  overflow: auto;
+}
+.tree-pane {
+  border-right: 1px solid var(--border-soft);
+}
+.pane-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 7px;
+  font-size: 9px;
+  letter-spacing: 0.09em;
+  color: #9cabb2;
+  margin-bottom: 10px;
+}
+.pane-subtitle {
+  font-size: 9px;
+  letter-spacing: 0;
+  color: var(--dim);
+}
+.fiber-tree {
+  font-size: 11px;
+  line-height: 1.55;
+  overflow: auto;
+}
+.fiber-tree button {
+  max-width: 100%;
+}
+.fiber-details {
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.details-symbol {
+  color: var(--cyan);
+}
+.components-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 290px;
+}
+.components-panel > .component-search-box {
+  margin-top: 10px;
+}
+.components-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  min-height: 150px;
+  flex: 1;
+}
+.component-list {
+  border-right: 1px solid var(--border-soft);
+  padding: 6px 10px;
+  overflow: auto;
+}
+.component-details {
+  padding: 10px;
+  overflow: auto;
+}
+.component-metadata {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 8px;
+  font-size: 10px;
+}
+.component-metadata dt {
+  color: var(--muted);
+}
+.component-metadata dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #d6e5ea;
+}
+.hook-inspection-list {
+  display: grid;
+  gap: 7px;
+}
+.hook-inspection-card {
+  border: 1px solid var(--border);
+  background: #0c1215;
+  border-radius: 6px;
+  padding: 8px;
+}
+.hook-inspection-title {
+  font-size: 10px;
+  color: #b6dce8;
+}
+.hook-inspection-value,
+.hook-inspection-meta {
+  font:
+    10px "DM Mono",
+    monospace;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.diff-placeholder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px;
+}
+.diff-side {
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: #0b1114;
+  padding: 9px;
+  min-width: 0;
+}
+.diff-side span {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.diff-side code {
+  font:
+    10px "DM Mono",
+    monospace;
+  color: #b6dce8;
+  overflow-wrap: anywhere;
+}
+.diff-placeholder p,
+.panel-disclaimer {
+  grid-column: 1/-1;
+  color: var(--dim);
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 2px 0 0;
+}
+.timeline-panel,
+.deep-activity-panel,
+.performance-panel,
+.diff-panel {
+  min-height: 190px;
+}
+.timeline-rows {
+  padding: 14px;
+  display: grid;
+  gap: 15px;
+}
+.timeline-rows > div {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.timeline-track {
+  height: 7px;
+  border-radius: 10px;
+  background: #1c2a30;
+  overflow: hidden;
+}
+.timeline-track i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #2c91b1, #43c9ef);
+  border-radius: 10px;
+}
+.timeline-panel .panel-disclaimer,
+.performance-panel .panel-disclaimer {
+  padding: 0 14px 12px;
+}
+.deep-log-mirror {
+  padding: 10px 13px;
+  font-size: 10px;
+  color: var(--muted);
+  max-height: 230px;
+  overflow: auto;
+}
+.performance-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 14px;
+  gap: 8px;
+}
+.performance-summary > div {
+  background: #0c1215;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 10px;
+}
+.performance-summary span {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+}
+.performance-summary strong {
+  display: block;
+  font:
+    18px "DM Mono",
+    monospace;
+  margin-top: 8px;
+  color: #d7f5fd;
+}
+.app-shell[data-mode="inspect"] .workspace-heading h1 {
+  color: #e9f7fb;
+}
+.app-shell[data-mode="inspect"] .primary-button {
+  background: #123541;
+  color: #c7f6ff;
+  border-color: #267c91;
+  box-shadow: none;
+}
+@media (min-width: 1500px) {
+  .app-shell {
+    grid-template-columns: 230px minmax(0, 1fr);
+    padding: 14px;
+    gap: 14px;
+  }
+  .studio-layout {
+    grid-template-rows: minmax(390px, 1.1fr) minmax(230px, 0.7fr);
+  }
+  .inspect-grid {
+    grid-template-columns: minmax(450px, 1.3fr) minmax(340px, 1fr);
+  }
+}
+@media (max-width: 1100px) {
+  .topbar {
+    gap: 14px;
+    padding: 0 12px;
+  }
+  .main-nav {
+    gap: 13px;
+  }
+  .app-shell {
+    grid-template-columns: 190px minmax(0, 1fr);
+    padding: 8px;
+    gap: 8px;
+  }
+  .studio-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .code-panel,
+  .preview-panel {
+    min-height: 340px;
+  }
+  .flow-panel {
+    grid-column: auto;
+  }
+  .inspect-grid {
+    grid-template-columns: 1fr;
+  }
+  .inspector-panel {
+    min-height: 430px;
+  }
+  .metric-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .components-panel {
+    min-height: 260px;
+  }
+}
+@media (max-width: 720px) {
+  .topbar {
+    height: auto;
+    min-height: 58px;
+    flex-wrap: wrap;
+    padding: 9px 10px;
+    gap: 10px;
+  }
+  .brand {
+    min-width: auto;
+  }
+  .main-nav {
+    order: 3;
+    width: 100%;
+    height: 30px;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .mode-switch {
+    margin-left: auto;
+  }
+  .mode-button {
+    padding: 7px 9px;
+    font-size: 11px;
+  }
+  .topbar-tools .icon-button,
+  .topbar-tools .avatar {
+    display: none;
+  }
+  .app-shell {
+    display: block;
+    padding: 8px;
+  }
+  .project-sidebar {
+    margin-bottom: 10px;
+  }
+  .project-sidebar .file-tree,
+  .project-sidebar .sidebar-divider,
+  .project-sidebar .side-tool,
+  .project-sidebar .sidebar-health {
+    display: none;
+  }
+  .workspace-heading {
+    align-items: flex-start;
+  }
+  .workspace-heading h1 {
+    font-size: 19px;
+  }
+  .workspace-heading p {
+    max-width: 260px;
+    line-height: 1.5;
+  }
+  .heading-actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 7px;
+  }
+  .runtime-status {
+    display: none;
+  }
+  .studio-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .code-panel {
+    min-height: 320px;
+  }
+  .preview-panel {
+    min-height: 330px;
+  }
+  .flow-steps {
+    padding: 16px 8px;
+    gap: 3px;
+  }
+  .flow-step {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 4px;
+  }
+  .flow-step small {
+    display: none;
+  }
+  .flow-steps > b {
+    font-size: 12px;
+  }
+  .activity-summary {
+    grid-template-columns: 1fr;
+  }
+  .activity-stat {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-soft);
+    padding: 9px 12px;
+  }
+  .activity-stat:last-child {
+    border-bottom: 0;
+  }
+  .metric-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .metric-card {
+    padding: 10px;
+  }
+  .metric-card strong {
+    font-size: 20px;
+  }
+  .cycle-flow {
+    padding: 14px 5px;
+    gap: 4px;
+  }
+  .cycle-node {
+    min-width: 48px;
+    font-size: 9px;
+  }
+  .cycle-node > span {
+    width: 24px;
+    height: 24px;
+  }
+  .cycle-flow > i:after {
+    font-size: 15px;
+    top: -9px;
+  }
+  .inspect-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .inspector-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tree-pane {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-soft);
+    max-height: 260px;
+  }
+  .details-pane {
+    max-height: 260px;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .components-layout {
+    grid-template-columns: 1fr;
+  }
+  .component-list {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .page-footer {
+    flex-direction: column;
+  }
+  .diff-placeholder {
+    grid-template-columns: 1fr;
+  }
+  .diff-placeholder p {
+    grid-column: auto;
+  }
+}
+body.sidebar-collapsed .app-shell {
+  grid-template-columns: 0 minmax(0, 1fr);
+}
+body.sidebar-collapsed .project-sidebar {
+  display: none;
+}
+/* Deep Inspect: stable panel sizing */
+.inspect-layout {
+  min-width: 0;
+  width: 100%;
+}
+
+.inspect-grid {
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 1fr);
+  align-items: stretch;
+}
+
+.inspector-panel,
+.components-panel,
+.diff-panel,
+.timeline-panel,
+.deep-activity-panel,
+.performance-panel {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Fiber tree: compact, readable rows */
+.fiber-tree {
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.55;
+  overflow: auto;
+  padding: 2px;
+}
+
+.fiber-tree button,
+.fiber-tree [role="treeitem"] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 26px;
+  margin: 1px 0;
+  padding: 5px 8px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: #cbd6db;
+  font: inherit;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.fiber-tree button:hover,
+.fiber-tree [role="treeitem"]:hover {
+  background: #172229;
+  border-color: #293c46;
+}
+
+.fiber-tree button:focus-visible,
+.fiber-tree [role="treeitem"]:focus-visible {
+  outline: 1px solid var(--cyan);
+  outline-offset: 1px;
+}
+
+.fiber-tree button[aria-selected="true"],
+.fiber-tree button[aria-pressed="true"],
+.fiber-tree .selected,
+.fiber-tree .is-selected {
+  color: #f2fbff;
+  background: #18313b;
+  border-color: #2d7186;
+}
+
+/* Prevent global button styles from making tree nodes grey */
+.fiber-tree button,
+.component-list button {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Component Explorer: cards should stay compact */
+.components-layout {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.8fr) minmax(0, 1.2fr);
+  align-items: stretch;
+  gap: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.component-list {
+  min-width: 0;
+  max-height: 420px;
+  overflow: auto;
+  padding: 8px;
+  border-right: 1px solid var(--border-soft);
+}
+
+.component-card {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 0 0 7px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: #0d1317;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.component-card:hover {
+  background: #141e23;
+  border-color: #3a535e;
+}
+
+.component-card.is-selected,
+.component-card[aria-pressed="true"] {
+  background: #17272e;
+  border-color: var(--cyan);
+  box-shadow: inset 2px 0 var(--cyan);
+}
+
+.component-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.component-card-heading strong {
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.component-card-heading span {
+  flex: 0 0 auto;
+  color: var(--cyan);
+}
+
+.component-type,
+.kind-pill {
+  display: inline-flex;
+  max-width: 100%;
+  margin-top: 6px;
+  padding: 3px 6px;
+  border: 1px solid #2b444e;
+  border-radius: 4px;
+  color: #a9c8d3;
+  background: #101c21;
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.component-card-parent {
+  margin: 7px 0;
+  color: var(--muted);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.component-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.component-metrics span {
+  padding: 3px 5px;
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  color: #9eafb7;
+  background: #0a1013;
+  font-size: 10px;
+}
+
+.component-details {
+  min-width: 0;
+  padding: 14px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+
+.component-details h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.component-details h4 {
+  margin: 18px 0 8px;
+  color: #d8e3e7;
+  font-size: 12px;
+}
+
+.component-description,
+.inspector-empty {
+  color: var(--muted);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.component-metadata {
+  display: grid;
+  grid-template-columns: minmax(75px, 0.8fr) minmax(0, 1.2fr);
+  gap: 7px 10px;
+  margin: 10px 0;
+  font-size: 11px;
+}
+
+.component-metadata dt {
+  color: var(--muted);
+}
+
+.component-metadata dd {
+  min-width: 0;
+  margin: 0;
+  color: #d9e5e9;
+  overflow-wrap: anywhere;
+}
+
+.hook-inspection-list {
+  display: grid;
+  gap: 7px;
+}
+
+.hook-inspection-card {
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #0b1114;
+}
+
+.hook-inspection-title {
+  margin-bottom: 6px;
+  color: #b5dce8;
+  font-size: 11px;
+}
+
+.hook-inspection-value {
+  color: #e7edf0;
+  font-family: "DM Mono", monospace;
+  overflow-wrap: anywhere;
+}
+
+.hook-inspection-meta {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+/* Runtime log and demo preview */
+.deep-log-mirror {
+  max-height: 250px;
+  overflow: auto;
+  padding: 12px;
+  color: #b8c9d0;
+  font:
+    11px/1.8 "DM Mono",
+    monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.demo-app {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+
+.demo-app > h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.demo-app > p {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0;
+}
+
+.demo-app .counter-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #3a332a;
+  border-radius: 8px;
+  background: #101411;
+}
+
+.demo-app .counter-card h2,
+.demo-app .counter-card p {
+  margin: 0;
+}
+
+.demo-app .counter-card button {
+  min-height: 32px;
+  padding: 7px 10px;
+  border: 1px solid #8d5b2f;
+  border-radius: 6px;
+  background: #2a1c11;
+  color: #ffe0bf;
+  cursor: pointer;
+}
+
+.demo-app .counter-card button:hover {
+  background: #3a2717;
+}
+
+.sidebar-collapsed {
+  display: none !important;
+}
+
+@media (max-width: 1100px) {
+  .inspect-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .metric-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .components-layout {
+    grid-template-columns: minmax(130px, 0.7fr) minmax(0, 1.3fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .app-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-sidebar {
+    max-height: 300px;
+    overflow: auto;
+  }
+
+  .main-nav {
+    display: none;
+  }
+
+  .metric-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .components-layout,
+  .inspector-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .component-list,
+  .tree-pane {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+}
+
+/* =====================================================
+   DEEP INSPECT — Fiber inspector layout refinement
+   Append to the end of playground/devtools.css
+   ===================================================== */
+
+#fiber-panel {
+  min-width: 0;
+  overflow: hidden;
+}
+
+#fiber-panel .inspector-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
+  align-items: stretch;
+  min-width: 0;
+}
+
+#fiber-panel .tree-pane,
+#fiber-panel .details-pane {
+  min-width: 0;
+  width: 100%;
+}
+
+#fiber-panel .tree-pane {
+  overflow: auto;
+}
+
+#fiber-panel .details-pane {
+  border-left: 1px solid var(--border, #26343b);
+  padding-left: 16px;
+  overflow-wrap: anywhere;
+}
+
+#fiber-panel .fiber-tree {
+  min-width: 0;
+  overflow-x: auto;
+  padding: 8px 4px 12px 0;
+}
+
+#fiber-panel .fiber-branch {
+  min-width: 0;
+}
+
+#fiber-panel .fiber-node {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+#fiber-panel .node-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#fiber-panel .tree-chevron,
+#fiber-panel .node-icon {
+  flex: 0 0 auto;
+}
+
+#fiber-panel .fiber-details {
+  min-width: 0;
+  font-size: 13px;
+}
+
+#fiber-panel .detail-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+#fiber-panel .detail-title {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+#fiber-panel .metadata-list,
+#fiber-panel .props-list {
+  display: grid;
+  grid-template-columns: minmax(90px, 0.8fr) minmax(0, 1.2fr);
+  column-gap: 12px;
+  row-gap: 10px;
+  margin: 12px 0 20px;
+}
+
+#fiber-panel .metadata-list dt,
+#fiber-panel .props-list dt {
+  color: var(--muted, #91a3ad);
+  min-width: 0;
+}
+
+#fiber-panel .metadata-list dd,
+#fiber-panel .props-list dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-align: left;
+}
+
+#fiber-panel .section-caption {
+  margin-top: 18px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--muted, #91a3ad);
+}
+
+#fiber-panel .inspector-empty {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px) {
+  #fiber-panel .inspector-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #fiber-panel .details-pane {
+    border-left: 0;
+    border-top: 1px solid var(--border, #26343b);
+    padding: 16px 0 0;
+  }
+}
+
+@media (max-width: 600px) {
+  #fiber-panel .metadata-list,
+  #fiber-panel .props-list {
+    grid-template-columns: minmax(76px, 0.8fr) minmax(0, 1.2fr);
+    column-gap: 8px;
+  }
+}
+
+/* =====================================================
+   EL NEXO — UNIFIED DEVELOPER WORKSPACE
+   Append to playground/devtools.css
+   ===================================================== */
+
+/* Remove the old workspace mode switch */
+.mode-switch {
+  display: none !important;
+}
+
+/* Keep both workspace sections visible */
+.studio-layout,
+.inspect-layout {
+  min-width: 0;
+  width: 100%;
+  display: grid;
+  gap: 18px;
+}
+
+.inspect-layout[hidden] {
+  display: none !important;
+}
+
+/* Shared layout safety */
+.workspace,
+.app-shell,
+.panel,
+.inspect-grid,
+.inspector-panel,
+.components-panel {
+  min-width: 0;
+}
+
+.workspace {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Main editor and preview */
+.studio-layout {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.code-panel,
+.preview-panel {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.code-editor {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.code-line {
+  min-width: max-content;
+}
+
+.preview-body {
+  min-height: 280px;
+}
+
+/* Runtime flow and activity span the whole workspace */
+.flow-panel,
+.activity-panel {
+  grid-column: 1 / -1;
+}
+
+/* Inspection metrics */
+.metric-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 0;
+}
+
+.metric-card {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Inspector and component explorer */
+.inspect-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.15fr)
+    minmax(0, 0.85fr);
+  gap: 18px;
+  align-items: start;
+}
+
+#fiber-panel,
+#components-panel {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Fiber tree and selected-node details */
+#fiber-panel .inspector-content {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(230px, 0.85fr);
+  align-items: start;
+  gap: 14px;
+  min-width: 0;
+}
+
+#fiber-panel .tree-pane,
+#fiber-panel .details-pane {
+  min-width: 0;
+  width: 100%;
+}
+
+#fiber-panel .tree-pane {
+  overflow-x: auto;
+}
+
+#fiber-panel .details-pane {
+  border-left: 1px solid var(--border, #26343b);
+  padding-left: 14px;
+  overflow-wrap: anywhere;
+}
+
+#fiber-panel .fiber-tree {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+#fiber-panel .fiber-branch {
+  min-width: 0;
+}
+
+#fiber-panel .fiber-node {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 8px;
+  text-align: left;
+}
+
+#fiber-panel .node-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#fiber-panel .tree-chevron,
+#fiber-panel .node-icon {
+  flex: 0 0 auto;
+}
+
+/* Details metadata: labels on the left, values on the right */
+#fiber-panel .detail-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+#fiber-panel .detail-title {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+#fiber-panel .metadata-list,
+#fiber-panel .props-list {
+  display: grid;
+  grid-template-columns:
+    minmax(85px, 0.8fr)
+    minmax(0, 1.2fr);
+  column-gap: 12px;
+  row-gap: 10px;
+  margin: 12px 0 20px;
+}
+
+#fiber-panel .metadata-list dt,
+#fiber-panel .props-list dt {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--muted, #91a3ad);
+}
+
+#fiber-panel .metadata-list dd,
+#fiber-panel .props-list dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-align: left;
+}
+
+/* Component Explorer */
+.components-layout {
+  display: grid;
+  grid-template-columns:
+    minmax(150px, 0.85fr)
+    minmax(0, 1.15fr);
+  gap: 14px;
+  min-width: 0;
+}
+
+.component-list,
+.component-details {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.component-search-box,
+.search-box {
+  min-width: 0;
+}
+
+.component-search-box input,
+.search-box input {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Prevent long event messages from expanding panels */
+.activity-log,
+.deep-log-mirror,
+.diff-placeholder,
+.timeline-rows,
+.performance-summary {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.performance-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.performance-summary > div {
+  min-width: 0;
+}
+
+/* Keep the unified workspace usable on laptops/tablets */
+@media (max-width: 1200px) {
+  .inspect-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .metric-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .studio-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .flow-panel,
+  .activity-panel {
+    grid-column: auto;
+  }
+
+  #fiber-panel .inspector-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #fiber-panel .details-pane {
+    border-left: 0;
+    border-top: 1px solid var(--border, #26343b);
+    padding: 14px 0 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .metric-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .components-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .performance-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #fiber-panel .metadata-list,
+  #fiber-panel .props-list {
+    grid-template-columns:
+      minmax(76px, 0.8fr)
+      minmax(0, 1.2fr);
+    column-gap: 8px;
+  }
+}
+
+/* El Nexo — unified developer workspace */
+.studio-layout,
+.inspect-layout {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 18px;
+}
+
+.studio-layout {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.inspect-layout {
+  margin-top: 24px;
+}
+
+.studio-layout > *,
+.inspect-layout > *,
+.panel,
+.workspace {
+  min-width: 0;
+}
+
+.code-panel,
+.preview-panel,
+#fiber-panel,
+#components-panel {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.code-editor,
+#fiber-panel .tree-pane,
+#fiber-panel .fiber-tree {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.metric-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metric-card {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.inspect-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 18px;
+  align-items: start;
+}
+
+#fiber-panel .inspector-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.85fr);
+  gap: 14px;
+  min-width: 0;
+}
+
+#fiber-panel .tree-pane,
+#fiber-panel .details-pane {
+  min-width: 0;
+  width: 100%;
+}
+
+#fiber-panel .details-pane {
+  border-left: 1px solid var(--border, #26343b);
+  padding-left: 14px;
+  overflow-wrap: anywhere;
+}
+
+#fiber-panel .fiber-node {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  min-width: 0;
+  padding: 7px 8px;
+  text-align: left;
+}
+
+#fiber-panel .node-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#fiber-panel .metadata-list,
+#fiber-panel .props-list {
+  display: grid;
+  grid-template-columns: minmax(85px, 0.8fr) minmax(0, 1.2fr);
+  gap: 10px 12px;
+}
+
+#fiber-panel .metadata-list dd,
+#fiber-panel .props-list dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.components-layout {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.85fr) minmax(0, 1.15fr);
+  gap: 14px;
+}
+
+.component-list,
+.component-details {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.activity-log,
+.performance-summary {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.performance-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 1200px) {
+  .inspect-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .metric-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .studio-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #fiber-panel .inspector-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #fiber-panel .details-pane {
+    border-left: 0;
+    border-top: 1px solid var(--border, #26343b);
+    padding: 14px 0 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .metric-strip,
+  .components-layout,
+  .performance-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* El Nexo playground button hover and interaction states */
+#preview button,
+.preview button,
+.preview-content button,
+#preview-root button,
+.demo-app button {
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+#preview button:hover,
+.preview button:hover,
+.preview-content button:hover,
+#preview-root button:hover,
+.demo-app button:hover {
+  background-color: #f59e0b !important;
+  color: #111318 !important;
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.35);
+  transform: translateY(-2px);
+}
+
+#preview button:active,
+.preview button:active,
+.preview-content button:active,
+#preview-root button:active,
+.demo-app button:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
+}
+
+#preview button:focus-visible,
+.preview button:focus-visible,
+.preview-content button:focus-visible,
+#preview-root button:focus-visible,
+.demo-app button:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 3px;
+}
+/* Ensure decorative graphics never block preview interactions. */
+#root,
+#root * {
+  pointer-events: auto;
+}
+
+#root button {
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+#root button:hover {
+  filter: brightness(1.2);
+  transform: translateY(-1px);
+}
+
+#root button:active {
+  transform: translateY(0);
+}
+
+#root button:focus-visible {
+  outline: 2px solid #ff9b42;
+  outline-offset: 3px;
+}
+
+/* El Nexo — clearer Fiber tree hierarchy */
+.fiber-branch {
+  position: relative;
+  margin-left: 19px;
+  padding-left: 14px;
+  border-left: 1px solid rgba(93, 166, 190, 0.3);
+}
+
+.fiber-branch:first-child {
+  margin-left: 0;
+  padding-left: 0;
+  border-left: none;
+}
+
+.fiber-branch > .fiber-branch {
+  margin-top: 3px;
+}
+
+.fiber-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 38px;
+  margin: 3px 0;
+  padding: 8px 10px;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #cbd9e5;
+  cursor: pointer;
+}
+
+.fiber-branch:not(:first-child) > .fiber-node::before {
+  content: "";
+  position: absolute;
+  width: 14px;
+  left: -15px;
+  top: 50%;
+  border-top: 1px solid rgba(93, 166, 190, 0.4);
+}
+
+.fiber-node:hover {
+  background: rgba(67, 117, 139, 0.14);
+  border-color: rgba(93, 166, 190, 0.25);
+}
+
+.fiber-node.is-selected {
+  background: rgba(50, 147, 174, 0.19);
+  border-color: #3aa8c5;
+  color: #ffffff;
+}
+
+.tree-chevron {
+  flex: 0 0 12px;
+  color: #8caec0;
+  text-align: center;
+}
+
+.node-icon {
+  flex: 0 0 17px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.node-component {
+  color: #ffad55;
+}
+
+.node-element {
+  color: #70c7e6;
+}
+
+.node-text {
+  color: #8c9aa8;
+  font-size: 12px;
+}
+
+.node-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 13px;
+}
+
+.fiber-tree,
+#fiber-tree {
+  overflow: auto;
+}
+
+/* Fiber tree: prevent labels from being clipped */
+.fiber-branch {
+  min-width: 0;
+}
+
+.fiber-node {
+  min-width: 0;
+  overflow: visible;
+}
+
+.node-label {
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+
+/* Reduce indentation so deeper branches fit */
+.fiber-branch {
+  margin-left: 12px;
+  padding-left: 9px;
+}
+
+.fiber-branch:not(:first-child) > .fiber-node::before {
+  width: 9px;
+  left: -10px;
+}
+
+/* Fiber Inspector: keep the tree area independently scrollable */
+.fiber-tree,
+#fiber-tree {
+  max-height: 560px;
+  overflow-y: auto;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #345565 transparent;
+  padding: 8px;
+  scroll-behavior: smooth;
+}
+
+/* Keep each tree row readable */
+.fiber-node {
+  min-height: 36px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+/* Make the selected node easy to identify */
+.fiber-node.is-selected {
+  box-shadow: inset 3px 0 0 #ffad55;
+}
+
+/* Component Explorer: render tracking */
+.component-card.is-latest-render {
+  border-color: rgba(76, 190, 157, 0.55);
+}
+
+.component-render-reason {
+  margin: 10px 0 0;
+  color: #91c9b6;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.component-change-summary {
+  margin-top: 7px;
+  color: #e9bd78;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.component-change-list {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 16px;
+}
+
+.component-change-item {
+  padding: 10px 12px;
+  border: 1px solid rgba(76, 190, 157, 0.25);
+  border-radius: 8px;
+  background: rgba(76, 190, 157, 0.06);
+}
+
+.component-change-title {
+  display: block;
+  color: #91c9b6;
+  font-size: 12px;
+}
+
+.component-change-values {
+  margin: 6px 0 0;
+  color: #d9e4ee;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+/* Interactive Fiber tree */
+.fiber-branch {
+  position: relative;
+  min-width: 0;
+}
+
+.fiber-row {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  min-width: 0;
+  padding-left: calc(var(--depth, 0) * 0px);
+}
+
+.tree-chevron {
+  flex: 0 0 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #8ca5b5;
+  cursor: pointer;
+}
+
+.tree-chevron:hover:not(:disabled) {
+  background: rgba(75, 205, 230, 0.12);
+  color: #65d9f0;
+}
+
+.tree-chevron:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.fiber-row > .fiber-node {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.fiber-children {
+  position: relative;
+  margin-left: 13px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(105, 153, 171, 0.28);
+}
+
+.fiber-children > .fiber-branch > .fiber-row::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  border-top: 1px solid rgba(105, 153, 171, 0.28);
+  transform: translateX(-12px);
+}
+
+.fiber-node {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #d6e2e9;
+  cursor: pointer;
+}
+
+.fiber-node:hover {
+  border-color: rgba(84, 202, 230, 0.35);
+  background: rgba(40, 105, 123, 0.12);
+}
+
+.fiber-node.is-selected {
+  border-color: #45c8e8;
+  background: rgba(39, 143, 165, 0.2);
+  box-shadow: inset 3px 0 #ff9f43;
+}
+
+.node-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fiber-node:focus-visible,
+.tree-chevron:focus-visible {
+  outline: 2px solid #55d7f0;
+  outline-offset: 2px;
+}
+/* Final Fiber Inspector label overrides */
+#fiber-panel .fiber-node {
+  min-width: 0;
+  overflow: visible;
+}
+
+#fiber-panel .node-label {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+
+/* Fiber Tree label visibility fix */
+.fiber-row {
+  display: flex;
+  align-items: center;
+  min-height: 30px;
+}
+
+.fiber-node {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  color: #e6edf3 !important;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fiber-node .node-label {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #e6edf3 !important;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.fiber-node .node-icon {
+  flex-shrink: 0;
+  color: #f5a623;
+}
+
+.fiber-node .node-label,
+.fiber-node .node-icon {
+  position: static;
+}
+
+/* =====================================================
+   EL NEXO — Fiber Tree Label Visibility Fix
+   ===================================================== */
+
+.fiber-row {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 3px 6px;
+}
+
+.fiber-node {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  padding: 7px 9px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  text-align: left;
+  color: #e6edf3 !important;
+  cursor: pointer;
+}
+
+.fiber-node:hover {
+  background: rgba(79, 140, 160, 0.15);
+}
+
+.fiber-node.is-selected,
+.fiber-row.is-selected .fiber-node {
+  background: rgba(49, 110, 128, 0.3);
+  border-color: rgba(61, 200, 225, 0.35);
+}
+
+.fiber-node .node-label {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #e6edf3 !important;
+  font-size: 13px !important;
+  line-height: 1.5;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.fiber-node .node-icon {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #57c7df !important;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.tree-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  min-width: 22px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #9fb6c5;
+  cursor: pointer;
+}
+
+.tree-chevron:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.fiber-children {
+  display: block;
+  margin-left: 14px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(120, 150, 165, 0.2);
+}
+
+.fiber-branch {
+  min-width: 0;
+}
+
+/* El Nexo — Fiber Tree label visibility fix */
+.fiber-row {
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  width: 100%;
+  gap: 6px;
+}
+
+.fiber-node {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  min-height: 32px;
+  gap: 8px;
+  padding: 5px 8px;
+  color: #e6edf3 !important;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.fiber-node:hover {
+  background: #17252d;
+  border-color: #29414b;
+}
+
+.fiber-node.selected,
+.fiber-node[aria-pressed="true"] {
+  background: #17333d;
+  border-color: #24c8e5;
+}
+
+.fiber-node .node-label {
+  display: inline-block;
+  flex: 1;
+  min-width: 0;
+  color: #e6edf3 !important;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.fiber-node .node-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: #70c9e8 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.tree-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 28px;
+  color: #a9bac7 !important;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.fiber-children {
+  margin-left: 18px;
+  padding-left: 8px;
+  border-left: 1px solid #263943;
+}
+
+/* =========================================
+   El Nexo — Fiber Inspector Details Fix
+   ========================================= */
+
+.fiber-details,
+.fiber-details-panel,
+#fiber-details,
+#fiber-details-panel {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.fiber-details .detail-row,
+.fiber-details-panel .detail-row,
+#fiber-details .detail-row,
+#fiber-details-panel .detail-row {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) minmax(0, 1.15fr);
+  align-items: start;
+  gap: 12px;
+  padding: 7px 0;
+  line-height: 1.5;
+}
+
+.fiber-details .detail-label,
+.fiber-details-panel .detail-label,
+#fiber-details .detail-label,
+#fiber-details-panel .detail-label {
+  min-width: 0;
+  color: #8fa8ba;
+  overflow-wrap: anywhere;
+}
+
+.fiber-details .detail-value,
+.fiber-details-panel .detail-value,
+#fiber-details .detail-value,
+#fiber-details-panel .detail-value {
+  min-width: 0;
+  color: #e4edf5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.fiber-details h2,
+.fiber-details h3,
+.fiber-details-panel h2,
+.fiber-details-panel h3 {
+  margin: 12px 0;
+  line-height: 1.4;
+}
+
+.fiber-details .props-list,
+.fiber-details .hooks-list,
+.fiber-details-panel .props-list,
+.fiber-details-panel .hooks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fiber-details pre,
+.fiber-details-panel pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Fiber Inspector: restore visible tree labels */
+.fiber-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.fiber-node {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  min-height: 38px;
+  padding: 8px 10px;
+  color: #e2e8f0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fiber-node:hover {
+  background: #132a33;
+  border-color: #24434e;
+}
+
+.fiber-node.selected,
+.fiber-node[aria-pressed="true"] {
+  background: #173d49;
+  border-color: #2e7184;
+}
+
+.node-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #67d7ee;
+}
+
+.node-label {
+  display: inline-block;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: #e2e8f0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  opacity: 1;
+  visibility: visible;
+}
+
+.tree-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  min-width: 22px;
+  min-height: 30px;
+  padding: 0;
+  color: #b8c7d1;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.tree-chevron:hover {
+  color: #67d7ee;
+}
+
+.fiber-children {
+  min-width: 0;
+}
+
+.node-label,
+.node-icon {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Compact El Nexo navigation */
+.sidebar,
+.sidebar-nav,
+.sidebar-navigation {
+  min-height: 0;
+}
+
+.sidebar {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.sidebar-nav a,
+.sidebar-nav button,
+.sidebar-navigation a,
+.sidebar-navigation button {
+  padding-top: 9px;
+  padding-bottom: 9px;
+  margin-bottom: 3px;
+}
+
+/* Let workspace sections use available height */
+.workspace,
+.workspace-layout,
+.main-workspace {
+  min-height: 0;
+}
+
+.file-tree,
+.sidebar-file-tree {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Reduce unnecessary vertical gaps */
+.workspace section,
+.workspace-panel {
+  margin-bottom: 12px;
+}
+
+/* Fix empty workspace space in El Nexo */
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Keep the application shell sized to the viewport */
+.app,
+.app-shell {
+  min-height: 100vh;
+}
+
+/* Prevent workspace panels from stretching unnecessarily */
+.workspace,
+.workspace-layout,
+.main-workspace,
+.content-area {
+  align-content: start;
+  min-height: 0;
+}
+
+/* Remove oversized minimum heights from content panels */
+.workspace > *,
+.workspace-layout > *,
+.main-workspace > * {
+  min-height: 0;
+}
+
+/* Keep runtime sections close to their content */
+.runtime-flow,
+.runtime-activity,
+.runtime-events {
+  height: auto;
+  min-height: 0;
+  margin-bottom: 12px;
+}
+
+/* Content-driven layout for El Nexo */
+.runtime-flow,
+.runtime-activity,
+.runtime-events,
+.workspace-panel {
+  height: fit-content;
+  min-height: 0;
+}
+
+/* Don't stretch sections to fill unused vertical space */
+.main-workspace,
+.workspace-layout,
+.content-area {
+  align-content: start;
+  align-items: start;
+}
+
+/* Let each section follow its content */
+.main-workspace > *,
+.workspace-layout > *,
+.content-area > * {
+  align-self: start;
+}
+
+/* Avoid artificial empty space between sections */
+.runtime-flow,
+.runtime-activity,
+.runtime-events {
+  margin-bottom: 12px;
+}
+
+/* Fix: remove excessive vertical space in the workspace */
+
+html,
+body {
+  min-height: 100%;
+  height: auto;
+}
+
+body {
+  overflow-y: auto;
+}
+
+/* Main workspace must grow with its content */
+.workspace,
+.playground-layout,
+.studio-layout,
+.main-content,
+.workspace-content {
+  min-height: 0;
+  height: auto;
+  align-content: start;
+  grid-auto-rows: max-content;
+}
+
+/* Runtime panels should use only the height they need */
+#runtime-activity,
+.runtime-activity,
+.runtime-events,
+.render-flow,
+.render-flow-panel,
+.activity-panel {
+  height: auto;
+  min-height: 0;
+  align-self: start;
+}
+
+/* Remove artificial gaps between stacked panels */
+.runtime-section,
+.runtime-panels,
+.bottom-panels {
+  align-content: start;
+  row-gap: 16px;
+}
+
+/* Prevent empty grid rows from stretching */
+.runtime-panels,
+.bottom-panels {
+  grid-auto-rows: max-content;
+}
+/* Fix unnecessary empty vertical space */
+html,
+body {
+  min-height: 100%;
+  height: auto;
+  margin: 0;
+}
+
+#overview,
+.app-shell {
+  min-height: 0;
+  height: auto;
+}
+
+.project-sidebar {
+  height: fit-content;
+  min-height: 0;
+  align-self: start;
+  position: sticky;
+  top: 90px;
+}
+
+.workspace {
+  min-height: 0;
+  height: auto;
+  align-self: start;
+}
+
+/* Let dashboard sections use only the space they need */
+.workspace > *,
+.workspace section,
+.workspace .panel,
+.workspace .card {
+  min-height: 0;
+}
+
+/* Remove excessive blank space between dashboard sections */
+.workspace {
+  gap: 16px;
+}
+
+.workspace > * {
+  margin-bottom: 0;
+}
+
+/* Fix workspace layout and remove excessive vertical gaps */
+.app-shell {
+  min-height: 0;
+  height: auto;
+  align-items: stretch;
+}
+
+.workspace {
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 20px;
+  padding-top: 16px;
+  padding-bottom: 24px;
+}
+
+/* Workspace sections should use only the height their content needs */
+.workspace > * {
+  flex: 0 0 auto;
+  margin-top: 0;
+}
+
+/* Prevent runtime sections from being pushed to the bottom */
+.workspace .runtime-section,
+.workspace .runtime-panel,
+.workspace .activity-panel {
+  margin-top: 0;
+}
+
+/* Keep the project sidebar sized to its contents */
+.project-sidebar {
+  align-self: start;
+  height: fit-content;
+  min-height: 0;
+}
+/* Project navigation: natural content height, not sticky */
+.project-sidebar {
+  position: static !important;
+  top: auto !important;
+  height: fit-content !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  align-self: start;
+  overflow: visible !important;
+}
+
+/* Let the page grow naturally with its content */
+.app-shell {
+  height: auto !important;
+  min-height: 0 !important;
+  align-items: start;
+  overflow: visible;
+}
+
+/* Main workspace should use available width and natural height */
+.workspace {
+  height: auto !important;
+  min-height: 0 !important;
+  align-self: start;
+  overflow: visible;
+}
+
+/* Remove forced stretching from the sidebar's parent layout */
+.app-shell > .project-sidebar {
+  position: static !important;
+  flex: 0 0 auto;
+  grid-row: auto;
+}
+
+/* Keep workspace sections in normal document flow */
+.workspace > * {
+  flex-shrink: 0;
+}
+
+/* Reduce excessive vertical gaps between dashboard sections */
+.app-shell {
+  align-content: start;
+}
+
+.dashboard,
+.dashboard-content,
+.main-content {
+  align-content: start;
+  row-gap: 24px;
+}
+
+/* Editable source editor */
+.editor-surface {
+  min-height: 330px;
+  padding: 0;
+  overflow: hidden;
+}
+.source-editor {
+  display: block;
+  width: 100%;
+  min-height: 330px;
+  resize: vertical;
+  padding: 18px 20px;
+  border: 0;
+  outline: 0;
+  background: #0c1115;
+  color: #dce8ed;
+  font:
+    12px/1.85 "DM Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+}
+.source-editor:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--cyan);
+}
+.editor-status {
+  padding: 8px 14px;
+  border-top: 1px solid var(--border-soft);
+  color: var(--muted);
+  font-size: 11px;
+}
+.editor-status[data-state="success"] {
+  color: var(--green);
+}
+.editor-status[data-state="error"] {
+  color: #ff8f8f;
+}
+/* Runtime Activity Filters */
+.activity-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.activity-filter {
+  padding: 7px 14px;
+  border: 1px solid #263943;
+  border-radius: 6px;
+  background: #10191e;
+  color: #9aabb4;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.activity-filter:hover {
+  border-color: #35c5e5;
+  color: #e5f7fc;
+}
+
+.activity-filter.active {
+  background: #123442;
+  border-color: #35c5e5;
+  color: #48d5f2;
+}
+/* Keep decorative preview animations from blocking interaction */
+.preview-orbit {
+  pointer-events: none;
+}
+
+/* =========================================
+   EL NEXO — DEVELOPER STUDIO POLISH
+========================================= */
+
+:root {
+  --studio-accent: #ff9b3d;
+  --studio-border: rgba(148, 163, 184, 0.16);
+  --studio-panel: #10171c;
+}
+
+/* Smooth interactions */
+button,
+a,
+.panel,
+.side-tool,
+.tree-row {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+/* Refined panel borders */
+.panel {
+  border-color: var(--studio-border);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* Better button feedback */
+.primary-button:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 18px rgba(255, 155, 61, 0.2);
+}
+
+.icon-button:hover,
+.quiet-icon:hover {
+  color: var(--studio-accent);
+  background: rgba(255, 155, 61, 0.09);
+}
+
+/* Sidebar interaction */
+.side-tool:hover,
+.tree-row:hover {
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.active-tool {
+  border-left: 2px solid var(--studio-accent);
+}
+
+/* Clear keyboard focus */
+button:focus-visible,
+a:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 3px;
+}
+
+/* Cleaner editor typography */
+.source-editor {
+  line-height: 1.75;
+  tab-size: 2;
+}
+
+/* Consistent panel headings */
+.panel-heading h2 {
+  letter-spacing: -0.02em;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* =========================================
+   EL NEXO — RESPONSIVE WORKSPACE
+========================================= */
+
+/* Tablets and smaller laptops */
+@media (max-width: 1100px) {
+  .app-shell {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .studio-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .code-panel,
+  .preview-panel {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 700px) {
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 64px;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .main-nav {
+    display: none;
+  }
+
+  .topbar-tools {
+    margin-left: auto;
+  }
+
+  .app-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px;
+    gap: 16px;
+  }
+
+  .project-sidebar {
+    width: 100%;
+    max-height: 280px;
+    overflow-y: auto !important;
+  }
+
+  .workspace {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .workspace-heading {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .heading-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .studio-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .code-editor {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .source-editor {
+    min-width: 0;
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .preview-panel {
+    min-width: 0;
+  }
+
+  .panel {
+    max-width: 100%;
+  }
+}
+
+/* =====================================================
+   EL NEXO — FINAL RESPONSIVE + THEME OVERRIDES
+   Added after the existing styles to avoid rewriting
+   the project's current component and inspector styles.
+===================================================== */
+
+/* Three connected KPI cards */
+.studio-overview,
+.metric-strip {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metric-card {
+  background: linear-gradient(145deg, #141d23, #101519);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.metric-card span,
+.metric-card small {
+  color: var(--muted);
+}
+
+.metric-card strong {
+  color: var(--text);
+}
+
+/* Keep the Render Cycle panel neutral — no golden outline */
+.cycle-panel {
+  border-color: var(--border) !important;
+  box-shadow: 0 2px 10px #0002;
+}
+
+.cycle-panel .panel-heading {
+  border-bottom-color: var(--border-soft);
+}
+
+.cycle-flow > i {
+  background: linear-gradient(90deg, #344b55, #263b44);
+}
+
+.cycle-flow > i::after {
+  color: var(--cyan);
+}
+
+.cycle-node > span {
+  border-color: #40515a;
+}
+
+.cycle-node.done > span {
+  border-color: #3199ad;
+  background: #15313a;
+  color: #c8f5ff;
+}
+
+.cycle-node.active > span,
+.cycle-node.current > span {
+  border-color: var(--cyan);
+  background: #163440;
+  color: #e4fbff;
+  box-shadow: 0 0 0 3px rgba(67, 201, 239, 0.08);
+}
+
+/* Give runtime activity and Local AI separate breathing room */
+#render-activity {
+  margin-bottom: 16px;
+}
+
+#ai-assistant {
+  margin-top: 16px;
+  scroll-margin-top: 76px;
+}
+
+/* Consistent spacing between live preview controls */
+.preview-app,
+.demo-app,
+.demo-app .counter-card {
+  gap: 12px;
+}
+
+.preview-app button,
+.demo-app button,
+.demo-app .counter-card button {
+  margin: 0;
+  min-width: 0;
+}
+
+.preview-app button + button,
+.demo-app button + button,
+.demo-app .counter-card button + button {
+  margin-top: 4px;
+}
+
+/* Dark theme for example cards and example workspaces.
+   These selectors intentionally cover common example
+   wrappers without changing the editor or preview canvas. */
+/* Notebook theme — readable example cards */
+.example-card,
+.example-panel,
+.example-section,
+.examples-panel,
+.examples-content,
+.basic-components,
+.advanced-components,
+.component-example,
+.example-workspace {
+  background: #fffdf8 !important;
+  color: #263653 !important;
+  border: 1px solid #e3d8c5 !important;
+  border-radius: 12px;
+  box-shadow: 0 5px 14px rgba(57, 47, 31, 0.08);
+}
+
+.example-card h1,
+.example-card h2,
+.example-card h3,
+.example-panel h1,
+.example-panel h2,
+.example-panel h3 {
+  color: #1d3154 !important;
+}
+
+.example-card p,
+.example-panel p,
+.example-section p,
+.example-workspace p {
+  color: #586b83 !important;
+}
+
+.example-card button,
+.example-panel button,
+.example-section button,
+.example-workspace button {
+  background: #fff0bd !important;
+  color: #243653 !important;
+  border: 1px solid #d8b95f !important;
+  border-radius: 7px;
+  padding: 9px 15px;
+  margin: 5px;
+}
+
+.example-card button:hover,
+.example-panel button:hover {
+  background: #ffe49a !important;
+}
+
+.example-card input,
+.example-card textarea,
+.example-panel input,
+.example-panel textarea {
+  background: #ffffff !important;
+  color: #263653 !important;
+  border: 1px solid #d7dce5 !important;
+  border-radius: 6px;
+}
+
+/* Keep nested example controls consistent with the dark studio */
+.example-card button,
+.example-panel button,
+.example-section button,
+.examples-panel button,
+.examples-content button,
+.basic-components button,
+.advanced-components button,
+.component-example button,
+.example-workspace button {
+  color: #dce8ed;
+  background: #172229;
+  border: 1px solid #344751;
+  border-radius: 6px;
+}
+
+.example-card button:hover,
+.example-panel button:hover,
+.example-section button:hover,
+.examples-panel button:hover,
+.examples-content button:hover,
+.basic-components button:hover,
+.advanced-components button:hover,
+.component-example button:hover,
+.example-workspace button:hover {
+  background: #20313a;
+  border-color: #4b6875;
+}
+
+/* Avoid horizontal overflow in the main application */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.app-shell,
+.workspace,
+.studio-layout,
+.inspect-layout,
+.inspect-grid,
+.panel {
+  min-width: 0;
+}
+
+.source-editor {
+  max-width: 100%;
+}
+
+/* Tablet and smaller laptop layouts */
+@media (max-width: 1100px) {
+  .app-shell {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+
+  .studio-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .code-panel,
+  .preview-panel {
+    min-height: 320px;
+  }
+
+  .inspect-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .metric-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Smaller tablets and phones */
+@media (max-width: 720px) {
+  .topbar {
+    min-height: 58px;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 9px 12px;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .main-nav {
+    display: flex;
+    order: 3;
+    width: 100%;
+    height: 34px;
+    gap: 22px;
+  }
+
+  .topbar-tools {
+    margin-left: auto;
+  }
+
+  .topbar-tools .icon-button,
+  .topbar-tools .avatar {
+    display: grid;
+  }
+
+  .app-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .project-sidebar {
+    width: 100%;
+    max-height: 230px;
+    overflow: auto !important;
+    position: static !important;
+  }
+
+  .workspace {
+    width: 100%;
+    min-width: 0;
+    gap: 14px;
+    padding-top: 4px;
+  }
+
+  .workspace-heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .workspace-heading h1 {
+    font-size: clamp(18px, 5vw, 23px);
+  }
+
+  .heading-actions {
+    width: auto;
+    flex-direction: row;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .runtime-status {
+    display: none;
+  }
+
+  .studio-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: 12px;
+  }
+
+  .code-panel,
+  .preview-panel {
+    min-height: 0;
+  }
+
+  .source-editor {
+    min-height: 280px;
+    width: 100%;
+    font-size: 12px;
+    overflow: auto;
+  }
+
+  .preview-body {
+    min-height: 280px;
+    padding: 16px 8px;
+  }
+
+  .preview-card {
+    width: min(94%, 380px);
+  }
+
+  .metric-strip,
+  .studio-overview {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .metric-card {
+    padding: 10px 8px;
+  }
+
+  .metric-card span,
+  .metric-card small {
+    font-size: 9px;
+    line-height: 1.4;
+  }
+
+  .metric-card strong {
+    font-size: 19px;
+  }
+
+  .activity-summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .activity-stat {
+    padding: 10px 8px;
+    border-right: 1px solid var(--border-soft);
+    border-bottom: 0;
+  }
+
+  .activity-stat:last-child {
+    border-right: 0;
+  }
+
+  .activity-stat strong {
+    font-size: 16px;
+  }
+
+  .cycle-flow {
+    gap: 5px;
+    padding: 14px 8px;
+  }
+
+  .cycle-node {
+    min-width: 0;
+    flex: 1;
+    font-size: 9px;
+  }
+
+  .cycle-flow > i {
+    min-width: 8px;
+  }
+
+  .inspect-grid,
+  .inspector-content,
+  .components-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tree-pane,
+  .component-list {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .details-pane {
+    border-left: 0 !important;
+    padding-left: 10px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .page-footer {
+    flex-direction: column;
+  }
+
+  #ai-assistant {
+    margin-top: 12px;
+  }
+
+  .ai-assistant-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ai-assistant-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* Very narrow phones */
+@media (max-width: 420px) {
+  .topbar-tools .live-pill {
+    display: none;
+  }
+
+  .workspace-heading {
+    display: block;
+  }
+
+  .heading-actions {
+    margin-top: 12px;
+    margin-left: 0;
+  }
+
+  .metric-strip,
+  .studio-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .metric-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 4px 10px;
+  }
+
+  .metric-card strong {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin: 0;
+  }
+
+  .activity-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .activity-stat {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .activity-stat:last-child {
+    border-bottom: 0;
+  }
+
+  .panel-heading {
+    flex-wrap: wrap;
+  }
+
+  .cycle-node {
+    font-size: 8px;
+  }
+}
+
+/* Basic example button layout */
+.example-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.example-actions .example-button {
+  min-width: 90px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.example-content {
+  margin-top: 18px;
+  width: 100%;
+}
+
+.user-card {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.user-card h2 {
+  margin-top: 0;
+  color: var(--text);
+}
+
+.user-card p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Nested Components Example */
+.nested-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.nested-header,
+.nested-profile,
+.nested-footer {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.nested-header h2,
+.nested-profile h3 {
+  margin-top: 0;
+  color: var(--text);
+}
+
+.nested-header p,
+.nested-profile p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.nested-footer {
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Form Handling Example */
+.example-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.example-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  outline: none;
+}
+
+.example-input:focus {
+  border-color: var(--accent);
+}
+
+.example-input::placeholder {
+  color: var(--muted);
+}
+
+.form-error {
+  color: #ef7777;
+  margin-top: 12px;
+}
+
+.form-success {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.form-success h3 {
+  margin-top: 0;
+}
+
+/* Todo List Example */
+.todo-input-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.todo-input-group .example-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.todo-current-input {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  box-sizing: border-box;
+}
+
+.todo-item input[type="checkbox"] {
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+
+.todo-text {
+  flex: 1;
+  min-width: 0;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.todo-text.completed {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.todo-delete {
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .todo-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .todo-item {
+    gap: 8px;
+    padding: 10px;
+  }
+}
+
+/* =====================================================
+   EL NEXO — FINAL INTEGRATION FIXES
+   Consolidates the shared example styles and ensures
+   the requested navigation and responsive behavior.
+===================================================== */
+
+:root {
+  --accent: var(--cyan);
+}
+
+/* Example cards inherit the Developer Studio visual system. */
+.example-card {
+  width: 100%;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #12191e, #0e1418);
+  color: var(--text);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  overflow-wrap: anywhere;
+}
+
+.example-card h1,
+.example-card h2,
+.example-card h3,
+.example-card h4 {
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.example-card h1 {
+  font-size: clamp(18px, 2vw, 22px);
+  margin: 0 0 10px;
+}
+
+.example-card h2 {
+  font-size: 17px;
+}
+
+.example-card p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.example-card button {
+  min-height: 36px;
+  max-width: 100%;
+  padding: 9px 14px;
+  color: #dce8ed;
+  background: #172229;
+  border: 1px solid #344751;
+  border-radius: 7px;
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease;
+}
+
+.example-card button:hover:not(:disabled) {
+  background: #20313a;
+  border-color: #4b6875;
+}
+
+.example-card button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.example-card input:not([type="checkbox"]),
+.example-card textarea,
+.example-card select {
+  min-width: 0;
+  color: var(--text);
+  background: #0b1115;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.example-card input::placeholder,
+.example-card textarea::placeholder {
+  color: var(--dim);
+}
+
+.example-card input:focus,
+.example-card textarea:focus,
+.example-card select:focus {
+  outline: 1px solid var(--cyan);
+  border-color: var(--cyan);
+}
+
+/* Buttons in examples and live previews use the same spacing. */
+.example-actions,
+.preview-app .example-actions,
+.demo-app .example-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.example-actions > button,
+.example-actions .example-button {
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.preview-app {
+  gap: 12px;
+}
+
+.preview-app section {
+  gap: 12px;
+}
+
+/* Keep the runtime activity and AI assistant visually separated. */
+#render-activity,
+.activity-panel {
+  margin-bottom: 16px;
+}
+
+#ai-assistant {
+  margin-top: 16px;
+  scroll-margin-top: 82px;
+}
+
+#ai-assistant,
+.ai-assistant-panel {
+  min-width: 0;
+  width: 100%;
+}
+
+/* KPI cards: three distinct metrics on desktop and tablet. */
+.metric-strip,
+.studio-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metric-card {
+  min-width: 0;
+  border-color: var(--border);
+  background: linear-gradient(145deg, #141d23, #101519);
+}
+
+.metric-card strong {
+  overflow-wrap: anywhere;
+}
+
+/* Neutral Render Cycle / Render Pipeline panel. */
+.cycle-panel {
+  border-color: var(--border) !important;
+  box-shadow: 0 2px 10px #0002;
+}
+
+.cycle-panel .panel-heading {
+  border-bottom-color: var(--border-soft);
+}
+
+/* Prevent accidental page-level horizontal scrolling. */
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.app-shell,
+.workspace,
+.studio-layout,
+.inspect-layout,
+.inspect-grid,
+.panel,
+.preview-panel,
+.preview-body {
+  min-width: 0;
+}
+
+/* Keep the two requested navigation links visible on mobile. */
+@media (max-width: 700px) {
+  .topbar {
+    height: auto;
+    min-height: 58px;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 9px 12px;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .main-nav {
+    display: flex !important;
+    order: 3;
+    width: 100%;
+    height: 34px;
+    gap: 22px;
+  }
+
+  .main-nav .nav-link {
+    flex: 0 0 auto;
+  }
+
+  .topbar-tools {
+    margin-left: auto;
+  }
+
+  .topbar-tools .icon-button,
+  .topbar-tools .avatar {
+    display: grid;
+  }
+
+  .app-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .project-sidebar {
+    width: 100%;
+    max-height: 230px;
+    overflow: auto;
+  }
+
+  .workspace {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .workspace-heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .heading-actions {
+    width: auto;
+    flex-direction: row;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .runtime-status {
+    display: none;
+  }
+
+  .studio-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: 12px;
+  }
+
+  .code-panel,
+  .preview-panel {
+    min-height: 0;
+  }
+
+  .preview-body {
+    min-height: 260px;
+    padding: 14px 8px;
+  }
+
+  .metric-strip,
+  .studio-overview {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .metric-card {
+    padding: 10px 8px;
+  }
+
+  .metric-card span,
+  .metric-card small {
+    font-size: 9px;
+    line-height: 1.4;
+  }
+
+  .metric-card strong {
+    font-size: 19px;
+  }
+
+  .inspect-grid,
+  .inspector-content,
+  .components-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ai-assistant-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .example-card {
+    padding: 14px;
+  }
+
+  .example-actions,
+  .preview-app .example-actions,
+  .demo-app .example-actions {
+    gap: 10px;
+  }
+
+  .example-actions > button,
+  .example-actions .example-button {
+    flex: 1 1 auto;
+  }
+
+  .todo-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .todo-item {
+    gap: 8px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .metric-strip,
+  .studio-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .metric-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .metric-card strong {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin: 0;
+  }
+
+  .main-nav {
+    gap: 16px;
+  }
+
+  .workspace-heading {
+    display: block;
+  }
+
+  .heading-actions {
+    margin: 12px 0 0;
+  }
+}
+
+/* --------------------------------------------------
+   El Nexo — Performance Command Center
+   Full-width diagnostics, separated from the inspect grid
+-------------------------------------------------- */
+.inspect-layout {
+  outline: none !important;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  overflow: visible;
+}
+
+.performance-panel {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 2px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #111a20 0%, #0e1418 58%, #11191e 100%);
+  box-shadow: 0 18px 48px #0003;
+}
+
+.performance-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 26px 20px;
+  border-bottom: 1px solid var(--border-soft);
+  background: radial-gradient(ellipse at 88% 20%, #43c9ef12, transparent 42%);
+}
+
+.performance-hero-copy {
+  min-width: 0;
+}
+.performance-hero-copy h2 {
+  margin: 6px 0 7px;
+  color: var(--text);
+  font-size: clamp(19px, 2vw, 24px);
+  letter-spacing: -0.035em;
+}
+.performance-hero-copy p {
+  max-width: 680px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.performance-live-mark {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border: 1px solid #43c9ef35;
+  border-radius: 999px;
+  background: #43c9ef0b;
+  color: #8bdcf4;
+  font:
+    10px "DM Mono",
+    monospace;
+  letter-spacing: 0.08em;
+}
+.performance-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow:
+    0 0 0 4px #4bd7a018,
+    0 0 12px #4bd7a080;
+}
+.performance-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px 20px;
+}
+.performance-summary > .performance-metric {
+  display: flex;
+  min-width: 0;
+  min-height: 142px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px 17px 14px;
+  border: 1px solid #263840;
+  border-radius: 11px;
+  background: linear-gradient(145deg, #141e24, #0d1317);
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    background 180ms ease;
+}
+.performance-summary > .performance-metric:hover {
+  transform: translateY(-2px);
+  border-color: #43c9ef70;
+  background: linear-gradient(145deg, #17252c, #10171b);
+}
+.performance-metric .metric-kicker {
+  color: #6f8792;
+  font:
+    9px "DM Mono",
+    monospace;
+  letter-spacing: 0.09em;
+}
+.performance-metric .metric-label {
+  margin-top: 13px;
+  color: #aab8bf;
+  font-size: 12px;
+}
+.performance-metric strong {
+  display: block;
+  margin-top: 4px;
+  color: #edf7fa;
+  font:
+    500 clamp(23px, 2.5vw, 30px) "DM Mono",
+    monospace;
+  letter-spacing: -0.055em;
+  overflow-wrap: anywhere;
+}
+.performance-metric small {
+  margin-top: auto;
+  padding-top: 10px;
+  color: #71818a;
+  font-size: 10px;
+  line-height: 1.45;
+}
+.metric-render strong,
+.metric-duration strong {
+  color: #83def4;
+}
+.metric-skipped strong,
+.metric-efficiency strong {
+  color: #72dfb2;
+}
+.performance-footnote {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 20px 18px;
+  padding: 12px 14px;
+  border: 1px solid #26343b;
+  border-radius: 9px;
+  background: #0b1115a8;
+}
+.performance-footnote-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #43c9ef18;
+  color: #80d8ef;
+  font:
+    11px "DM Mono",
+    monospace;
+}
+.performance-footnote p {
+  margin: 0;
+  color: #81919a;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+@media (max-width: 760px) {
+  .performance-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .performance-hero {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+}
+@media (max-width: 480px) {
+  .performance-summary {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px;
+  }
+  .performance-summary > .performance-metric {
+    min-height: 122px;
+  }
+  .performance-footnote {
+    margin: 0 12px 12px;
+  }
+  .performance-hero {
+    padding: 18px 16px;
+  }
+}
+
+/* --------------------------------------------------
+   Studio polish: clearer navigation and project tree
+-------------------------------------------------- */
+.topbar {
+  gap: 22px;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.nav-link-ai {
+  color: #f5f7f8 !important;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.nav-link-ai:hover,
+.nav-link-ai:focus-visible {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.075);
+}
+
+.avatar-button {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  margin-left: 2px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: #f5f6f4;
+  color: #101820;
+  font: 700 13px/1 inherit;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.avatar-button:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.24);
+}
+
+.avatar-button:focus-visible,
+.nav-link-ai:focus-visible {
+  outline: 2px solid #58d6e8;
+  outline-offset: 3px;
+}
+
+/* Folder and file rows should feel like a quiet project tree,
+   not raised or embossed controls. */
+.file-tree .tree-row,
+.file-tree .file-row,
+.file-tree .folder-row {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+.file-tree .selected-file {
+  box-shadow: none !important;
+  background: rgba(76, 190, 207, 0.1);
+  border-left: 2px solid #53c6d6;
+}
+
+.file-tree .folder-row {
+  background: transparent;
+  border: 0;
+}
+
+.file-tree .folder-row:hover,
+.file-tree .file-row:hover {
+  background: rgba(255, 255, 255, 0.045);
+}
+
+#refresh-preview {
+  transition:
+    transform 180ms ease,
+    color 180ms ease,
+    background 180ms ease;
+}
+
+#refresh-preview:active,
+#preview-refresh:active {
+  transform: rotate(35deg);
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+  .main-nav {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-start;
+  }
+  .topbar-tools {
+    margin-left: auto;
+  }
+  .nav-link {
+    padding: 7px 10px;
+  }
+}
+
+@media (max-width: 460px) {
+  .live-pill {
+    display: none;
+  }
+  .main-nav {
+    gap: 4px;
+  }
+}
+
+/* =========================================================
+   EL NEXO — FIELD NOTEBOOK THEME
+   Warm paper, ink, restrained red pencil and a yellow run mark.
+   Functional selectors above remain intact.
+========================================================= */
+:root {
+  color-scheme: light;
+  --bg: #f3f0e7;
+  --surface: #fffdf7;
+  --surface-2: #f8f5ec;
+  --surface-3: #eee9dc;
+  --border: #d8d2c4;
+  --border-soft: #e7e1d5;
+  --text: #26334b;
+  --muted: #667086;
+  --dim: #8b8d91;
+  --orange: #e1ad22;
+  --orange-soft: #f2d77b;
+  --cyan: #477b86;
+  --green: #477d62;
+  --pink: #b86a5c;
+  --radius: 5px;
+  --shadow: 2px 4px 0 rgba(47, 53, 66, 0.09);
+  font-family: "Segoe UI", Inter, system-ui, sans-serif;
+  font-size: 13px;
+}
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+body {
+  background-color: #f5f2e9;
+  background-image:
+    linear-gradient(rgba(86, 113, 133, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(86, 113, 133, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.topbar {
+  background: rgba(250, 248, 241, 0.96);
+  border-bottom: 1px solid #d5cfc2;
+  box-shadow: 0 2px 0 rgba(49, 58, 73, 0.035);
+  backdrop-filter: none;
+  gap: 24px;
+}
+.brand {
+  color: #24314b;
+  min-width: 138px;
+  letter-spacing: 0.035em;
+}
+.brand-mark {
+  color: #b95e4c;
+  font-size: 25px;
+}
+.main-nav {
+  gap: 22px;
+  margin-left: 2px;
+}
+.nav-link {
+  color: #687187;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: #27334b;
+  border-bottom-color: #e2b82e;
+}
+.topbar-tools {
+  margin-left: auto;
+}
+.live-pill,
+.runtime-status {
+  color: #4e725f;
+  border-color: #d5dfd3;
+  background: #f7faf3;
+}
+.icon-button,
+.quiet-icon {
+  color: #687187;
+}
+.icon-button:hover,
+.quiet-icon:hover {
+  background: #eee8d9;
+  color: #27334b;
+}
+.avatar {
+  background: #f1d66d;
+  color: #27334b;
+  border: 1px solid #d1ae3d;
+  box-shadow: 2px 2px 0 rgba(39, 51, 75, 0.16);
+  font-size: 17px;
+  cursor: pointer;
+}
+.app-shell {
+  grid-template-columns: 205px minmax(0, 1fr);
+  gap: 18px;
+  padding: 18px;
+}
+.project-sidebar {
+  background: rgba(255, 253, 247, 0.88);
+  border: 1px solid #ddd6c8;
+  border-radius: 4px;
+  box-shadow: 2px 3px 0 rgba(47, 53, 66, 0.06);
+}
+.section-label {
+  color: #8a7467;
+}
+.project-select {
+  background: #f7f3e9;
+  color: #27334b;
+  border: 1px solid #e1dacb;
+  border-radius: 3px;
+}
+.folder-symbol {
+  color: #b65c4d;
+}
+.file-tree {
+  color: #4f5b70;
+}
+.tree-row,
+.side-tool {
+  border-radius: 3px;
+}
+.tree-row:hover,
+.side-tool:hover {
+  background: #f1eddf;
+  color: #26334b;
+}
+.side-tool.active-tool {
+  background: #f7edc5;
+  color: #29364d;
+  border-left: 2px solid #c79c20;
+}
+.workspace {
+  min-width: 0;
+}
+.workspace-heading {
+  padding: 8px 2px 14px;
+}
+.workspace-heading h1 {
+  color: #26334b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+.eyebrow,
+.panel-eyebrow,
+.panel-tool-label {
+  color: #9b6655;
+  letter-spacing: 0.12em;
+}
+.panel,
+.metric-card,
+.performance-workspace {
+  background: rgba(255, 253, 247, 0.94);
+  border: 1px solid #d8d2c5;
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+}
+.metric-card {
+  border-top: 2px solid #e3c65e;
+  padding: 15px 16px;
+}
+.metric-card:nth-child(2) {
+  border-top-color: #91a9a0;
+}
+.metric-card:nth-child(3) {
+  border-top-color: #c88778;
+}
+.metric-card span {
+  color: #72798a;
+}
+.metric-card strong {
+  color: #29364d;
+}
+.panel-top,
+.panel-heading,
+.panel-bottom {
+  border-color: #e5dfd3;
+}
+.panel-heading h2,
+.panel-top,
+.tab-label {
+  color: #29364d;
+}
+.code-panel,
+.preview-panel,
+.activity-panel,
+.panel {
+  background: rgba(255, 253, 247, 0.95);
+}
+.code-editor,
+.editor-surface {
+  background: #fffdf7;
+  border-color: #e2dccf;
+}
+.source-editor {
+  color: #35435d;
+  caret-color: #b85f4e;
+  background: transparent;
+  font-family: "Cascadia Code", Consolas, monospace;
+  line-height: 1.75;
+}
+.editor-status {
+  color: #69758a;
+}
+.preview-body {
+  background:
+    linear-gradient(rgba(103, 130, 146, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(103, 130, 146, 0.09) 1px, transparent 1px),
+    #f6f3e9;
+  background-size: 22px 22px;
+}
+.preview-card {
+  background: #fffefa;
+  border: 1px solid #e2dccf;
+  border-radius: 2px;
+  box-shadow: 3px 5px 0 rgba(42, 52, 69, 0.12);
+}
+.preview-card h2 {
+  color: #29364d;
+}
+.preview-card p,
+.preview-overline {
+  color: #727b8d;
+}
+.preview-app {
+  padding: 16px 10px 18px;
+}
+.preview-app button {
+  margin: 6px 5px 0;
+  padding: 9px 15px;
+  min-width: 104px;
+  border: 1px solid #64718a;
+  border-radius: 3px;
+  background: #fffefa;
+  color: #2c3850;
+  box-shadow: 1px 2px 0 rgba(41, 54, 77, 0.12);
+}
+.preview-app button:hover {
+  background: #f8edc5;
+  border-color: #b8952d;
+}
+.primary-button,
+#run-button {
+  background: #f2cf48;
+  color: #26334b;
+  border: 1px solid #b99525;
+  border-radius: 3px;
+  box-shadow: 2px 3px 0 #34415a;
+  font-weight: 700;
+}
+.primary-button:hover,
+#run-button:hover {
+  background: #f7dc76;
+  transform: translateY(-1px);
+}
+.text-button,
+button:not(.icon-button):not(.quiet-icon):not(.avatar) {
+  border-radius: 4px;
+}
+.ai-assistant-panel {
+  background: #fffdf7;
+  border-top: 3px solid #b96a58;
+  box-shadow: 3px 4px 0 rgba(47, 53, 66, 0.09);
+}
+.ai-assistant-panel .panel-heading {
+  background: #f8f3e8;
+}
+.ai-assistant-panel h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #29364d;
+}
+.ai-assistant-input,
+.ai-assistant-response {
+  background: #fffefa;
+  color: #29364d;
+  border: 1px solid #d9d2c4;
+  border-radius: 4px;
+}
+.ai-assistant-response:empty::before {
+  color: #8a8b8b;
+}
+.ai-assistant-actions button {
+  background: #f4e8bd;
+  color: #33415a;
+  border: 1px solid #d8c47b;
+}
+.sidebar-health {
+  background: #f4f1e8;
+  border-color: #e0dacd;
+}
+.performance-workspace {
+  overflow: hidden;
+  background: #f7f4eb;
+}
+.performance-workspace iframe {
+  background: #f7f4eb;
+}
+.page-footer {
+  display: none !important;
+}
+@media (max-width: 1050px) {
+  .app-shell {
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+}
+@media (max-width: 760px) {
+  .topbar {
+    gap: 12px;
+    padding: 0 12px;
+  }
+  .brand {
+    min-width: auto;
+  }
+  .main-nav {
+    gap: 12px;
+  }
+  .topbar-tools .live-pill {
+    display: none;
+  }
+  .app-shell {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+  .project-sidebar {
+    order: 0;
+  }
+}
+
+/* ---------------------------------------------------------
+   Notebook theme: readability and developer-tool navigation
+   --------------------------------------------------------- */
+.file-tree,
+.file-tree .tree-row,
+.file-tree .folder-row,
+.file-tree .file-row {
+  color: #29364d;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.file-tree .folder-row {
+  color: #263650;
+}
+.file-tree .file-row {
+  color: #34425b;
+}
+.file-tree .file-row .file-icon {
+  color: #a65d43;
+}
+.file-tree .file-row:hover,
+.file-tree .folder-row:hover {
+  background: #f2e8c9;
+  color: #1f2d46;
+}
+.file-tree .selected-file {
+  color: #1e2b43;
+  background: #f8e7a8;
+  border-left: 3px solid #c99b22;
+  box-shadow: none;
+}
+
+.source-editor {
+  color: #25334e !important;
+  caret-color: #a94e3d;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.8;
+  text-shadow: none;
+}
+.editor-status {
+  color: #52617a;
+}
+
+.fiber-tree,
+.fiber-details,
+.fiber-tree *,
+.fiber-details *,
+.component-list,
+.component-details,
+.component-details *,
+.activity-log,
+.activity-log *,
+.deep-log-mirror {
+  color: #29364d;
+}
+.fiber-tree,
+.fiber-details,
+.component-list,
+.component-details,
+.deep-log-mirror,
+.activity-log {
+  font-size: 12px;
+  line-height: 1.65;
+}
+.fiber-tree button,
+.component-list button {
+  color: #29364d;
+  background: #fffdf7;
+  border-color: #d9d1c1;
+}
+.fiber-tree button:hover,
+.component-list button:hover {
+  background: #f8edc5;
+  border-color: #c6a447;
+}
+.fiber-details,
+.component-details {
+  background: #fffdf8;
+  border-color: #ded7c9;
+}
+.component-metadata dt,
+.hook-inspection-meta,
+.hook-inspection-value,
+.inspector-empty {
+  color: #59667c !important;
+}
+.component-metadata dd,
+.hook-inspection-title {
+  color: #263650 !important;
+}
+.hook-inspection-card {
+  background: #f8f4e9;
+  border-color: #ded6c7;
+}
+.activity-entry-content strong,
+.activity-entry-content p,
+.activity-entry-time,
+.deep-log-mirror {
+  color: #34425a !important;
+}
+.activity-entry {
+  border-color: #e1daca;
+}
+.activity-entry-time {
+  color: #69758a !important;
+}
+
+#fiber-panel .panel-heading,
+#components-panel .panel-heading {
+  background: #f8f3e8;
+}
+#fiber-panel .panel-eyebrow,
+#components-panel .panel-eyebrow {
+  color: #9b6655;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+}
+#fiber-panel .panel-heading h2,
+#components-panel .panel-heading h2 {
+  color: #29364d;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+#fiber-panel,
+#components-panel,
+.activity-panel {
+  scroll-margin-top: 18px;
+}
+#render-activity,
+#performance-workspace,
+#ai-assistant {
+  scroll-margin-top: 18px;
+}
+
+.main-nav .nav-link-ai {
+  margin-left: 12px;
+  color: #29364d;
+  background: #fffdf7;
+  border: 1px solid #ded6c8;
+  border-radius: 4px;
+  padding: 8px 14px;
+}
+.main-nav .nav-link-ai:hover,
+.main-nav .nav-link-ai:focus-visible {
+  background: #f8edc5;
+  border-color: #c8a64b;
+  color: #1f2d46;
+}
+
+@media (max-width: 760px) {
+  .main-nav .nav-link-ai {
+    margin-left: 0;
+  }
+  .source-editor {
+    font-size: 12px;
+  }
+}
+/* AI Assistant navigation visibility fix */
+.main-nav .nav-link-ai {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  margin-left: 14px;
+  color: #243653 !important;
+  background: #fff9e9 !important;
+  border: 1px solid #dfc98f !important;
+  border-radius: 8px;
+  font-weight: 600;
+  opacity: 1 !important;
+  visibility: visible !important;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.main-nav .nav-link-ai:hover {
+  background: #ffedbd !important;
+  border-color: #d5a832 !important;
+  color: #172b4d !important;
+}
+
+.main-nav .nav-link-ai.active {
+  background: #ffdf83 !important;
+  border-color: #d5a832 !important;
+  color: #172b4d !important;
+}
+/* ==========================================
+   EL NEXO — NOTEBOOK CODE EDITOR REFINEMENT
+========================================== */
+
+.code-panel {
+  background: #fffdf8;
+  border: 1px solid #ded4c3;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(65, 49, 25, 0.07);
+}
+
+.code-panel .panel-top {
+  min-height: 54px;
+  padding: 10px 16px;
+  background: #fffaf0;
+  border-bottom: 1px solid #e9dfce;
+}
+
+.code-panel .tab-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 13px;
+  background: #fff0bd;
+  color: #243653;
+  border: 1px solid #e6cf83;
+  border-bottom: 2px solid #d9a92e;
+  border-radius: 8px 8px 4px 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.code-panel .file-icon {
+  color: #bd8420;
+  font-weight: 800;
+}
+
+.code-panel .tab-close {
+  color: #8a7650;
+}
+
+.code-panel .panel-tool-label {
+  color: #8b785c;
+  font-size: 10px;
+  letter-spacing: 0.09em;
+}
+
+/* Editor surface */
+.code-panel .code-editor,
+.code-panel .editor-surface {
+  background: #fffdf8;
+  padding: 15px 0;
+  min-height: 360px;
+}
+
+.code-panel .source-editor {
+  display: block;
+  width: 100%;
+  min-height: 360px;
+  resize: vertical;
+  padding: 12px 22px 20px;
+  background: #fffdf8;
+  color: #263653;
+  border: 0;
+  outline: none;
+  font-family: "Consolas", "Cascadia Code", monospace;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.85;
+  letter-spacing: 0;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+  caret-color: #c58a19;
+}
+
+.code-panel .source-editor::selection {
+  background: #f8e6a9;
+  color: #1d3154;
+}
+
+.code-panel .source-editor:focus {
+  outline: none;
+}
+
+/* Editor status */
+.code-panel .editor-status {
+  padding: 9px 16px;
+  background: #fff9e9;
+  color: #65758b;
+  border-top: 1px solid #eee3ce;
+  font-size: 11px;
+}
+
+/* Bottom information bar */
+.code-panel .panel-bottom {
+  background: #fffaf0;
+  border-top: 1px solid #e9dfce;
+  color: #68778c;
+  padding: 10px 15px;
+}
+
+/* Responsive editor */
+@media (max-width: 700px) {
+  .code-panel .source-editor {
+    font-size: 12px;
+    padding: 12px;
+    min-height: 300px;
+  }
+
+  .code-panel .panel-tool-label {
+    font-size: 8px;
+  }
+}
+/* Developer tools navigation targets */
+#components-panel,
+#fiber-panel,
+#deep-activity-panel,
+#performance-workspace {
+  scroll-margin-top: 24px;
+}
+/* Deep Inspect heading visibility */
+h1 {
+  color: #243653;
+  opacity: 1;
+}
+
+/* Deep Inspect breadcrumb */
+.eyebrow {
+  color: #9a6248;
+}
+/* AI Assistant response — Notebook theme */
+.ai-response,
+.ai-response-box,
+#ai-response,
+#ai-output,
+.ai-result {
+  background: #fffdf7 !important;
+  color: #243653 !important;
+  border: 1px solid #e5d6b8 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 3px 10px rgba(48, 55, 70, 0.07) !important;
+  line-height: 1.8 !important;
+  padding: 18px 22px !important;
+}
+
+.ai-response *,
+.ai-response-box *,
+#ai-response *,
+#ai-output *,
+.ai-result * {
+  color: #243653 !important;
+}
+/* El Nexo AI Assistant — Soft Blush Theme */
+.ai-response,
+.ai-response-box,
+#ai-response,
+#ai-output,
+.ai-result {
+  background: #fff1f3 !important;
+  color: #293653 !important;
+  border: 1px solid #e9bdc8 !important;
+  border-left: 4px solid #d98da2 !important;
+  border-radius: 14px !important;
+  padding: 22px 26px !important;
+  line-height: 1.85 !important;
+  box-shadow: 0 4px 12px rgba(150, 90, 110, 0.08) !important;
+}
+
+.ai-response *,
+.ai-response-box *,
+#ai-response *,
+#ai-output *,
+.ai-result * {
+  color: #293653 !important;
+}
+
+.ai-response li,
+.ai-response-box li,
+#ai-response li,
+#ai-output li,
+.ai-result li {
+  margin-bottom: 14px;
+}
+/* =====================================
+   EL NEXO — INSPECTOR TEXT VISIBILITY
+   ===================================== */
+
+#fiber-inspector,
+#fiber-details,
+#component-list,
+#component-details {
+  color: #263653 !important;
+}
+
+/* Improve normal labels and descriptions */
+#fiber-inspector *,
+#fiber-details *,
+#component-list *,
+#component-details * {
+  text-shadow: none !important;
+}
+
+/* Headings */
+#fiber-inspector h1,
+#fiber-inspector h2,
+#fiber-inspector h3,
+#fiber-details h1,
+#fiber-details h2,
+#fiber-details h3,
+#component-details h1,
+#component-details h2,
+#component-details h3 {
+  color: #1d304d !important;
+  font-weight: 700 !important;
+}
+
+/* Metadata and secondary text */
+#fiber-details p,
+#fiber-details span,
+#fiber-details label,
+#component-details p,
+#component-details span,
+#component-details label {
+  color: #586b85;
+}
+
+/* Fiber tree labels */
+#fiber-inspector .fiber-node,
+#fiber-inspector .node-label,
+#component-list .component-name {
+  color: #344966 !important;
+  font-weight: 600;
+}
+
+/* Preserve contrast on selected nodes */
+#fiber-inspector .selected,
+#component-list .selected {
+  color: #ffffff !important;
+}
+
+/* Section headings */
+#fiber-details .section-title,
+#component-details .section-title {
+  color: #b66c55 !important;
+  font-weight: 700 !important;
+}
+
+/* ==========================================
+   EL NEXO — NOTEBOOK THEME: INSPECTOR FIX
+   Warm cream + yellow + terracotta
+   ========================================== */
+
+:root {
+  --inspector-bg: #fffaf0;
+  --inspector-panel: #fffdf8;
+  --inspector-soft: #f8efd9;
+  --inspector-yellow: #f6d875;
+  --inspector-border: #e5d6bd;
+  --inspector-text: #293750;
+  --inspector-muted: #64748b;
+  --inspector-accent: #b96d52;
+}
+
+/* Search boxes and filters */
+#fiber-search,
+#component-search,
+input[placeholder*="Filter nodes"],
+input[placeholder*="Search components"] {
+  background: #fffaf0 !important;
+  color: var(--inspector-text) !important;
+  border: 1px solid var(--inspector-border) !important;
+  box-shadow: none !important;
+}
+
+#fiber-search::placeholder,
+#component-search::placeholder,
+input[placeholder*="Filter nodes"]::placeholder,
+input[placeholder*="Search components"]::placeholder {
+  color: #788397 !important;
+  opacity: 1 !important;
+}
+
+/* Main inspector panels */
+#fiber-inspector,
+#fiber-details,
+#component-list,
+#component-details {
+  background: var(--inspector-panel) !important;
+  color: var(--inspector-text) !important;
+}
+
+/* Remove dark backgrounds from cards and selected component panels */
+#fiber-inspector .selected,
+#component-list .selected,
+.component-card,
+.component-item,
+.component-details-card {
+  background: var(--inspector-soft) !important;
+  color: var(--inspector-text) !important;
+  border-color: var(--inspector-border) !important;
+}
+
+/* Keep selected tree items readable */
+#fiber-inspector .selected *,
+#component-list .selected * {
+  color: var(--inspector-text) !important;
+}
+
+/* All inspector labels and metadata */
+#fiber-details *,
+#component-details *,
+#fiber-inspector *,
+#component-list * {
+  text-shadow: none !important;
+}
+
+/* Primary text */
+#fiber-details,
+#component-details,
+#fiber-inspector,
+#component-list {
+  color: var(--inspector-text) !important;
+}
+
+/* Secondary text */
+#fiber-details span,
+#fiber-details p,
+#component-details span,
+#component-details p {
+  color: var(--inspector-muted) !important;
+}
+
+/* Headings and section labels */
+#fiber-details h1,
+#fiber-details h2,
+#fiber-details h3,
+#component-details h1,
+#component-details h2,
+#component-details h3 {
+  color: var(--inspector-text) !important;
+  font-weight: 700 !important;
+}
+
+#fiber-details .section-title,
+#component-details .section-title {
+  color: var(--inspector-accent) !important;
+  font-weight: 700 !important;
+}
+
+/* Fiber node labels */
+#fiber-inspector .fiber-node,
+#fiber-inspector .node-label,
+#component-list .component-name {
+  color: #344966 !important;
+  font-weight: 600 !important;
+}
+
+/* Small badges */
+#fiber-details .badge,
+#component-details .badge,
+#component-list .badge {
+  background: #f8efd9 !important;
+  color: #72513c !important;
+  border: 1px solid #e5d6bd !important;
+}
+
+/* Remove dark card styling */
+#component-list [style*="background"],
+#component-details [style*="background"] {
+  background-color: #fffaf0 !important;
+  color: var(--inspector-text) !important;
+}
+
+/* Scrollbar */
+#fiber-inspector ::-webkit-scrollbar-thumb,
+#component-list ::-webkit-scrollbar-thumb {
+  background: #d9c5a5 !important;
+  border-radius: 8px;
+}
+
+/* FIX: Search bars — remove black outer containers */
+*:has(> input[placeholder*="Filter nodes"]),
+*:has(> input[placeholder*="Search components"]) {
+  background: #fffaf0 !important;
+  border: 1px solid #e5d6bd !important;
+  box-shadow: none !important;
+}
+
+input[placeholder*="Filter nodes"],
+input[placeholder*="Search components"] {
+  background: #fffdf8 !important;
+  color: #293750 !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Component Explorer badges */
+#component-details .badge,
+#component-list .badge,
+#component-details button,
+#component-list button {
+  background: #f8efd9 !important;
+  color: #344966 !important;
+  border: 1px solid #e5d6bd !important;
+  box-shadow: none !important;
+}
+
+/* Component type labels */
+#component-details [class*="tag"],
+#component-list [class*="tag"] {
+  background: #f8efd9 !important;
+  color: #72513c !important;
+  border: 1px solid #e5d6bd !important;
+}
+
+/* Keep selected component warm yellow */
+#component-list .selected {
+  background: #fff0bd !important;
+  color: #293750 !important;
+  border: 1px solid #e4c66c !important;
+}
+
+/* Improve faint headings */
+#component-details h2,
+#component-details h3,
+#fiber-details h2,
+#fiber-details h3 {
+  color: #293750 !important;
+}
+
+/* FINAL COMPONENT EXPLORER COLOUR CLEANUP */
+
+/* Remove highlighted Counter card background */
+#component-list .selected,
+#component-list .component-card,
+#component-list .component-item {
+  background: #fffdf8 !important;
+  color: #293750 !important;
+  border: 1px solid #e5d6bd !important;
+  box-shadow: none !important;
+}
+
+/* Remove black backgrounds from component badges */
+#component-list [class*="badge"],
+#component-list [class*="chip"],
+#component-list [class*="tag"],
+#component-list [class*="pill"],
+#component-details [class*="badge"],
+#component-details [class*="chip"],
+#component-details [class*="tag"],
+#component-details [class*="pill"] {
+  background: #f8efd9 !important;
+  background-color: #f8efd9 !important;
+  color: #344966 !important;
+  border: 1px solid #e5d6bd !important;
+  box-shadow: none !important;
+}
+
+/* Ensure badge text is readable */
+#component-list [class*="badge"] *,
+#component-list [class*="chip"] *,
+#component-list [class*="tag"] *,
+#component-list [class*="pill"] *,
+#component-details [class*="badge"] *,
+#component-details [class*="chip"] *,
+#component-details [class*="tag"] *,
+#component-details [class*="pill"] * {
+  color: #344966 !important;
+}
+
+/* Keep selected component subtly indicated */
+#component-list .selected {
+  border-left: 3px solid #d6a832 !important;
+}
+
+/* ======================================
+   COMPONENT EXPLORER — FINAL THEME FIX
+   ====================================== */
+
+/* Remove dark badge and chip backgrounds */
+#component-list *,
+#component-details * {
+  text-shadow: none !important;
+}
+
+#component-list [class*="badge"],
+#component-list [class*="chip"],
+#component-list [class*="tag"],
+#component-list [class*="pill"],
+#component-details [class*="badge"],
+#component-details [class*="chip"],
+#component-details [class*="tag"],
+#component-details [class*="pill"] {
+  background: #f8efd9 !important;
+  background-color: #f8efd9 !important;
+  color: #344966 !important;
+  border: 1px solid #e5d6bd !important;
+  box-shadow: none !important;
+}
+
+/* Also override inline dark backgrounds */
+#component-list [style*="background"],
+#component-details [style*="background"] {
+  background-color: #fffaf0 !important;
+  color: #293750 !important;
+}
+
+/* Component card */
+#component-list .selected,
+#component-list [aria-selected="true"] {
+  background: #fffdf8 !important;
+  color: #293750 !important;
+  border: 1px solid #e5d6bd !important;
+  box-shadow: none !important;
+}
+
+/* Details panel background */
+#component-details {
+  background: #fffdf8 !important;
+  color: #293750 !important;
+}
+
+/* Make all details headings readable */
+#component-details h1,
+#component-details h2,
+#component-details h3,
+#component-details h4,
+#component-details strong,
+#component-details b {
+  color: #293750 !important;
+  opacity: 1 !important;
+}
+
+/* Metadata and explanatory labels */
+#component-details p,
+#component-details span,
+#component-details label,
+#component-details dt,
+#component-details dd {
+  color: #52647d !important;
+  opacity: 1 !important;
+}
+
+/* Specific section headings */
+#component-details [class*="section"],
+#component-details [class*="heading"],
+#component-details [class*="title"] {
+  color: #344966 !important;
+  opacity: 1 !important;
+}
+
+/* Keep the warm notebook palette */
+#component-details,
+#component-list {
+  --text: #293750;
+  --muted: #64748b;
+  --panel: #fffdf8;
+  --border: #e5d6bd;
+}
+
+/* ================================================================
+   EL NEXO VISUAL THEMES — Notebook / Studio
+   Theme is controlled by body[data-visual-theme] and is independent
+   from the existing Studio / Inspect workspace navigation.
+   ================================================================ */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-2);
+  white-space: nowrap;
+}
+.theme-choice {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 7px 11px;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+.theme-choice:hover {
+  color: var(--text);
+}
+.theme-choice.active {
+  background: var(--accent-soft);
+  color: var(--text);
+  border-color: var(--accent-border);
+}
+
+/* Notebook: warm graph-paper scratchpad with editorial typography. */
+body[data-visual-theme="notebook"] {
+  --bg: #f4f0e5;
+  --surface: #fffdf8;
+  --surface-2: #f8f3e8;
+  --surface-3: #eee6d7;
+  --border: #dfd2bd;
+  --border-soft: #e9dfcf;
+  --text: #202d49;
+  --muted: #66738a;
+  --dim: #8a8d94;
+  --orange: #c4472f;
+  --orange-soft: #e06a4f;
+  --cyan: #497bb8;
+  --green: #39804e;
+  --pink: #c97891;
+  --accent-soft: #f8e7a5;
+  --accent-border: #dfc56e;
+  color-scheme: light;
+  font-family: Inter, system-ui, sans-serif;
+}
+body[data-visual-theme="notebook"] {
+  background-color: #f4f0e5;
+  background-image:
+    linear-gradient(rgba(100, 139, 170, 0.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 139, 170, 0.13) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--text);
+}
+body[data-visual-theme="notebook"] .topbar {
+  background: rgba(248, 245, 235, 0.94);
+  border-bottom: 1px solid #ded3c0;
+  box-shadow: 0 3px 14px rgba(60, 48, 30, 0.05);
+}
+body[data-visual-theme="notebook"] .brand {
+  color: #202d49;
+  font-family: Caveat, cursive;
+  font-size: 26px;
+  letter-spacing: 0.01em;
+}
+body[data-visual-theme="notebook"] .brand-mark {
+  color: #c4472f;
+}
+body[data-visual-theme="notebook"] .nav-link {
+  color: #68758a;
+}
+body[data-visual-theme="notebook"] .nav-link:hover,
+body[data-visual-theme="notebook"] .nav-link.active {
+  color: #202d49;
+  border-bottom-color: #c4472f;
+}
+body[data-visual-theme="notebook"] .theme-toggle {
+  background: #fffaf0;
+  border-color: #dfd2bd;
+}
+body[data-visual-theme="notebook"] .theme-choice.active {
+  background: #f8e7a5;
+  border-color: #dfc56e;
+  color: #293750;
+}
+body[data-visual-theme="notebook"] .live-pill,
+body[data-visual-theme="notebook"] .runtime-status {
+  color: #45604c;
+  background: #f4f7ed;
+  border-color: #cddbc7;
+}
+body[data-visual-theme="notebook"] .icon-button,
+body[data-visual-theme="notebook"] .avatar {
+  color: #344966;
+  background: #f8efd9;
+  border-color: #e5d6bd;
+}
+body[data-visual-theme="notebook"] .app-shell {
+  background: transparent;
+}
+body[data-visual-theme="notebook"] .project-sidebar,
+body[data-visual-theme="notebook"] .panel,
+body[data-visual-theme="notebook"] .metric-card,
+body[data-visual-theme="notebook"] #components-panel,
+body[data-visual-theme="notebook"] #fiber-panel,
+body[data-visual-theme="notebook"] #deep-activity-panel,
+body[data-visual-theme="notebook"] .ai-assistant-panel {
+  background: rgba(255, 253, 248, 0.96) !important;
+  color: #293750 !important;
+  border-color: #dfd2bd !important;
+  box-shadow: 0 5px 16px rgba(71, 57, 35, 0.07);
+}
+body[data-visual-theme="notebook"] .project-sidebar {
+  background: rgba(250, 247, 238, 0.96) !important;
+}
+body[data-visual-theme="notebook"] .section-label,
+body[data-visual-theme="notebook"] .panel-tool-label,
+body[data-visual-theme="notebook"] .panel-eyebrow {
+  color: #788197 !important;
+}
+body[data-visual-theme="notebook"] .project-select,
+body[data-visual-theme="notebook"] .tab-label,
+body[data-visual-theme="notebook"] .panel-top,
+body[data-visual-theme="notebook"] .panel-heading {
+  background: #f8f3e8 !important;
+  color: #293750 !important;
+  border-color: #e5d6bd !important;
+}
+body[data-visual-theme="notebook"] .file-tree,
+body[data-visual-theme="notebook"] .tree-row,
+body[data-visual-theme="notebook"] .folder-row,
+body[data-visual-theme="notebook"] .file-row,
+body[data-visual-theme="notebook"] .side-tool {
+  color: #52627a !important;
+}
+body[data-visual-theme="notebook"] .side-tool:hover,
+body[data-visual-theme="notebook"] .active-tool,
+body[data-visual-theme="notebook"] .selected-file {
+  background: #fff0bd !important;
+  color: #293750 !important;
+  box-shadow: inset 3px 0 #c4472f;
+}
+body[data-visual-theme="notebook"] .workspace-heading h1 {
+  color: #202d49;
+  font-family: Caveat, cursive;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+body[data-visual-theme="notebook"] .workspace-heading p,
+body[data-visual-theme="notebook"] .metric-card span,
+body[data-visual-theme="notebook"] .metric-card small {
+  color: #68758a !important;
+}
+body[data-visual-theme="notebook"] .eyebrow b {
+  color: #c4472f;
+}
+body[data-visual-theme="notebook"] .source-editor,
+body[data-visual-theme="notebook"] .code-editor,
+body[data-visual-theme="notebook"] pre,
+body[data-visual-theme="notebook"] code {
+  background: #fffdf8 !important;
+  color: #293750 !important;
+}
+body[data-visual-theme="notebook"] .preview-body {
+  background-color: #f8f5ec !important;
+  background-image:
+    linear-gradient(rgba(100, 139, 170, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 139, 170, 0.1) 1px, transparent 1px) !important;
+  background-size: 22px 22px !important;
+}
+body[data-visual-theme="notebook"] .preview-card,
+body[data-visual-theme="notebook"] .preview-app {
+  background: #fffdf8 !important;
+  color: #293750 !important;
+  border-color: #e5d6bd !important;
+  box-shadow: 0 8px 18px rgba(50, 45, 35, 0.1);
+}
+body[data-visual-theme="notebook"] .preview-card h2,
+body[data-visual-theme="notebook"] .preview-app h1,
+body[data-visual-theme="notebook"] .preview-app h2 {
+  color: #202d49 !important;
+}
+body[data-visual-theme="notebook"] .primary-button {
+  background: #f5df85 !important;
+  color: #293750 !important;
+  border-color: #d8bd5f !important;
+  box-shadow: none !important;
+}
+body[data-visual-theme="notebook"] .ai-assistant-response {
+  background: #f8e8ed !important;
+  color: #4e3542 !important;
+  border-color: #e8cbd5 !important;
+}
+body[data-visual-theme="notebook"] input,
+body[data-visual-theme="notebook"] textarea,
+body[data-visual-theme="notebook"] select {
+  background: #fffdf8;
+  color: #293750;
+  border-color: #dfd2bd;
+}
+
+/* Studio: saturated midnight-blue technical canvas with yellow signal accents. */
+body[data-visual-theme="studio"] {
+  --bg: #0b2b52;
+  --surface: #123963;
+  --surface-2: #153f6d;
+  --surface-3: #1c4a79;
+  --border: #47739b;
+  --border-soft: #315d86;
+  --text: #eaf3ff;
+  --muted: #a9c3df;
+  --dim: #84a6ca;
+  --orange: #f4c64e;
+  --orange-soft: #ffe08a;
+  --cyan: #78d9ef;
+  --green: #8de0b4;
+  --pink: #f0a9c7;
+  --accent-soft: #244e79;
+  --accent-border: #e4bd4e;
+  color-scheme: dark;
+  font-family: Inter, system-ui, sans-serif;
+}
+body[data-visual-theme="studio"] {
+  background-color: #0b2b52;
+  background-image:
+    linear-gradient(rgba(153, 190, 226, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(153, 190, 226, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: #eaf3ff;
+}
+body[data-visual-theme="studio"] .topbar {
+  background: rgba(8, 35, 69, 0.96);
+  border-bottom: 1px solid #47739b;
+}
+body[data-visual-theme="studio"] .brand {
+  color: #f3f7ff;
+  font-family: Inter, sans-serif;
+  letter-spacing: 0.14em;
+  font-size: 17px;
+}
+body[data-visual-theme="studio"] .brand-mark {
+  color: #f4c64e;
+}
+body[data-visual-theme="studio"] .nav-link {
+  color: #a9c3df;
+}
+body[data-visual-theme="studio"] .nav-link:hover,
+body[data-visual-theme="studio"] .nav-link.active {
+  color: #fff;
+  border-bottom-color: #f4c64e;
+}
+body[data-visual-theme="studio"] .theme-toggle {
+  background: #092648;
+  border-color: #47739b;
+}
+body[data-visual-theme="studio"] .theme-choice.active {
+  background: #f4c64e;
+  border-color: #ffe08a;
+  color: #102f59;
+}
+body[data-visual-theme="studio"] .live-pill,
+body[data-visual-theme="studio"] .runtime-status {
+  color: #a9e9c9;
+  background: #103e50;
+  border-color: #39758a;
+}
+body[data-visual-theme="studio"] .icon-button,
+body[data-visual-theme="studio"] .avatar {
+  color: #f4d77d;
+  background: #153f6d;
+  border-color: #47739b;
+}
+body[data-visual-theme="studio"] .project-sidebar,
+body[data-visual-theme="studio"] .panel,
+body[data-visual-theme="studio"] .metric-card,
+body[data-visual-theme="studio"] #components-panel,
+body[data-visual-theme="studio"] #fiber-panel,
+body[data-visual-theme="studio"] #deep-activity-panel,
+body[data-visual-theme="studio"] .ai-assistant-panel {
+  background: rgba(13, 49, 88, 0.96) !important;
+  color: #eaf3ff !important;
+  border-color: #47739b !important;
+  box-shadow: 0 8px 24px rgba(0, 12, 32, 0.18);
+}
+body[data-visual-theme="studio"] .project-sidebar {
+  background: rgba(8, 39, 76, 0.97) !important;
+}
+body[data-visual-theme="studio"] .section-label,
+body[data-visual-theme="studio"] .panel-tool-label,
+body[data-visual-theme="studio"] .panel-eyebrow {
+  color: #a9c3df !important;
+}
+body[data-visual-theme="studio"] .project-select,
+body[data-visual-theme="studio"] .tab-label,
+body[data-visual-theme="studio"] .panel-top,
+body[data-visual-theme="studio"] .panel-heading {
+  background: #123963 !important;
+  color: #eaf3ff !important;
+  border-color: #47739b !important;
+}
+body[data-visual-theme="studio"] .file-tree,
+body[data-visual-theme="studio"] .tree-row,
+body[data-visual-theme="studio"] .folder-row,
+body[data-visual-theme="studio"] .file-row,
+body[data-visual-theme="studio"] .side-tool {
+  color: #bdd2e9 !important;
+}
+body[data-visual-theme="studio"] .side-tool:hover,
+body[data-visual-theme="studio"] .active-tool,
+body[data-visual-theme="studio"] .selected-file {
+  background: #1b4a78 !important;
+  color: #fff !important;
+  box-shadow: inset 3px 0 #f4c64e;
+}
+body[data-visual-theme="studio"] .workspace-heading h1 {
+  color: #fff;
+  font-family: Inter, sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+body[data-visual-theme="studio"] .workspace-heading p,
+body[data-visual-theme="studio"] .metric-card span,
+body[data-visual-theme="studio"] .metric-card small {
+  color: #a9c3df !important;
+}
+body[data-visual-theme="studio"] .eyebrow b {
+  color: #f4c64e;
+}
+body[data-visual-theme="studio"] .source-editor,
+body[data-visual-theme="studio"] .code-editor,
+body[data-visual-theme="studio"] pre,
+body[data-visual-theme="studio"] code {
+  background: #082747 !important;
+  color: #e6f1ff !important;
+}
+body[data-visual-theme="studio"] .preview-body {
+  background-color: #0e3764 !important;
+  background-image:
+    linear-gradient(rgba(153, 190, 226, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(153, 190, 226, 0.09) 1px, transparent 1px) !important;
+  background-size: 22px 22px !important;
+}
+body[data-visual-theme="studio"] .preview-card,
+body[data-visual-theme="studio"] .preview-app {
+  background: #123963 !important;
+  color: #eaf3ff !important;
+  border-color: #47739b !important;
+  box-shadow: 0 8px 22px rgba(0, 12, 32, 0.25);
+}
+body[data-visual-theme="studio"] .preview-card h2,
+body[data-visual-theme="studio"] .preview-app h1,
+body[data-visual-theme="studio"] .preview-app h2 {
+  color: #fff !important;
+}
+body[data-visual-theme="studio"] .primary-button {
+  background: #f4c64e !important;
+  color: #102f59 !important;
+  border-color: #ffe08a !important;
+  box-shadow: none !important;
+}
+body[data-visual-theme="studio"] .ai-assistant-response {
+  background: #244665 !important;
+  color: #eff7ff !important;
+  border-color: #47739b !important;
+}
+body[data-visual-theme="studio"] input,
+body[data-visual-theme="studio"] textarea,
+body[data-visual-theme="studio"] select {
+  background: #092b4d;
+  color: #eaf3ff;
+  border-color: #47739b;
+}
+
+/* Small screens: keep the two-way switch usable without crowding the header. */
+@media (max-width: 760px) {
+  .topbar {
+    height: auto;
+    min-height: 58px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .topbar-tools {
+    margin-left: auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .theme-choice {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Theme-aware inner DevTools surfaces (the runtime DOM is generated dynamically). */
+body[data-visual-theme="notebook"] #component-list,
+body[data-visual-theme="notebook"] #component-details,
+body[data-visual-theme="notebook"] #fiber-inspector,
+body[data-visual-theme="notebook"] #fiber-details,
+body[data-visual-theme="notebook"] #activity-log,
+body[data-visual-theme="notebook"] .inspector-content,
+body[data-visual-theme="notebook"] .tree-pane,
+body[data-visual-theme="notebook"] .details-pane {
+  background: #fffdf8 !important;
+  color: #293750 !important;
+  border-color: #e5d6bd !important;
+}
+body[data-visual-theme="notebook"] #component-list *,
+body[data-visual-theme="notebook"] #component-details *,
+body[data-visual-theme="notebook"] #fiber-inspector *,
+body[data-visual-theme="notebook"] #fiber-details *,
+body[data-visual-theme="notebook"] #activity-log * {
+  color: #344966;
+}
+body[data-visual-theme="notebook"] #component-list button,
+body[data-visual-theme="notebook"] #component-details button,
+body[data-visual-theme="notebook"] #fiber-inspector button,
+body[data-visual-theme="notebook"] #fiber-details button {
+  background: #f8efd9 !important;
+  border-color: #e5d6bd !important;
+}
+body[data-visual-theme="studio"] #component-list,
+body[data-visual-theme="studio"] #component-details,
+body[data-visual-theme="studio"] #fiber-inspector,
+body[data-visual-theme="studio"] #fiber-details,
+body[data-visual-theme="studio"] #activity-log,
+body[data-visual-theme="studio"] .inspector-content,
+body[data-visual-theme="studio"] .tree-pane,
+body[data-visual-theme="studio"] .details-pane {
+  background: #0d3158 !important;
+  color: #eaf3ff !important;
+  border-color: #47739b !important;
+}
+body[data-visual-theme="studio"] #component-list *,
+body[data-visual-theme="studio"] #component-details *,
+body[data-visual-theme="studio"] #fiber-inspector *,
+body[data-visual-theme="studio"] #fiber-details *,
+body[data-visual-theme="studio"] #activity-log * {
+  color: #dcecff !important;
+}
+body[data-visual-theme="studio"] #component-list button,
+body[data-visual-theme="studio"] #component-details button,
+body[data-visual-theme="studio"] #fiber-inspector button,
+body[data-visual-theme="studio"] #fiber-details button {
+  background: #17436f !important;
+  color: #f3f8ff !important;
+  border-color: #47739b !important;
+}
+body[data-visual-theme="studio"] .ai-assistant-response {
+  background: #244665 !important;
+  color: #eff7ff !important;
+}
+
+/* ================================================================
+   THEME POLISH — readable diff panels, runtime log and timeline
+   Appended overrides only: preserves existing layout and behavior.
+   ================================================================ */
+
+/* Notebook mode: replace near-black technical blocks with paper surfaces. */
+body[data-visual-theme="notebook"] .diff-side,
+body[data-visual-theme="notebook"] .diff-placeholder .diff-side,
+body[data-visual-theme="notebook"] .deep-log-mirror,
+body[data-visual-theme="notebook"] .activity-log,
+body[data-visual-theme="notebook"] .activity-log .activity-item {
+  background: #fffaf0 !important;
+  color: #293750 !important;
+  border-color: #e5d6bd !important;
+}
+
+body[data-visual-theme="notebook"] .diff-side span,
+body[data-visual-theme="notebook"] .deep-log-mirror,
+body[data-visual-theme="notebook"] .activity-log,
+body[data-visual-theme="notebook"] .activity-log * {
+  color: #344966 !important;
+}
+
+body[data-visual-theme="notebook"] .diff-side code,
+body[data-visual-theme="notebook"] .deep-log-mirror code,
+body[data-visual-theme="notebook"] .deep-log-mirror pre {
+  display: inline-block;
+  max-width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #e5d6bd;
+  border-radius: 4px;
+  background: #f5efdf !important;
+  color: #263b5b !important;
+  font-family: "DM Mono", Consolas, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+body[data-visual-theme="notebook"] .timeline-track {
+  background: #e7dfd1 !important;
+  border: 1px solid #d8cbb7;
+}
+
+body[data-visual-theme="notebook"] .timeline-track i {
+  background: linear-gradient(90deg, #7898bd, #497bb8) !important;
+}
+
+/* Studio mode: use readable blue surfaces rather than near-black blocks. */
+body[data-visual-theme="studio"] .diff-side,
+body[data-visual-theme="studio"] .diff-placeholder .diff-side,
+body[data-visual-theme="studio"] .deep-log-mirror,
+body[data-visual-theme="studio"] .activity-log,
+body[data-visual-theme="studio"] .activity-log .activity-item {
+  background: #17436f !important;
+  color: #eff6ff !important;
+  border-color: #47739b !important;
+}
+
+body[data-visual-theme="studio"] .diff-side span,
+body[data-visual-theme="studio"] .deep-log-mirror,
+body[data-visual-theme="studio"] .activity-log,
+body[data-visual-theme="studio"] .activity-log * {
+  color: #dcecff !important;
+}
+
+body[data-visual-theme="studio"] .diff-side code,
+body[data-visual-theme="studio"] .deep-log-mirror code,
+body[data-visual-theme="studio"] .deep-log-mirror pre {
+  display: inline-block;
+  max-width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #527da5;
+  border-radius: 4px;
+  background: #0e3764 !important;
+  color: #fff2c5 !important;
+  font-family: "DM Mono", Consolas, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+body[data-visual-theme="studio"] .timeline-track {
+  background: #082747 !important;
+  border: 1px solid #47739b;
+}
+
+body[data-visual-theme="studio"] .timeline-track i {
+  background: linear-gradient(90deg, #6ebbdc, #f4c64e) !important;
+}
+
+/* Keep text readable inside dynamically generated event rows and metadata. */
+body[data-visual-theme="notebook"] .diff-side *,
+body[data-visual-theme="notebook"] .deep-log-mirror *,
+body[data-visual-theme="notebook"] .activity-log * {
+  text-shadow: none !important;
+}
+
+body[data-visual-theme="studio"] .diff-side *,
+body[data-visual-theme="studio"] .deep-log-mirror *,
+body[data-visual-theme="studio"] .activity-log * {
+  text-shadow: none !important;
+}
+
+/* Fix remaining dark chips inside the light Component Explorer cards. */
+.component-card .component-type,
+.component-card .kind-pill,
+#component-list .component-type,
+#component-list .kind-pill {
+  color: #344966 !important;
+  background: #fff7e6 !important;
+  border: 1px solid #e5cfa7 !important;
+}
+
+.component-card .component-metrics span,
+#component-list .component-metrics span {
+  color: #344966 !important;
+  background: #fffaf0 !important;
+  border: 1px solid #e5d6bd !important;
+}
+
+.component-card .component-card-parent {
+  color: #526985 !important;
+}
+
+/* ================================================================
+   STUDIO THEME — FINAL CONTRAST PASS
+   The previous theme rules left several legacy dark text declarations
+   active on headings, hook cards and runtime log entries.
+   ================================================================ */
+
+/* Force readable foregrounds throughout the Studio insight surfaces. */
+body[data-visual-theme="studio"] #components-panel,
+body[data-visual-theme="studio"] #fiber-panel,
+body[data-visual-theme="studio"] #deep-activity-panel {
+  color: #edf5ff !important;
+}
+
+body[data-visual-theme="studio"]
+  #components-panel
+  :is(h1, h2, h3, h4, h5, p, span, label, small, strong, em, dt, dd, li),
+body[data-visual-theme="studio"]
+  #fiber-panel
+  :is(h1, h2, h3, h4, h5, p, span, label, small, strong, em, dt, dd, li),
+body[data-visual-theme="studio"]
+  #deep-activity-panel
+  :is(h1, h2, h3, h4, h5, p, span, label, small, strong, em, dt, dd, li) {
+  color: #eaf3ff !important;
+  opacity: 1 !important;
+}
+
+/* Keep muted labels distinct but still comfortably readable. */
+body[data-visual-theme="studio"]
+  #components-panel
+  :is(.panel-eyebrow, .section-label, .muted, .component-card-parent),
+body[data-visual-theme="studio"]
+  #fiber-panel
+  :is(.panel-eyebrow, .section-label, .muted),
+body[data-visual-theme="studio"]
+  #deep-activity-panel
+  :is(.panel-eyebrow, .section-label, .muted) {
+  color: #a9c9e8 !important;
+}
+
+/* Panel titles were inheriting a dark serif color from the Notebook rules. */
+body[data-visual-theme="studio"] #components-panel .panel-heading h2,
+body[data-visual-theme="studio"] #fiber-panel .panel-heading h2,
+body[data-visual-theme="studio"] #deep-activity-panel .panel-heading h2,
+body[data-visual-theme="studio"] #deep-activity-panel h2,
+body[data-visual-theme="studio"] #deep-activity-panel h3 {
+  color: #fff1c2 !important;
+}
+
+/* Hook inspector cards: pale text on pale cards was nearly invisible. */
+body[data-visual-theme="studio"] .hook-inspection-card,
+body[data-visual-theme="studio"] .hook-card,
+body[data-visual-theme="studio"] .hook-inspection-item {
+  background: #17436f !important;
+  border-color: #47739b !important;
+  color: #eff6ff !important;
+}
+
+body[data-visual-theme="studio"] .hook-inspection-card *,
+body[data-visual-theme="studio"] .hook-card *,
+body[data-visual-theme="studio"] .hook-inspection-item * {
+  color: #eff6ff !important;
+  opacity: 1 !important;
+}
+
+body[data-visual-theme="studio"] .hook-inspection-meta {
+  color: #b8d2ed !important;
+}
+
+/* Runtime event stream and dynamically rendered entries. */
+body[data-visual-theme="studio"] #activity-log,
+body[data-visual-theme="studio"] #activity-log *,
+body[data-visual-theme="studio"] .deep-log-mirror,
+body[data-visual-theme="studio"] .deep-log-mirror *,
+body[data-visual-theme="studio"] .activity-log,
+body[data-visual-theme="studio"] .activity-log * {
+  color: #edf5ff !important;
+  opacity: 1 !important;
+}
+
+body[data-visual-theme="studio"] #activity-log,
+body[data-visual-theme="studio"] .deep-log-mirror,
+body[data-visual-theme="studio"] .activity-log {
+  background: #123b65 !important;
+}
+
+/* VDOM diff headings and explanatory copy. */
+body[data-visual-theme="studio"] .diff-panel,
+body[data-visual-theme="studio"] .diff-panel *,
+body[data-visual-theme="studio"] .diff-side,
+body[data-visual-theme="studio"] .diff-side * {
+  color: #edf5ff !important;
+  opacity: 1 !important;
+}
+
+body[data-visual-theme="studio"] .diff-side code {
+  color: #fff1c2 !important;
+  background: #0d3158 !important;
+}
+
+/* Notebook mode also keeps the same elements readable on paper surfaces. */
+body[data-visual-theme="notebook"] .hook-inspection-card,
+body[data-visual-theme="notebook"] .hook-card,
+body[data-visual-theme="notebook"] .hook-inspection-item {
+  background: #fffaf0 !important;
+  border-color: #e5d6bd !important;
+  color: #293750 !important;
+}
+
+body[data-visual-theme="notebook"] .hook-inspection-card *,
+body[data-visual-theme="notebook"] .hook-card *,
+body[data-visual-theme="notebook"] .hook-inspection-item * {
+  color: #344966 !important;
+  opacity: 1 !important;
+}
+/* ==========================================================
+   EL NEXO — FINAL DUAL THEME CONTRAST FIX
+   ========================================================== */
+
+/* NOTEBOOK */
+body[data-visual-theme="notebook"] {
+  color-scheme: light;
+}
+
+body[data-visual-theme="notebook"]
+  :is(
+    #components-panel,
+    #fiber-panel,
+    #deep-activity-panel,
+    .component-card,
+    .hook-inspection-card,
+    .hook-card,
+    .hook-inspection-item,
+    #activity-log,
+    .activity-log,
+    .deep-log-mirror,
+    .diff-panel,
+    .diff-side
+  ) {
+  background-color: #fffaf0 !important;
+  color: #293750 !important;
+  border-color: #e2d5c1 !important;
+}
+
+body[data-visual-theme="notebook"]
+  :is(
+    #components-panel,
+    #fiber-panel,
+    #deep-activity-panel,
+    .component-card,
+    .hook-inspection-card,
+    .hook-card,
+    .hook-inspection-item,
+    #activity-log,
+    .activity-log,
+    .deep-log-mirror,
+    .diff-panel,
+    .diff-side
+  )
+  :is(h1, h2, h3, h4, p, span, label, small, strong, em, dt, dd, li, code) {
+  color: #344966 !important;
+  opacity: 1 !important;
+}
+
+body[data-visual-theme="notebook"]
+  :is(
+    .panel-heading h2,
+    #components-panel h2,
+    #fiber-panel h2,
+    #deep-activity-panel h2
+  ) {
+  color: #253b5b !important;
+}
+
+body[data-visual-theme="notebook"]
+  :is(.component-type, .kind-pill, .component-metrics span) {
+  background: #f7efd9 !important;
+  color: #344966 !important;
+  border-color: #e2d1ad !important;
+}
+
+body[data-visual-theme="notebook"]
+  :is(
+    .activity-entry,
+    .activity-entry-content,
+    .activity-entry-time,
+    .component-card-parent,
+    .hook-inspection-meta
+  ) {
+  color: #526985 !important;
+}
+
+/* STUDIO */
+body[data-visual-theme="studio"] {
+  color-scheme: dark;
+}
+
+body[data-visual-theme="studio"]
+  :is(
+    #components-panel,
+    #fiber-panel,
+    #deep-activity-panel,
+    .component-card,
+    .hook-inspection-card,
+    .hook-card,
+    .hook-inspection-item,
+    #activity-log,
+    .activity-log,
+    .deep-log-mirror,
+    .diff-panel,
+    .diff-side
+  ) {
+  background-color: #123b65 !important;
+  color: #edf5ff !important;
+  border-color: #47739b !important;
+}
+
+body[data-visual-theme="studio"]
+  :is(
+    #components-panel,
+    #fiber-panel,
+    #deep-activity-panel,
+    .component-card,
+    .hook-inspection-card,
+    .hook-card,
+    .hook-inspection-item,
+    #activity-log,
+    .activity-log,
+    .deep-log-mirror,
+    .diff-panel,
+    .diff-side
+  )
+  :is(h1, h2, h3, h4, p, span, label, small, strong, em, dt, dd, li, code) {
+  color: #eaf3ff !important;
+  opacity: 1 !important;
+}
+
+body[data-visual-theme="studio"]
+  :is(
+    .panel-heading h2,
+    #components-panel h2,
+    #fiber-panel h2,
+    #deep-activity-panel h2
+  ) {
+  color: #fff1c2 !important;
+}
+
+body[data-visual-theme="studio"]
+  :is(.component-type, .kind-pill, .component-metrics span) {
+  background: #1a4a78 !important;
+  color: #fff1c2 !important;
+  border-color: #5b86ad !important;
+}
+
+body[data-visual-theme="studio"]
+  :is(
+    .activity-entry,
+    .activity-entry-content,
+    .activity-entry-time,
+    .component-card-parent,
+    .hook-inspection-meta
+  ) {
+  color: #b8d2ed !important;
+}
+
+body[data-visual-theme="studio"]
+  :is(
+    #components-panel button,
+    #fiber-panel button,
+    #deep-activity-panel button,
+    .component-card button,
+    .hook-inspection-card button
+  ) {
+  background: #17436f !important;
+  color: #edf5ff !important;
+  border-color: #527da5 !important;
+}
+
+body[data-visual-theme="studio"]
+  :is(
+    .component-render-reason,
+    .component-change-summary,
+    .component-metadata,
+    .hook-inspection-value,
+    .hook-inspection-title
+  ) {
+  color: #eaf3ff !important;
+}
+
+/* =====================================================
+   EL NEXO — STUDIO MODE TEXT VISIBILITY FIX
+   ===================================================== */
+
+body[data-visual-theme="studio"] {
+  color: #edf5ff !important;
+}
+
+/* Sidebar connection status */
+body[data-visual-theme="studio"] .sidebar-health {
+  background: #123963 !important;
+  border: 1px solid #47739b !important;
+}
+
+body[data-visual-theme="studio"] .sidebar-health strong {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+body[data-visual-theme="studio"] .sidebar-health small {
+  color: #c5dcf3 !important;
+  opacity: 1 !important;
+}
+
+/* Preview card supporting text */
+body[data-visual-theme="studio"] .preview-card p,
+body[data-visual-theme="studio"] .preview-app p {
+  color: #c5dcf3 !important;
+  opacity: 1 !important;
+}
+
+/* Preview eyebrow text */
+body[data-visual-theme="studio"] .preview-overline {
+  color: #b8d2ed !important;
+  opacity: 1 !important;
+}
+
+/* Preview headings */
+body[data-visual-theme="studio"] .preview-card h2,
+body[data-visual-theme="studio"] .preview-app h1,
+body[data-visual-theme="studio"] .preview-app h2 {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Preview buttons */
+body[data-visual-theme="studio"] .preview-app button {
+  color: #173454 !important;
+  background: #fffdf8 !important;
+  border-color: #d6e2ef !important;
+}
+
+/* Runtime and workspace supporting text */
+body[data-visual-theme="studio"] .workspace-heading p,
+body[data-visual-theme="studio"] .metric-card span,
+body[data-visual-theme="studio"] .metric-card small,
+body[data-visual-theme="studio"] .editor-status,
+body[data-visual-theme="studio"] .panel-subtitle {
+  color: #c5dcf3 !important;
+  opacity: 1 !important;
+}
+
+/* Ensure labels remain readable */
+body[data-visual-theme="studio"] .eyebrow,
+body[data-visual-theme="studio"] .section-label,
+body[data-visual-theme="studio"] .panel-eyebrow {
+  color: #b8d2ed !important;
+  opacity: 1 !important;
+}
+/* Fix faint "Ran Counter successfully" message in Studio mode */
+body[data-visual-theme="studio"] .editor-status {
+  background: #123963 !important;
+  color: #eaf3ff !important;
+  border-color: #47739b !important;
+  opacity: 1 !important;
+}
+
+body[data-visual-theme="studio"] .editor-status[data-state="success"] {
+  color: #8de0b4 !important;
+  font-weight: 600 !important;
+}
+
+body[data-visual-theme="studio"] .editor-status[data-state="error"] {
+  color: #ffaaaa !important;
+}
+
+/* ==========================================================
+   ADDITIVE FEATURE — LIVE PREVIEW FIBER TREE VISUALIZER
+   Existing preview and runtime styles remain unchanged.
+   ========================================================== */
+#preview-fiber-visualizer[hidden] {
+  display: none !important;
+}
+
+.preview-fiber-visualizer {
+  display: grid;
+  gap: 12px;
+  margin: 14px 0 0;
+  padding: 16px;
+  border: 1px solid var(--border, #47739b);
+  border-radius: 12px;
+  background: var(--surface, #123963);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.preview-fiber-heading,
+.preview-fiber-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.preview-fiber-heading h3 {
+  margin: 4px 0;
+  font-size: 16px;
+  color: var(--text, #edf5ff);
+}
+
+.preview-fiber-heading p {
+  margin: 4px 0 0;
+  color: var(--muted, #b5cce4);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.preview-fiber-replay {
+  flex: 0 0 auto;
+  border: 1px solid var(--border, #47739b);
+  border-radius: 7px;
+  padding: 8px 11px;
+  background: transparent;
+  color: var(--text, #edf5ff);
+  cursor: pointer;
+}
+
+.preview-fiber-replay:hover {
+  border-color: var(--cyan, #78d9ef);
+}
+
+.preview-fiber-canvas {
+  min-height: 170px;
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid var(--border, #47739b);
+  border-radius: 9px;
+  padding: 14px 10px;
+  background-color: var(--surface-2, #0d3158);
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--muted, #b5cce4) 10%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--muted, #b5cce4) 10%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 24px 24px;
+}
+
+.preview-fiber-svg {
+  display: block;
+  max-width: none;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.preview-fiber-link {
+  stroke: var(--muted, #b5cce4);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: preview-fiber-draw 520ms ease forwards;
+}
+
+.preview-fiber-node {
+  cursor: pointer;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: preview-fiber-appear 420ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  outline: none;
+}
+
+.preview-fiber-node-circle {
+  fill: var(--surface, #123963);
+  stroke: var(--cyan, #78d9ef);
+  stroke-width: 2.5;
+  transition:
+    fill 160ms ease,
+    stroke 160ms ease,
+    stroke-width 160ms ease;
+}
+
+.preview-fiber-node-label {
+  fill: var(--text, #edf5ff);
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.preview-fiber-node:hover .preview-fiber-node-circle,
+.preview-fiber-node:focus-visible .preview-fiber-node-circle,
+.preview-fiber-node.is-selected .preview-fiber-node-circle {
+  fill: var(--orange, #f2cf48);
+  stroke: var(--orange, #f2cf48);
+  stroke-width: 3.5;
+}
+
+.preview-fiber-node.is-selected .preview-fiber-node-label {
+  font-weight: 700;
+}
+
+.preview-fiber-footer {
+  color: var(--text, #edf5ff);
+  font-size: 12px;
+}
+
+.preview-fiber-footer span,
+.preview-fiber-selection,
+.preview-fiber-empty {
+  color: var(--muted, #b5cce4);
+}
+
+.preview-fiber-selection {
+  border-top: 1px solid var(--border, #47739b);
+  padding-top: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.preview-fiber-empty {
+  margin: 0;
+  padding: 24px 10px;
+  text-align: center;
+}
+
+@keyframes preview-fiber-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.55) translateY(9px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes preview-fiber-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Warm graph-paper Notebook presentation */
+body[data-visual-theme="notebook"] .preview-fiber-visualizer {
+  background: #fffdf8;
+  border-color: #dfd2bd;
+  color: #293750;
+}
+body[data-visual-theme="notebook"] .preview-fiber-heading h3,
+body[data-visual-theme="notebook"] .preview-fiber-footer strong {
+  color: #293750;
+}
+body[data-visual-theme="notebook"] .preview-fiber-heading p,
+body[data-visual-theme="notebook"] .preview-fiber-footer span,
+body[data-visual-theme="notebook"] .preview-fiber-selection,
+body[data-visual-theme="notebook"] .preview-fiber-empty {
+  color: #66738a;
+}
+body[data-visual-theme="notebook"] .preview-fiber-canvas {
+  background-color: #f5f1e6;
+  border-color: #d9d2c4;
+  background-image:
+    linear-gradient(rgba(86, 113, 133, 0.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(86, 113, 133, 0.13) 1px, transparent 1px);
+}
+body[data-visual-theme="notebook"] .preview-fiber-link {
+  stroke: #293750;
+}
+body[data-visual-theme="notebook"] .preview-fiber-node-circle {
+  fill: #fffdf8;
+  stroke: #293750;
+}
+body[data-visual-theme="notebook"] .preview-fiber-node-label {
+  fill: #293750;
+  font-family: Caveat, cursive;
+  font-size: 18px;
+}
+body[data-visual-theme="notebook"]
+  .preview-fiber-node:hover
+  .preview-fiber-node-circle,
+body[data-visual-theme="notebook"]
+  .preview-fiber-node:focus-visible
+  .preview-fiber-node-circle,
+body[data-visual-theme="notebook"]
+  .preview-fiber-node.is-selected
+  .preview-fiber-node-circle {
+  fill: #f2cf48;
+  stroke: #293750;
+}
+body[data-visual-theme="notebook"] .preview-fiber-replay {
+  color: #344966;
+  border-color: #d8cbb7;
+  background: #fffdf8;
+}
+body[data-visual-theme="notebook"] .preview-fiber-selection {
+  border-color: #dfd2bd;
+}
+
+/* Blue technical Studio presentation */
+body[data-visual-theme="studio"] .preview-fiber-visualizer {
+  background: #123963;
+  border-color: #47739b;
+  color: #edf5ff;
+}
+body[data-visual-theme="studio"] .preview-fiber-heading h3,
+body[data-visual-theme="studio"] .preview-fiber-footer strong {
+  color: #fff1c2;
+}
+body[data-visual-theme="studio"] .preview-fiber-heading p,
+body[data-visual-theme="studio"] .preview-fiber-footer span,
+body[data-visual-theme="studio"] .preview-fiber-selection,
+body[data-visual-theme="studio"] .preview-fiber-empty {
+  color: #b5cce4;
+}
+body[data-visual-theme="studio"] .preview-fiber-canvas {
+  background-color: #0d3158;
+  border-color: #47739b;
+  background-image:
+    linear-gradient(rgba(153, 190, 226, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(153, 190, 226, 0.12) 1px, transparent 1px);
+}
+body[data-visual-theme="studio"] .preview-fiber-link {
+  stroke: #b5cce4;
+}
+body[data-visual-theme="studio"] .preview-fiber-node-circle {
+  fill: #123963;
+  stroke: #78d9ef;
+}
+body[data-visual-theme="studio"] .preview-fiber-node-label {
+  fill: #edf5ff;
+}
+body[data-visual-theme="studio"]
+  .preview-fiber-node:hover
+  .preview-fiber-node-circle,
+body[data-visual-theme="studio"]
+  .preview-fiber-node:focus-visible
+  .preview-fiber-node-circle,
+body[data-visual-theme="studio"]
+  .preview-fiber-node.is-selected
+  .preview-fiber-node-circle {
+  fill: #f4c64e;
+  stroke: #ffe08a;
+}
+body[data-visual-theme="studio"]
+  .preview-fiber-node.is-selected
+  .preview-fiber-node-label {
+  fill: #fff1c2;
+}
+body[data-visual-theme="studio"] .preview-fiber-replay {
+  color: #edf5ff;
+  border-color: #47739b;
+  background: #153f6d;
+}
+body[data-visual-theme="studio"] .preview-fiber-selection {
+  border-color: #47739b;
+}
+
+@media (max-width: 560px) {
+  .preview-fiber-visualizer {
+    padding: 11px;
+  }
+  .preview-fiber-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .preview-fiber-replay {
+    align-self: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-fiber-node,
+  .preview-fiber-link {
+    animation-duration: 1ms;
+    animation-delay: 0ms !important;
+  }
+}
+
+/* Compact Fiber preview with an immersive, nearly full-screen explorer. */
+.preview-fiber-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+.preview-fiber-expand,
+.preview-fiber-close {
+  border: 1px solid var(--border, #47739b);
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: var(--surface-2, #0d3158);
+  color: var(--text, #edf5ff);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+}
+.preview-fiber-expand:hover,
+.preview-fiber-close:hover {
+  border-color: var(--cyan, #78d9ef);
+}
+.preview-fiber-visualizer:not(.is-expanded) .preview-fiber-canvas {
+  max-height: 190px;
+  min-height: 125px;
+  overflow: auto;
+  padding: 8px;
+}
+.preview-fiber-visualizer:not(.is-expanded) .preview-fiber-svg {
+  transform: scale(0.72);
+  transform-origin: top center;
+  margin-bottom: -25px;
+}
+.preview-fiber-visualizer:not(.is-expanded) .preview-fiber-selection {
+  display: none;
+}
+.preview-fiber-visualizer:not(.is-expanded) .preview-fiber-footer {
+  font-size: 11px;
+}
+.preview-fiber-modal[hidden] {
+  display: none !important;
+}
+.preview-fiber-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(8, 18, 34, 0.76);
+  backdrop-filter: blur(8px);
+}
+.preview-fiber-modal-shell {
+  width: min(1500px, 96vw);
+  height: min(920px, 94vh);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border, #47739b);
+  border-radius: 18px;
+  background: var(--surface, #123963);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.38);
+}
+.preview-fiber-modal-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border, #47739b);
+}
+.preview-fiber-modal-topbar h2 {
+  margin: 4px 0;
+  font-size: 21px;
+  color: var(--text, #edf5ff);
+}
+.preview-fiber-modal-topbar p {
+  margin: 4px 0 0;
+  color: var(--muted, #b5cce4);
+  font-size: 13px;
+}
+.preview-fiber-close {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  font-size: 28px;
+  line-height: 1;
+}
+.preview-fiber-modal-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 18px;
+}
+.preview-fiber-visualizer.is-expanded {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+.preview-fiber-visualizer.is-expanded .preview-fiber-heading {
+  display: none;
+}
+.preview-fiber-visualizer.is-expanded .preview-fiber-canvas {
+  min-height: min(65vh, 680px);
+  max-height: none;
+  overflow: auto;
+  padding: 24px;
+}
+.preview-fiber-visualizer.is-expanded .preview-fiber-svg {
+  transform: none;
+  margin: 0 auto;
+}
+.preview-fiber-visualizer.is-expanded .preview-fiber-selection {
+  display: block;
+  font-size: 13px;
+  padding: 14px;
+}
+.preview-fiber-visualizer.is-expanded .preview-fiber-footer {
+  padding: 4px 2px;
+  font-size: 13px;
+}
+body.fiber-modal-open {
+  overflow: hidden;
+}
+body[data-visual-theme="notebook"] .preview-fiber-modal-shell {
+  background: #fffdf8;
+  border-color: #dfd2bd;
+}
+body[data-visual-theme="notebook"] .preview-fiber-modal-topbar {
+  border-color: #dfd2bd;
+}
+body[data-visual-theme="notebook"] .preview-fiber-modal-topbar h2 {
+  color: #293750;
+}
+body[data-visual-theme="notebook"] .preview-fiber-modal-topbar p {
+  color: #66738a;
+}
+body[data-visual-theme="notebook"] .preview-fiber-expand,
+body[data-visual-theme="notebook"] .preview-fiber-close {
+  color: #344966;
+  background: #fffdf8;
+  border-color: #d8cbb7;
+}
+@media (max-width: 700px) {
+  .preview-fiber-modal {
+    padding: 0;
+  }
+  .preview-fiber-modal-shell {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+  }
+  .preview-fiber-modal-topbar {
+    padding: 14px;
+  }
+  .preview-fiber-modal-content {
+    padding: 10px;
+  }
+  .preview-fiber-visualizer.is-expanded .preview-fiber-canvas {
+    min-height: 60vh;
+    padding: 10px;
+  }
+  .preview-fiber-actions {
+    width: 100%;
+  }
+}
+/* =========================================
+   EL NEXO — FINAL STUDIO SPACING & KPI FIX
+   ========================================= */
+
+/* 1. Close the excessive gap before AI Assistant */
+#ai-assistant,
+.ai-assistant-panel {
+  margin-top: 0 !important;
+}
+
+#render-activity,
+.activity-panel,
+#deep-activity-panel {
+  margin-bottom: 0 !important;
+}
+
+/* Keep dashboard section spacing compact */
+.workspace {
+  gap: 16px !important;
+}
+
+.dashboard,
+.dashboard-content,
+.main-content {
+  row-gap: 16px !important;
+}
+
+/* 2. Make KPI numbers clearly visible in Studio */
+body[data-visual-theme="studio"] .metric-card strong,
+body[data-visual-theme="studio"] #studio-component-count,
+body[data-visual-theme="studio"] #studio-render-count,
+body[data-visual-theme="studio"] #studio-node-count {
+  color: #f4d36b !important;
+  font-size: 30px !important;
+  font-weight: 800 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  line-height: 1.3 !important;
+}
+
+/* Keep KPI labels readable */
+body[data-visual-theme="studio"] .metric-card span,
+body[data-visual-theme="studio"] .metric-card small {
+  color: #c5dcf5 !important;
+  opacity: 1 !important;
+}
+
+/* KPI card readability */
+body[data-visual-theme="studio"] .metric-card {
+  background: #123963 !important;
+  border: 1px solid #47739b !important;
+}
+
+/* Mobile layout */
+@media (max-width: 700px) {
+  .metric-strip,
+  .studio-overview {
+    grid-template-columns: 1fr !important;
+  }
+}
+/* =========================================
+   EL NEXO — FINAL GAP CORRECTION
+   Preserve all existing workspace features
+   ========================================= */
+
+/* Stop the Studio grid rows from stretching */
+.workspace > .studio-layout {
+  height: auto !important;
+  min-height: 0 !important;
+  grid-template-rows: auto auto !important;
+  grid-auto-rows: max-content !important;
+  align-content: start !important;
+  row-gap: 12px !important;
+}
+
+/* Remove unnecessary workspace padding and large gaps */
+.workspace {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  gap: 16px !important;
+  justify-content: flex-start !important;
+}
+
+/* Keep AI Assistant directly after the Studio workspace */
+#ai-assistant,
+.ai-assistant-panel {
+  margin-top: 0 !important;
+  align-self: stretch !important;
+}
+
+/* Remove extra spacing below runtime activity */
+#render-activity,
+.activity-panel {
+  margin-bottom: 0 !important;
+}
+
+/* Prevent panels from creating artificial vertical space */
+.workspace > * {
+  flex-shrink: 0;
+  min-height: 0;
+}
+
+/* Preserve the responsive layout */
+@media (max-width: 1100px) {
+  .workspace > .studio-layout {
+    grid-template-rows: auto !important;
+  }
+}
+/* =========================================
+   EL NEXO — STUDIO INSPECTOR CONTRAST FIX
+   ========================================= */
+
+body[data-visual-theme="studio"] .inspector-panel,
+body[data-visual-theme="studio"] .components-panel {
+  color: #edf5ff !important;
+}
+
+/* Inspector headings and labels */
+body[data-visual-theme="studio"] .inspector-panel span,
+body[data-visual-theme="studio"] .components-panel span,
+body[data-visual-theme="studio"] .inspector-panel label {
+  color: #c9def5;
+  opacity: 1 !important;
+}
+
+/* Main headings */
+body[data-visual-theme="studio"] .inspector-panel h2,
+body[data-visual-theme="studio"] .components-panel h2,
+body[data-visual-theme="studio"] .inspector-panel h3,
+body[data-visual-theme="studio"] .components-panel h3 {
+  color: #ffffff !important;
+}
+
+/* Fiber statistics */
+body[data-visual-theme="studio"] .stats-grid strong,
+body[data-visual-theme="studio"] .stat-card strong {
+  color: #ffd166 !important;
+  opacity: 1 !important;
+}
+
+/* Component cards */
+body[data-visual-theme="studio"] .component-list,
+body[data-visual-theme="studio"] .component-details,
+body[data-visual-theme="studio"] .details-pane {
+  color: #edf5ff !important;
+}
+
+/* Pale badges — make text dark and readable */
+body[data-visual-theme="studio"] .snapshot-badge,
+body[data-visual-theme="studio"] .component-list .badge,
+body[data-visual-theme="studio"] .component-details .badge,
+body[data-visual-theme="studio"] .component-card .badge,
+body[data-visual-theme="studio"] .component-meta span {
+  background: #f5d978 !important;
+  color: #173456 !important;
+  border-color: #f5d978 !important;
+  opacity: 1 !important;
+}
+
+/* Component cards */
+body[data-visual-theme="studio"] .component-card {
+  background: #194875 !important;
+  color: #ffffff !important;
+  border-color: #477da8 !important;
+}
+
+/* Fiber tree node text */
+body[data-visual-theme="studio"] .fiber-tree,
+body[data-visual-theme="studio"] .fiber-tree button {
+  color: #edf5ff !important;
+}
+
+/* Details text */
+body[data-visual-theme="studio"] .fiber-details,
+body[data-visual-theme="studio"] .component-details p,
+body[data-visual-theme="studio"] .component-details strong {
+  color: #edf5ff !important;
+  opacity: 1 !important;
+}
+
+/* Search inputs */
+body[data-visual-theme="studio"] .search-box input,
+body[data-visual-theme="studio"] .component-search-box input {
+  color: #173456 !important;
+  background: #fffdf8 !important;
+}
+
+/* Remove faded appearance */
+body[data-visual-theme="studio"] .inspector-panel *,
+body[data-visual-theme="studio"] .components-panel * {
+  text-shadow: none;
+}
+
+/* EL NEXO — COMPONENT BADGE CONTRAST OVERRIDE (2026-11-05)
+   These are the exact elements created by renderComponentsExplorer() in main.js:
+   .component-type, .component-metrics > span, and .kind-pill.
+   Keep this block at the very end so it wins over broad panel span rules. */
+body[data-visual-theme="studio"]
+  #components-panel
+  #component-list
+  .component-card
+  .component-type,
+body[data-visual-theme="studio"]
+  #component-list
+  .component-card
+  .component-type,
+body[data-visual-theme="studio"] #component-details .kind-pill {
+  background: #fff4d6 !important;
+  background-color: #fff4d6 !important;
+  color: #173456 !important;
+  -webkit-text-fill-color: #173456 !important;
+  border: 1px solid #e8cf91 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+body[data-visual-theme="studio"]
+  #components-panel
+  #component-list
+  .component-card
+  .component-metrics
+  > span,
+body[data-visual-theme="studio"]
+  #component-list
+  .component-card
+  .component-metrics
+  > span {
+  background: #fffaf0 !important;
+  background-color: #fffaf0 !important;
+  color: #173456 !important;
+  -webkit-text-fill-color: #173456 !important;
+  border: 1px solid #e8cf91 !important;
+  opacity: 1 !important;
+  font-weight: 700 !important;
+  text-shadow: none !important;
+}
+
+body[data-visual-theme="studio"]
+  #components-panel
+  #component-list
+  .component-card
+  .component-type
+  *,
+body[data-visual-theme="studio"]
+  #components-panel
+  #component-list
+  .component-card
+  .component-metrics
+  > span
+  *,
+body[data-visual-theme="studio"]
+  #component-list
+  .component-card
+  .component-type
+  *,
+body[data-visual-theme="studio"]
+  #component-list
+  .component-card
+  .component-metrics
+  > span
+  *,
+body[data-visual-theme="studio"] #component-details .kind-pill * {
+  color: #173456 !important;
+  -webkit-text-fill-color: #173456 !important;
+  opacity: 1 !important;
+}
+
+/* =====================================================
+   EL NEXO — LIVE PREVIEW TEXT CONTRAST FIX
+   Scoped to the running app inside the preview only.
+   ===================================================== */
+body[data-visual-theme="studio"] .preview-body #root {
+  color: #edf5ff !important;
+  opacity: 1 !important;
+}
+
+body[data-visual-theme="studio"]
+  .preview-body
+  #root
+  :is(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    span,
+    label,
+    strong,
+    b,
+    small,
+    li,
+    dt,
+    dd,
+    legend,
+    figcaption
+  ) {
+  color: #edf5ff !important;
+  -webkit-text-fill-color: currentColor !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+/* Keep supporting copy readable without making it compete with headings. */
+body[data-visual-theme="studio"] .preview-body #root :is(p, small, figcaption) {
+  color: #c5d9ef !important;
+}
+
+/* The built-in multiple-component demo uses its own cards. */
+body[data-visual-theme="studio"] .preview-body #root .counter-card {
+  background: #123963 !important;
+  color: #edf5ff !important;
+  border-color: #47739b !important;
+}
+
+body[data-visual-theme="studio"]
+  .preview-body
+  #root
+  .counter-card
+  :is(h1, h2, h3, h4, p, span, strong, small, label) {
+  color: #edf5ff !important;
+  -webkit-text-fill-color: currentColor !important;
+  opacity: 1 !important;
+}
+
+/* Preserve readable form controls in user-created preview examples. */
+body[data-visual-theme="studio"]
+  .preview-body
+  #root
+  :is(input, textarea, select) {
+  color: #edf5ff !important;
+  background-color: #092b4d !important;
+  border-color: #6b91b7 !important;
+  opacity: 1 !important;
+}
+
+body[data-visual-theme="studio"]
+  .preview-body
+  #root
+  :is(input, textarea)::placeholder {
+  color: #b8cce2 !important;
+  opacity: 1 !important;
+}
+
+/* ==========================================================
+   EL NEXO — FINAL LIVE PREVIEW CARD CONTRAST FIX (V2)
+   The running example is mounted directly inside #root.
+   Give its top-level example card a Studio surface and keep
+   all nested text readable. Preview controls stay light.
+   ========================================================== */
+body[data-visual-theme="studio"] .preview-body #root > * {
+  background: #123963 !important;
+  background-color: #123963 !important;
+  color: #edf5ff !important;
+  border-color: #47739b !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #edf5ff !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22) !important;
+}
+
+body[data-visual-theme="studio"]
+  .preview-body
+  #root
+  > *
+  :is(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    span,
+    label,
+    strong,
+    b,
+    small,
+    li,
+    dt,
+    dd,
+    legend,
+    figcaption,
+    output
+  ) {
+  color: #edf5ff !important;
+  -webkit-text-fill-color: #edf5ff !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+body[data-visual-theme="studio"]
+  .preview-body
+  #root
+  > *
+  :is(p, small, figcaption) {
+  color: #c5d9ef !important;
+  -webkit-text-fill-color: #c5d9ef !important;
+}
+
+/* Keep light action buttons distinct from the dark example card. */
+body[data-visual-theme="studio"]
+  .preview-body
+  #root
+  :is(button, input[type="button"], input[type="submit"]) {
+  background: #fffdf8 !important;
+  color: #173454 !important;
+  -webkit-text-fill-color: #173454 !important;
+  border: 1px solid #d6e2ef !important;
+  opacity: 1 !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12) !important;
+}
+
+body[data-visual-theme="studio"]
+  .preview-body
+  #root
+  :is(button, input[type="button"], input[type="submit"]):hover {
+  background: #eaf2fb !important;
+  color: #102d4b !important;
+  -webkit-text-fill-color: #102d4b !important;
+}
+
+body[data-visual-theme="studio"]
+  .preview-body
+  #root
+  :is(input, textarea, select) {
+  background: #092b4d !important;
+  color: #edf5ff !important;
+  -webkit-text-fill-color: #edf5ff !important;
+  border-color: #6b91b7 !important;
+}
+
+body[data-visual-theme="studio"]
+  .preview-body
+  #root
+  :is(input, textarea)::placeholder {
+  color: #b8cce2 !important;
+  -webkit-text-fill-color: #b8cce2 !important;
+  opacity: 1 !important;
+}
