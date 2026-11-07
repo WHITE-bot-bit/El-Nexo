@@ -1,3 +1,4 @@
+
 {
   "rewrites": [
     {
@@ -5,12 +6,8 @@
       "destination": "https://bye-tribunal-mia-experiments.trycloudflare.com/api/:path*"
     },
     {
-      "source": "/src/:path*",
-      "destination": "https://bye-tribunal-mia-experiments.trycloudflare.com/src/:path*"
-    },
-    {
-      "source": "/examples/:path*",
-      "destination": "https://bye-tribunal-mia-experiments.trycloudflare.com/examples/:path*"
+      "source": "/",
+      "destination": "/playground/"
     }
   ]
 }
