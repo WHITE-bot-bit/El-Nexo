@@ -4,10 +4,13 @@
     {
       "source": "/api/:path*",
       "destination": "https://bye-tribunal-mia-experiments.trycloudflare.com/api/:path*"
-    },
+    }
+  ],
+  "redirects": [
     {
       "source": "/",
-      "destination": "/playground/"
+      "destination": "/playground/",
+      "permanent": false
     }
   ]
 }
