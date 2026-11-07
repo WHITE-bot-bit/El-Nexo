@@ -1025,10 +1025,10 @@ return function Counter() {
 
         shell.dataset.mode = mode;
         // Keep the main Studio editor and preview visible.
-studio.hidden = false;
+        studio.hidden = false;
 
-// Keep Deep Inspect features available below the Studio workspace.
-inspect.hidden = false;
+        // Keep Deep Inspect features available below the Studio workspace.
+        inspect.hidden = false;
 
         modes.forEach((button) => {
           const active = button.dataset.mode === mode;
@@ -1132,6 +1132,7 @@ inspect.hidden = false;
     </script>
 
     <script>
+      const EL_NEXO_API_BASE = "https://lamps-take-bool-alex.trycloudflare.com";
       // ==========================================
       // EL NEXO AI ASSISTANT
       // ==========================================
@@ -1193,7 +1194,7 @@ inspect.hidden = false;
 
       async function checkAIConnection() {
         try {
-          const response = await fetch("/api/ai/health");
+          const response = await fetch(`${EL_NEXO_API_BASE}/api/ai/health`);
           const data = await response.json();
 
           if (!response.ok || !data.connected || !data.modelAvailable) {
@@ -1242,7 +1243,7 @@ inspect.hidden = false;
         responseBox.textContent = "El Nexo AI is thinking...";
 
         try {
-          const response = await fetch("/api/ai/explain", {
+          const response = await fetch(`${EL_NEXO_API_BASE}/api/ai/explain`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
