@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://lamps-take-bool-alex.trycloudflare.com/api/:path*"
+    },
+    {
+      "source": "/src/:path*",
+      "destination": "https://lamps-take-bool-alex.trycloudflare.com/src/:path*"
+    },
+    {
+      "source": "/examples/:path*",
+      "destination": "https://lamps-take-bool-alex.trycloudflare.com/examples/:path*"
+    }
+  ]
+}
