@@ -7952,3 +7952,122 @@ body[data-visual-theme="studio"]
   -webkit-text-fill-color: #b8cce2 !important;
   opacity: 1 !important;
 }
+
+
+/* =====================================================
+   EL NEXO AI ASSISTANT — INLINE CODE CONTRAST FIX
+   Keep the blush response card; make code readable.
+   ===================================================== */
+.ai-response :is(code, kbd, samp),
+.ai-response-box :is(code, kbd, samp),
+#ai-response :is(code, kbd, samp),
+#ai-output :is(code, kbd, samp),
+.ai-result :is(code, kbd, samp) {
+  color: #173454 !important;
+  -webkit-text-fill-color: #173454 !important;
+  background: #f7dce5 !important;
+  border: 1px solid #e8b9c9 !important;
+  border-radius: 4px !important;
+  padding: 0.12em 0.38em !important;
+  font-family: "DM Mono", Consolas, monospace !important;
+  font-size: 0.92em !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.ai-response pre,
+.ai-response-box pre,
+#ai-response pre,
+#ai-output pre,
+.ai-result pre {
+  background: #f7dce5 !important;
+  border: 1px solid #e8b9c9 !important;
+  border-radius: 8px !important;
+  padding: 12px 14px !important;
+  overflow-x: auto !important;
+}
+
+.ai-response pre code,
+.ai-response-box pre code,
+#ai-response pre code,
+#ai-output pre code,
+.ai-result pre code {
+  display: block !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #173454 !important;
+  -webkit-text-fill-color: #173454 !important;
+  white-space: pre !important;
+}
+/* ============================================
+   EL NEXO — AI ASSISTANT INLINE CODE FIX
+   ============================================ */
+
+/* Inline code, highlighted terms and keyboard text */
+.ai-assistant-response code,
+.ai-assistant-response kbd,
+.ai-assistant-response samp,
+.ai-assistant-response mark,
+.ai-response code,
+.ai-response kbd,
+.ai-response samp,
+.ai-response mark,
+.ai-response-box code,
+.ai-response-box kbd,
+.ai-response-box samp,
+.ai-response-box mark,
+#ai-response code,
+#ai-response kbd,
+#ai-response samp,
+#ai-response mark,
+#ai-output code,
+#ai-output kbd,
+#ai-output samp,
+#ai-output mark,
+.ai-result code,
+.ai-result kbd,
+.ai-result samp,
+.ai-result mark {
+  color: #173454 !important;
+  -webkit-text-fill-color: #173454 !important;
+  background: #f7dce5 !important;
+  border: 1px solid #e8b9c9 !important;
+  border-radius: 4px !important;
+  padding: 2px 5px !important;
+  font-family: "DM Mono", Consolas, monospace !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+/* Code blocks */
+.ai-assistant-response pre,
+.ai-response pre,
+.ai-response-box pre,
+#ai-response pre,
+#ai-output pre,
+.ai-result pre {
+  background: #f7dce5 !important;
+  color: #173454 !important;
+  border: 1px solid #e8b9c9 !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  overflow-x: auto !important;
+}
+
+.ai-assistant-response pre code,
+.ai-response pre code,
+.ai-response-box pre code,
+#ai-response pre code,
+#ai-output pre code,
+.ai-result pre code {
+  background: transparent !important;
+  color: #173454 !important;
+  -webkit-text-fill-color: #173454 !important;
+  border: 0 !important;
+  padding: 0 !important;
+  white-space: pre !important;
+}
