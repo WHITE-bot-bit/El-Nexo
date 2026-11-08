@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://budgets-salvador-loved-subdivision.trycloudflare.com/api/:path*"
+      "destination": "https://samba-ghz-bag-specify.trycloudflare.com/api/:path*"
     }
   ],
   "redirects": [
