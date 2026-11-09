@@ -550,7 +550,7 @@ return function Counter() {
         <section class="panel ai-assistant-panel" id="ai-assistant">
           <div class="panel-heading">
             <div>
-              <span class="panel-eyebrow">LOCAL AI · OLLAMA</span>
+              <span class="panel-eyebrow">CLOUDFLARE WORKERS AI</span>
               <h2>El Nexo AI Assistant</h2>
             </div>
 
@@ -595,10 +595,10 @@ return function Counter() {
           <div class="panel-bottom">
             <span>
               <i class="green-dot"></i>
-              Runs locally through Ollama
+              Powered by Cloudflare Workers AI
             </span>
 
-            <span id="ai-model-label">llama3.2:1b</span>
+            <span id="ai-model-label">Cloudflare Workers AI · Gemma 4 26B</span>
           </div>
         </section>
 
@@ -1209,7 +1209,7 @@ return function Counter() {
           statusBadge.textContent = "AI OFFLINE";
           statusBadge.dataset.state = "error";
 
-          modelLabel.textContent = "Check Ollama";
+          modelLabel.textContent = "Check Cloudflare connection";
         }
       }
 
