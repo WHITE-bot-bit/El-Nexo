@@ -8,6 +8,14 @@ It explores the internal concepts behind modern frontend frameworks, including V
 
 The Developer Studio brings these concepts into an interactive workspace where developers can write components, execute examples, inspect runtime behavior, and explore framework internals.
 
+## 🌐 Live Demo
+
+**Developer Studio:** https://el-nexo-developer-studio.vercel.app/playground/
+
+**GitHub Repository:** https://github.com/WHITE-bot-bit/El-Nexo
+
+**Latest Release:** v1.0.0
+
 ---
 
 ## ✨ Project Highlights
@@ -20,8 +28,9 @@ The Developer Studio brings these concepts into an interactive workspace where d
 | Fiber Visualization | Fiber Inspector and Fiber Tree visualization |
 | Runtime Monitoring | Rendering activity and performance observations |
 | Visual Experience | Notebook and Studio themes |
-| AI Integration | Local coding assistance using Ollama |
+| AI Integration | Cloudflare Workers AI coding assistant |
 | Testing | Automated tests and Fiber benchmarks |
+| Deployment | Vercel and Cloudflare Workers |
 
 ---
 
@@ -91,11 +100,6 @@ The Playground is the primary coding workspace inside El Nexo Developer Studio.
 - Load example source files dynamically.
 - Explore basic, component, hook, interaction, and advanced examples.
 
-**Interactive Development**
-- Modify component code.
-- Execute updated examples.
-- Observe the result in the live preview.
-
 </details>
 
 <details>
@@ -103,27 +107,16 @@ The Playground is the primary coding workspace inside El Nexo Developer Studio.
 
 The Component Explorer provides visibility into function components registered during runtime.
 
-**Component Information**
 - Inspect registered components.
 - Explore component names and types.
-- View available component information.
-
-**Props Inspection**
 - Explore component properties.
-- Understand the data passed into components.
-
-**Hooks Information**
 - Inspect available hook information.
-- Explore component state and hook-related details.
-
-**Render Information**
-- Observe component rendering information.
-- Explore component metrics and runtime registration data.
+- View component rendering and runtime registration data.
 
 </details>
 
 <details>
-<summary><strong>04. 🌳 Fiber Inspector and Fiber Tree — Explore the Internal Structure</strong></summary>
+<summary><strong>04. 🌳 Fiber Inspector and Fiber Tree</strong></summary>
 
 El Nexo includes visual tools for exploring Fiber-related structures and component relationships.
 
@@ -184,19 +177,13 @@ These are results from one local benchmark run, not standardized performance com
 El Nexo provides two visual experiences that can be switched inside the Developer Studio.
 
 **📓 Notebook Theme**
-
-A warm, notebook-inspired workspace.
-
 - Cream-colored background.
 - Graph-paper visual styling.
 - Navy typography.
 - Yellow accent details.
-- A clean learning and experimentation atmosphere.
+- Learning and experimentation atmosphere.
 
 **💻 Studio Theme**
-
-A technical developer workspace.
-
 - Deep navy and blue interface.
 - Bright yellow accents.
 - High-contrast workspace styling.
@@ -210,26 +197,48 @@ A technical developer workspace.
 </details>
 
 <details>
-<summary><strong>07. 🤖 AI Assistant — Local AI Coding Support</strong></summary>
+<summary><strong>07. 🤖 AI Assistant — Cloudflare Workers AI</strong></summary>
 
-El Nexo integrates a locally powered AI coding assistant through Ollama.
+El Nexo integrates an AI coding assistant powered by Cloudflare Workers AI.
+
+The assistant connects to a separately deployed Cloudflare Worker, allowing the public Developer Studio to make AI requests without requiring the visitor to run Ollama or host a local Node.js backend.
 
 **AI Capabilities**
 - Explain selected source code.
 - Provide debugging assistance.
 - Answer questions about code.
-- Offer context-aware development guidance.
+- Provide context-aware development guidance.
 
 **AI Technology**
 
 | Component | Configuration |
 |---|---|
-| Provider | Ollama |
-| Model | `qwen2.5-coder:3b` |
-| API endpoint | `/api/ai/explain` |
-| Execution | Local Ollama service |
+| Provider | Cloudflare Workers AI |
+| Model | `@cf/google/gemma-4-26b-a4b-it` |
+| Backend | Cloudflare Worker |
+| Health endpoint | `/api/ai/health` |
+| Explanation endpoint | `/api/ai/explain` |
+| Frontend hosting | Vercel |
 
-The AI Assistant is optional and requires Ollama to be installed and running.
+**Request Flow**
+
+1. A developer submits a question in the Playground.
+2. The frontend sends the request to the Cloudflare Worker.
+3. The Worker validates the request and applies rate limiting.
+4. Cloudflare Workers AI processes the prompt.
+5. The Worker returns the generated explanation.
+6. The Developer Studio displays the response.
+
+**Cloudflare Worker Bindings**
+
+The Worker uses the following bindings:
+
+- `AI` — Cloudflare Workers AI binding.
+- `AI_RATE_LIMITER` — rate-limiting binding.
+
+The deployed Worker also validates the allowed frontend origin and limits request and input sizes.
+
+**Important:** Cloudflare Workers AI has usage limits and applicable pricing or quotas. Availability and usage depend on the Cloudflare account and plan.
 
 </details>
 
@@ -240,27 +249,58 @@ The AI Assistant is optional and requires Ollama to be installed and running.
 El Nexo combines a framework runtime with an integrated Developer Studio.
 
 ```text
-                   EL NEXO
-                       |
-          +------------+------------+
-          |                         |
-     Framework Core           Developer Studio
-          |                         |
-     Virtual DOM              Interactive Playground
-          |                         |
-     Reconciliation             Live Preview
-          |                         |
-     Fiber Structures          Component Explorer
-          |                         |
-     Hooks & State             Fiber Inspector
-          |                         |
-     DOM Rendering             Runtime Activity
-                                    |
-                              Performance Tools
-                                    |
-                              AI Assistant
-                                    |
-                              Theme Switching
+                         EL NEXO
+                            |
+              +-------------+-------------+
+              |                           |
+        Framework Core              Developer Studio
+              |                           |
+         Virtual DOM              Interactive Playground
+              |                           |
+        Reconciliation                 Live Preview
+              |                           |
+        Fiber Structures           Component Explorer
+              |                           |
+         Hooks & State               Fiber Inspector
+              |                           |
+         DOM Rendering               Runtime Activity
+                                          |
+                                    Performance Tools
+                                          |
+                                      AI Assistant
+                                          |
+                                    Theme Switching
+```
+
+### Production Architecture
+
+```text
+                 Developer / Browser
+                         |
+                         v
+              Vercel — Frontend Hosting
+                         |
+               El Nexo Developer Studio
+                         |
+              AI request from frontend
+                         |
+                         v
+             Cloudflare Worker — API
+                         |
+                Request Validation
+                         |
+                  Rate Limiting
+                         |
+                         v
+              Cloudflare Workers AI
+                         |
+                 Gemma 4 Model
+                         |
+                         v
+                AI Explanation
+                         |
+                         v
+              Developer Studio UI
 ```
 
 ### Project Structure
@@ -279,6 +319,8 @@ El-Nexo/
 │   ├── main.js
 │   ├── devtools.css
 │   └── performance.html
+├── scripts/
+│   └── build.mjs
 ├── src/
 │   ├── core/
 │   ├── devtools/
@@ -288,6 +330,7 @@ El-Nexo/
 │   └── vdom/
 ├── tests/
 ├── server.cjs
+├── vercel.json
 ├── package.json
 ├── package-lock.json
 └── README.md
@@ -302,10 +345,13 @@ El-Nexo/
 | JavaScript (ES Modules) | Framework implementation |
 | HTML5 | Developer Studio structure |
 | CSS3 | Workspace styling and themes |
-| Node.js | Local development server |
-| Express | Server-side APIs |
+| Node.js | Local development server and build tooling |
+| Express | Local server-side APIs |
 | Vitest | Automated testing |
-| Ollama | Local AI integration |
+| Vercel | Public frontend hosting |
+| Cloudflare Workers | AI API backend |
+| Cloudflare Workers AI | AI inference |
+| Gemma 4 | Configured AI model |
 
 ---
 
@@ -315,7 +361,7 @@ El-Nexo/
 
 - Node.js
 - npm
-- Ollama (optional, for AI Assistant functionality)
+- Git
 
 ### 1. Clone the repository
 
@@ -330,17 +376,7 @@ cd El-Nexo
 npm install
 ```
 
-### 3. Configure the AI Assistant (Optional)
-
-Install Ollama and download the supported coding model:
-
-```bash
-ollama pull qwen2.5-coder:3b
-```
-
-Make sure Ollama is running before using the AI Assistant.
-
-### 4. Start El Nexo
+### 3. Start the local development server
 
 ```bash
 npm start
@@ -352,7 +388,7 @@ Alternatively:
 node server.cjs
 ```
 
-### 5. Open Developer Studio
+### 4. Open Developer Studio
 
 Visit:
 
@@ -360,7 +396,87 @@ Visit:
 http://localhost:5500/playground/
 ```
 
-Use the Node.js server instead of opening the HTML file directly. The server provides example discovery, AI API functionality, and project file serving.
+Use the Node.js server instead of opening the HTML file directly. The local server provides example discovery, project file serving, and the configured local development APIs.
+
+**Note:** The public deployment uses Cloudflare Workers AI. The local server and its AI configuration are separate from the production Worker.
+
+---
+
+## 🌍 Production Deployment
+
+### Frontend — Vercel
+
+The public Developer Studio is hosted on Vercel.
+
+**Live URL:**
+
+https://el-nexo-developer-studio.vercel.app/playground/
+
+The project is connected to the GitHub repository:
+
+https://github.com/WHITE-bot-bit/El-Nexo
+
+**Production build**
+
+Run:
+
+```bash
+npm run build
+```
+
+The build script generates the `dist` directory containing:
+- Playground files.
+- Framework runtime files from `src`.
+- Example files.
+- Generated `examples/index.json`.
+
+**Vercel configuration**
+
+| Setting | Value |
+|---|---|
+| Framework Preset | Other |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
+| Production Branch | `main` |
+
+The Vercel configuration also redirects the root URL to `/playground/` and serves the generated examples index through the `/api/examples` rewrite.
+
+### AI Backend — Cloudflare Workers
+
+The AI assistant is hosted separately using Cloudflare Workers.
+
+**Worker endpoint:**
+
+```text
+https://el-nexo-ai.moreshwar771.workers.dev
+```
+
+**Available API routes:**
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/api/ai/health` | Check AI service connection |
+| POST | `/api/ai/explain` | Generate code explanations |
+
+The explanation endpoint accepts:
+
+```json
+{
+  "prompt": "Explain how Fiber nodes work",
+  "context": "Source code goes here",
+  "fileName": "Counter.js"
+}
+```
+
+The Worker uses Cloudflare Workers AI to generate the response.
+
+**Cloudflare configuration requirements**
+- Enable the Workers AI binding named `AI`.
+- Configure the rate-limiting binding named `AI_RATE_LIMITER`.
+- Allow the production frontend origin:
+  `https://el-nexo-developer-studio.vercel.app`
+
+Do not expose private credentials or account secrets in frontend code or this repository.
 
 ---
 
@@ -376,7 +492,7 @@ Use the Node.js server instead of opening the HTML file directly. The server pro
 8. Inspect Fiber-related structures through Fiber Inspector.
 9. Monitor rendering activity.
 10. Switch between Notebook and Studio themes.
-11. Use the AI Assistant when Ollama is configured.
+11. Use the AI Assistant to ask questions about code.
 
 The editor supports injected `createElement`, `useState`, `useEffect`, and `useMemo` APIs.
 
@@ -408,8 +524,9 @@ npm run bench
 | Automated tests | 111 passed |
 | Benchmark test files | 1 passed |
 | Benchmark tests | 3 passed |
+| Latest npm audit | 0 vulnerabilities |
 
-**All recorded tests passed in the local validation run.**
+These results reflect the local validation run.
 
 ---
 
@@ -421,6 +538,7 @@ El Nexo is an experimental framework intended to explore frontend framework inte
 - The Fiber Inspector displays a Fiber tree built from the current Virtual DOM snapshot; this is not yet the active rendering tree used by the Playground.
 - The Component Explorer uses a separate runtime registry to track function components invoked during rendering.
 - Performance timings are approximate and intended for experimentation.
+- The Render Timeline is a conceptual visualization and should not be interpreted as precise per-component profiling.
 
 These distinctions are important when interpreting the Developer Studio visualizations.
 
@@ -436,16 +554,20 @@ Potential directions for further development include:
 - Improved performance profiling.
 - Additional framework inspection tools.
 - Expanded AI-assisted development features.
+- More comprehensive framework documentation.
+- Additional runtime and reconciliation tests.
 
 ---
 
 ## 📌 Project Status
 
-**El Nexo is an experimental frontend framework and Developer Studio.**
+**El Nexo v1.0.0 — Initial Public Release**
+
+El Nexo is an experimental frontend framework and Developer Studio.
 
 The project focuses on understanding framework internals while building a practical development environment around those concepts.
 
-It combines framework implementation, interactive experimentation, runtime inspection, and local AI assistance in one project.
+It combines framework implementation, interactive experimentation, runtime inspection, and AI-assisted development in one project.
 
 ---
 
